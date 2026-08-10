@@ -1,7 +1,7 @@
 {
   "name": "learning-academy",
-  "version": "1.0.10",
-  "description": "Learning Academy — Your All in One Learning Hub.",
+  "version": "1.1.0",
+  "description": "Learning Academy — universal multi-course learning client with package-based courses, per-course progress, backups, and automatic updates.",
   "main": "main.js",
   "scripts": {
     "start": "electron .",
@@ -20,7 +20,8 @@
       "index.html",
       "main.js",
       "preload.js",
-      "validate.js"
+      "validate.js",
+      "courses/**/*"
     ],
     "win": {
       "target": "nsis"

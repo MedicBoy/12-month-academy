@@ -13,3 +13,14 @@ contextBridge.exposeInMainWorld("academyUpdater", {
     return () => ipcRenderer.removeListener("updater:status", handler);
   }
 });
+
+contextBridge.exposeInMainWorld("academyCourses", {
+  list: () => ipcRenderer.invoke("courses:list"),
+  load: (id) => ipcRenderer.invoke("courses:load", id)
+});
+
+contextBridge.exposeInMainWorld("academyData", {
+  backupProgress: (payload) => ipcRenderer.invoke("academy:backupProgress", payload),
+  restoreLatestBackup: (payload) => ipcRenderer.invoke("academy:restoreLatestBackup", payload),
+  openDiagnostics: () => ipcRenderer.invoke("academy:openDiagnostics")
+});

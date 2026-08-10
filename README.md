@@ -1,15 +1,43 @@
-# Learning Academy v1.0.10 — Automatic Updates & Live Notifications
+# Learning Academy v1.1.0 — Universal Course Engine
 
-## Changes
-- Replaced the static Dashboard notification messages with a persistent live notification feed.
-- Course loads, completed study days, newly unlocked achievements, available updates, and update results now appear in **Updates & Notifications**.
-- The notification feed keeps the newest activity and automatically drops older entries.
-- Learning Academy now checks GitHub Releases automatically each time the installed app opens.
-- When a newer version is available, an automatic **New Update Available** popup opens with a button that takes the user directly to **Settings**.
-- Removed the manual **Check for Updates** button from Settings.
-- Settings now shows a single **Update to vX** action only when an update is available.
-- Clicking Update starts the download and displays live percentage progress in Settings.
-- After the download completes, Learning Academy installs the Windows NSIS update silently and automatically restarts/reopens the app.
-- Added **Update Successful** and **Update Unsuccessful** popup feedback, including install-result tracking across the restart.
-- Preserves the v1.0.9 Recent Courses load button, green achievement completion checkmarks, centered brand subtitle, and v1.0.8 session-advance behavior.
+Learning Academy is now a package-based multi-course desktop learning platform.
 
+## What changed in v1.1.0
+
+- Courses are no longer hard-coded into `index.html`.
+- Built-in courses live in the `courses/` directory as structured JSON packages.
+- The Electron main process validates and loads course packages through a secure preload bridge.
+- Each course keeps independent progress, lesson checks, XP, notes, bookmarks, and achievements.
+- Existing Computing & STEM Foundations progress is automatically migrated from the legacy v1.0.x save format.
+- Save data now uses schema version 2 so future migrations can be handled safely.
+- A persistent local learner ID is created now so local progress can later attach to an online account.
+- Progress is automatically backed up outside browser storage under the Learning Academy user-data folder. The newest five backups per course are retained.
+- Settings can restore the latest progress backup and open the diagnostics folder.
+- Course Library now supports search, category filtering, and difficulty filtering.
+- Course metadata already contains storefront-ready fields such as category, difficulty, provider, version, estimated hours, status, and price placeholder.
+- The validator checks JavaScript plus every built-in course package before a release can publish.
+
+## Course package format
+
+Each `courses/*.json` package contains:
+
+- `schemaVersion`
+- `id` and `version`
+- catalog metadata
+- `curriculum` and study days
+- interactive `lessons`
+- `achievements`
+- `projects`
+- `assessments`
+
+The client now loads this format generically. A future online catalog can deliver the same package format without redesigning the learning engine.
+
+## Development
+
+```text
+npm install
+npm run validate
+npm start
+```
+
+`npm start` runs the development client. Automatic app updates only operate in the packaged/installed build.
