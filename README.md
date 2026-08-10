@@ -1,3 +1,17 @@
+# Learning Academy v1.2.1 — Course Navigation & Global XP Fix
+
+This maintenance release fixes two issues found while testing the multi-course package system.
+
+## What changed in v1.2.1
+
+- The XP shown in the top application header is now **Total XP across all courses** instead of changing to the XP of whichever course is currently loaded.
+- Course-specific XP remains available inside each course's Home and Course Stats views.
+- The lesson **Previous** button now navigates to the preceding lesson step.
+- On the first lesson step, that button changes to **← Course Home** and returns to the loaded course home instead of doing nothing.
+- Existing per-course progress, achievements, and XP values are preserved; this update only changes how academy-wide XP is displayed.
+
+---
+
 # Learning Academy v1.2.0 — Course Package System
 
 Learning Academy can now install courses independently from the desktop client through the `.lacourse` package format.

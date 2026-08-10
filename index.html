@@ -52,7 +52,7 @@
 
 </style></head><body>
 <header><div class="brand"><h1>🎓 Learning Academy</h1><div class="muted">Your All in One Learning Hub</div></div>
-<div>⭐ <b id="xp">0</b> XP &nbsp; 🔥 <b id="streak">0</b></div></header>
+<div>⭐ <b id="xp">0</b> Total XP &nbsp; 🔥 <b id="streak">0</b></div></header>
 <div class="wrap">
 <div class="nav">
 <button onclick="page('dash')">Dashboard</button>
@@ -197,7 +197,7 @@
         <div id="lessonFeedback"></div>
       </div>
       <div style="display:flex;justify-content:space-between;gap:10px;margin-top:18px">
-        <button class="alt" onclick="prevLessonStep()">← Previous</button>
+        <button class="alt" id="prevLessonBtn" onclick="prevLessonStep()">← Previous</button>
         <button id="nextLessonBtn" onclick="nextLessonStep()">Next →</button>
       </div>
     </main>
@@ -641,6 +641,11 @@ function saveCourseNotes(){const c=selectedCourse();if(!c)return;courseNotes[c.i
 
 function streakFor(progress){let n=0;for(let d=progress.day;d>=1;d--){if(progress.completed.includes(d))n++;else break}return n}
 function streak(){return streakFor(S)}
+function totalAcademyXp(){
+  const prefix="learningAcademy:courseProgress:",ids=new Set(COURSES.map(course=>course.id));
+  for(let i=0;i<localStorage.length;i++){const key=localStorage.key(i);if(key&&key.startsWith(prefix))ids.add(key.slice(prefix.length))}
+  return [...ids].reduce((total,id)=>{if(id===selectedCourseId)return total+Math.max(0,Number(S.xp)||0);const raw=safeJson(localStorage.getItem(progressKey(id)),null);return total+Math.max(0,Number(raw?.xp)||0)},0);
+}
 function renderDashboard(){
   const c=selectedCourse(),badge=document.getElementById("dashCourseName");
   if(c&&current()){
@@ -661,7 +666,7 @@ function renderDashboard(){
 }
 function render(){
   const c=current();
-  const xpEl=document.getElementById("xp");if(xpEl)xpEl.textContent=selectedCourseId?S.xp:COURSES.reduce((n,course)=>n+courseProgressFor(course.id).xp,0);
+  const xpEl=document.getElementById("xp");if(xpEl)xpEl.textContent=totalAcademyXp();
   const streakEl=document.getElementById("streak");if(streakEl)streakEl.textContent=selectedCourseId?streak():0;
   if(c){
     const done=c.tasks.filter((_,i)=>isDone(c.day,i)).length,p=Math.round(done/c.tasks.length*100),sel=document.getElementById("dayselect");
@@ -696,7 +701,7 @@ function openLesson(){if(!selectedCourse()){page("courses");return}page("learn")
 function renderLesson(){
   const day=S.day,list=lessonList(day);if(!list.length)return;
   lessonIndex=Math.max(0,Math.min(lessonIndex,list.length-1));const l=list[lessonIndex],completed=list.filter((_,i)=>lessonDone(day,i)).length,pct=Math.round(completed/list.length*100),d=DATA.days[day-1];
-  document.getElementById("lessonDayNum").textContent=day;document.getElementById("lessonSidebarTitle").textContent=d.focus;document.getElementById("lessonOverallFill").style.width=pct+"%";document.getElementById("lessonOverallText").textContent=pct+"% complete";document.getElementById("lessonKicker").textContent=`DAY ${day} • LESSON ${lessonIndex+1} OF ${list.length}`;document.getElementById("lessonTitle").textContent=l.title;document.getElementById("lessonObjective").textContent=l.objective;document.getElementById("lessonContent").innerHTML=safeLessonHtml(l.content);document.getElementById("questionText").textContent=l.q;document.getElementById("answerInput").value="";document.getElementById("lessonFeedback").innerHTML="";document.getElementById("lessonSteps").innerHTML=list.map((x,i)=>`<div class="lesson-step ${i===lessonIndex?"active":""} ${lessonDone(day,i)?"done":""}" onclick="lessonIndex=${i};renderLesson()">${lessonDone(day,i)?"✓":"○"} ${i+1}. ${x.title}</div>`).join("");document.getElementById("nextLessonBtn").textContent=lessonIndex===list.length-1?"Finish Session":"Next →";
+  document.getElementById("lessonDayNum").textContent=day;document.getElementById("lessonSidebarTitle").textContent=d.focus;document.getElementById("lessonOverallFill").style.width=pct+"%";document.getElementById("lessonOverallText").textContent=pct+"% complete";document.getElementById("lessonKicker").textContent=`DAY ${day} • LESSON ${lessonIndex+1} OF ${list.length}`;document.getElementById("lessonTitle").textContent=l.title;document.getElementById("lessonObjective").textContent=l.objective;document.getElementById("lessonContent").innerHTML=safeLessonHtml(l.content);document.getElementById("questionText").textContent=l.q;document.getElementById("answerInput").value="";document.getElementById("lessonFeedback").innerHTML="";document.getElementById("lessonSteps").innerHTML=list.map((x,i)=>`<div class="lesson-step ${i===lessonIndex?"active":""} ${lessonDone(day,i)?"done":""}" onclick="lessonIndex=${i};renderLesson()">${lessonDone(day,i)?"✓":"○"} ${i+1}. ${x.title}</div>`).join("");document.getElementById("nextLessonBtn").textContent=lessonIndex===list.length-1?"Finish Session":"Next →";const prevBtn=document.getElementById("prevLessonBtn");if(prevBtn)prevBtn.textContent=lessonIndex===0?"← Course Home":"← Previous";
 }
 function normalizeAnswer(v){return v.trim().toLowerCase().replace(/\s+/g," ")}
 function submitLessonAnswer(){
@@ -713,7 +718,7 @@ function finishLessonSession(){
   S.day=finishedDay+1;lessonIndex=0;save();render();renderLesson();document.getElementById("lessonFeedback").innerHTML=`<div class="feedback good"><b>Day ${finishedDay} complete.</b><br>+250 completion XP. You are now at the start of Day ${S.day}.</div>`;
 }
 function nextLessonStep(){const list=lessonList(S.day);if(lessonIndex<list.length-1){lessonIndex++;renderLesson()}else finishLessonSession()}
-function prevLessonStep(){if(lessonIndex>0){lessonIndex--;renderLesson()}}
+function prevLessonStep(){if(lessonIndex>0){lessonIndex--;renderLesson();return}page("course");showCourseTab("home")}
 
 async function restoreLatestProgressBackup(){
   if(!selectedCourseId){alert("Load a course first, then restore its latest backup.");return}
