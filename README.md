@@ -1,36 +1,52 @@
-# Learning Academy v1.1.0 — Universal Course Engine
+# Learning Academy v1.2.0 — Course Package System
 
-Learning Academy is now a package-based multi-course desktop learning platform.
+Learning Academy can now install courses independently from the desktop client through the `.lacourse` package format.
 
-## What changed in v1.1.0
+## What changed in v1.2.0
 
-- Courses are no longer hard-coded into `index.html`.
-- Built-in courses live in the `courses/` directory as structured JSON packages.
-- The Electron main process validates and loads course packages through a secure preload bridge.
-- Each course keeps independent progress, lesson checks, XP, notes, bookmarks, and achievements.
-- Existing Computing & STEM Foundations progress is automatically migrated from the legacy v1.0.x save format.
-- Save data now uses schema version 2 so future migrations can be handled safely.
-- A persistent local learner ID is created now so local progress can later attach to an online account.
-- Progress is automatically backed up outside browser storage under the Learning Academy user-data folder. The newest five backups per course are retained.
-- Settings can restore the latest progress backup and open the diagnostics folder.
-- Course Library now supports search, category filtering, and difficulty filtering.
-- Course metadata already contains storefront-ready fields such as category, difficulty, provider, version, estimated hours, status, and price placeholder.
-- The validator checks JavaScript plus every built-in course package before a release can publish.
+- Added the Learning Academy `.lacourse` package format.
+- Course Library can install a `.lacourse` file with a normal Windows file picker.
+- Installed courses are stored under Learning Academy's user-data folder rather than inside the Windows installation.
+- Installed packages are discovered automatically whenever the app opens.
+- Built-in and separately installed courses appear together in Course Library.
+- Course cards show the course version and whether the course is built-in or an installed package.
+- Installing a newer package with the same course ID updates that course without erasing learner progress.
+- Course downgrades are blocked to protect progress compatibility.
+- Installed courses can be uninstalled while keeping their saved progress for a future reinstall.
+- Built-in courses cannot be overwritten or uninstalled by local packages.
+- Settings can open the installed-course folder.
+- Course archives are validated for package format, schema, IDs, semantic versions, unsafe archive paths, file-count limits, and compressed/uncompressed size limits.
+- Imported lesson HTML is filtered before display, and package metadata must remain plain text.
+- Added `adm-zip` as a bundled production dependency, so customers do not need ZIP software or any other program to install courses.
 
-## Course package format
+## `.lacourse` package format v1
 
-Each `courses/*.json` package contains:
+A `.lacourse` file is a ZIP-compatible archive with a Learning Academy-specific extension. It contains at minimum:
 
-- `schemaVersion`
-- `id` and `version`
-- catalog metadata
-- `curriculum` and study days
-- interactive `lessons`
-- `achievements`
-- `projects`
-- `assessments`
+```text
+Python_Foundations_Demo.lacourse
+├── manifest.json
+└── course.json
+```
 
-The client now loads this format generically. A future online catalog can deliver the same package format without redesigning the learning engine.
+`manifest.json` identifies the package:
+
+```json
+{
+  "packageFormat": "learning-academy-course",
+  "packageVersion": 1,
+  "courseId": "python-foundations-demo",
+  "courseVersion": "1.0.0",
+  "entry": "course.json",
+  "name": "Python Foundations — Demo"
+}
+```
+
+`course.json` uses the same universal course schema introduced in v1.1.0. Future package versions can add assets without redesigning the learning engine.
+
+## Why this matters
+
+Today a learner can receive a `.lacourse` file and install it manually. Later the online Learning Academy store can download the exact same package after purchase and hand it to the same validator/installer. The course engine therefore does not need to be rebuilt when accounts and commerce are added.
 
 ## Development
 
@@ -40,4 +56,4 @@ npm run validate
 npm start
 ```
 
-`npm start` runs the development client. Automatic app updates only operate in the packaged/installed build.
+`adm-zip` is bundled with the application when the Windows release is built. Customers do not install Node.js, Git, ZIP software, or any other dependency.

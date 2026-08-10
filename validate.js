@@ -79,8 +79,16 @@ if (!fs.existsSync(courseDir)) {
 }
 
 const pkg = JSON.parse(fs.readFileSync("package.json", "utf8"));
+if (pkg.version !== "1.2.0") fail(`package.json version must be 1.2.0, found ${pkg.version}.`);
+else ok("Application version is 1.2.0");
 if (!pkg.build?.files?.some(entry => String(entry).startsWith("courses/"))) fail("package.json build.files must include courses/**/*.");
-else ok("Course packages included in Windows build");
+else ok("Built-in course packages included in Windows build");
+if (!pkg.dependencies?.["adm-zip"]) fail("package.json dependencies must include adm-zip for .lacourse support.");
+else ok(".lacourse archive dependency declared");
+if (!fs.readFileSync("preload.js", "utf8").includes("installPackage")) fail("preload.js is missing the course-package install bridge.");
+else ok("Course package bridge present");
+if (!fs.readFileSync("main.js", "utf8").includes("learning-academy-course")) fail("main.js is missing the .lacourse package-format validator.");
+else ok("Course package validator present");
 
 if (failed) process.exit(1);
 console.log("✓ Learning Academy validation passed.");

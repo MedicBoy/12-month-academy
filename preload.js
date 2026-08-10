@@ -16,7 +16,10 @@ contextBridge.exposeInMainWorld("academyUpdater", {
 
 contextBridge.exposeInMainWorld("academyCourses", {
   list: () => ipcRenderer.invoke("courses:list"),
-  load: (id) => ipcRenderer.invoke("courses:load", id)
+  load: (id) => ipcRenderer.invoke("courses:load", id),
+  installPackage: () => ipcRenderer.invoke("courses:installPackage"),
+  uninstallPackage: (id) => ipcRenderer.invoke("courses:uninstallPackage", id),
+  openInstalledFolder: () => ipcRenderer.invoke("courses:openInstalledFolder")
 });
 
 contextBridge.exposeInMainWorld("academyData", {

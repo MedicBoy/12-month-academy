@@ -47,6 +47,7 @@
 .note-area{width:100%;min-height:180px;border-radius:12px;border:1px solid var(--line);background:#0b1427;color:var(--txt);padding:12px}
 .queue-item{background:#121d34;border:1px solid var(--line);border-radius:12px;padding:12px;margin:8px 0}.recent-course-item{display:flex;justify-content:space-between;gap:14px;align-items:center;flex-wrap:wrap}.recent-course-item button{white-space:nowrap}.achievement-reward{display:flex;align-items:center;gap:8px;white-space:nowrap}.achievement-check{display:inline-grid;place-items:center;width:24px;height:24px;border-radius:50%;background:var(--g);color:#06140e;font-size:16px;font-weight:950;box-shadow:0 0 0 2px #43d79a22}.notification-item{display:flex;gap:11px;align-items:flex-start}.notification-icon{font-size:20px;line-height:1.2}.notification-meta{font-size:11px;color:var(--muted);margin-top:4px}.update-modal-icon{font-size:52px;margin-bottom:8px}.update-actions{display:flex;justify-content:center;gap:10px;flex-wrap:wrap;margin-top:18px}.update-ready{border-left-color:var(--g)}
 .course-progress-row{display:flex;justify-content:space-between;gap:12px;align-items:center}
+.course-package-toolbar{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin:14px 0 6px}.package-note{background:#0e172b;border:1px solid var(--line);border-radius:12px;padding:12px;margin:10px 0}.source-tag{font-weight:800}.source-tag.installed{background:#213b35;color:#c9ffe7}.source-tag.builtin{background:#253354}.course-version{font-variant-numeric:tabular-nums}
 @media(max-width:900px){.course-shell{grid-template-columns:1fr}.course-nav{position:static}.stat-grid{grid-template-columns:1fr 1fr}}
 
 </style></head><body>
@@ -116,7 +117,12 @@
 <section id="courses" class="hidden">
   <div class="card">
     <h2>📚 Course Library</h2>
-    <p class="muted">Browse every learning program available in Learning Academy. Load a course to make it your active program.</p>
+    <p class="muted">Browse built-in and installed learning programs. Course packages can now be added independently from Learning Academy itself.</p>
+    <div class="course-package-toolbar">
+      <button class="good" onclick="installCoursePackage()">➕ Install .lacourse Package</button>
+      <button class="alt" onclick="openInstalledCourseFolder()">📁 Installed Course Folder</button>
+    </div>
+    <div class="package-note"><b>Course packages are independent from app updates.</b><div class="muted">Install only .lacourse files from sources you trust. Updating or uninstalling a course package does not erase its saved learner progress.</div></div>
     <div class="course-catalog-tools" style="display:flex;gap:10px;flex-wrap:wrap;margin:14px 0">
       <input class="search" id="courseSearch" placeholder="Search courses..." oninput="renderCourses()" style="flex:1;min-width:220px">
       <select class="select" id="courseCategory" onchange="renderCourses()"><option value="">All categories</option></select>
@@ -220,6 +226,14 @@
       GitHub Releases: MedicBoy / 12-month-academy
     </div>
     <div class="month" style="margin-top:14px">
+      <h3>Course Packages</h3>
+      <p class="muted">Installed .lacourse packages live in your Learning Academy data folder and can be added or updated without releasing a new version of the client.</p>
+      <div style="display:flex;gap:10px;flex-wrap:wrap">
+        <button class="good" onclick="installCoursePackage()">➕ Install Course Package</button>
+        <button class="alt" onclick="openInstalledCourseFolder()">📁 Open Installed Course Folder</button>
+      </div>
+    </div>
+    <div class="month" style="margin-top:14px">
       <h3>Local Learner Data</h3>
       <p class="muted">Course progress is stored separately for every course and automatically backed up on this computer.</p>
       <p><b>Local learner ID:</b> <span id="learnerProfileId">Loading…</span></p>
@@ -267,6 +281,19 @@ let backupTimer=null;
 function safeJson(value,fallback){
   try{return value?JSON.parse(value):fallback}catch(_){return fallback}
 }
+function safeLessonHtml(html){
+  const template=document.createElement("template");
+  template.innerHTML=String(html||"");
+  template.content.querySelectorAll("script,iframe,object,embed,link,meta,base").forEach(el=>el.remove());
+  template.content.querySelectorAll("*").forEach(el=>{
+    [...el.attributes].forEach(attr=>{
+      const name=attr.name.toLowerCase(),value=String(attr.value||"").trim().toLowerCase();
+      if(name.startsWith("on")||name==="srcdoc"||((name==="href"||name==="src")&&value.startsWith("javascript:"))) el.removeAttribute(attr.name);
+    });
+  });
+  return template.innerHTML;
+}
+function escapeHtml(value){return String(value??"").replace(/[&<>"']/g,ch=>({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;"}[ch]||ch))}
 function makeLearnerId(){
   if(globalThis.crypto?.randomUUID) return crypto.randomUUID();
   return "local-"+Date.now().toString(36)+"-"+Math.random().toString(36).slice(2,12);
@@ -436,21 +463,73 @@ function renderCourses(){
   const q=(document.getElementById("courseSearch")?.value||"").trim().toLowerCase();
   const category=document.getElementById("courseCategory")?.value||"";
   const difficulty=document.getElementById("courseDifficulty")?.value||"";
-  const visible=COURSES.filter(c=>(!q||`${c.name} ${c.description} ${c.category} ${c.difficulty}`.toLowerCase().includes(q))&&(!category||c.category===category)&&(!difficulty||c.difficulty===difficulty));
+  const visible=COURSES.filter(c=>(!q||`${c.name} ${c.description} ${c.category} ${c.difficulty} ${c.provider}`.toLowerCase().includes(q))&&(!category||c.category===category)&&(!difficulty||c.difficulty===difficulty));
   grid.innerHTML=visible.length?visible.map(c=>{
     const loaded=selectedCourseId===c.id;
     const state=loaded?S:courseProgressFor(c.id);
     const max=totalDaysForCourse(c);
     const progress=Math.round((state.completed.length/max)*100);
+    const sourceLabel=c.installedPackage?"📦 Installed Package":"🏛 Built-in";
+    const sourceClass=c.installedPackage?"installed":"builtin";
+    const removeButton=c.canUninstall?`<button class="alt" onclick="uninstallCoursePackage('${c.id}')">🗑 Uninstall</button>`:"";
     return `<div class="course-card ${loaded?"loaded":""}">
-      <div class="course-title">${c.name}</div>
-      <span class="tag">${c.duration}</span><span class="tag">${c.status}</span>${c.category?`<span class="tag">${c.category}</span>`:""}${c.difficulty?`<span class="tag">${c.difficulty}</span>`:""}
-      <p class="muted">${c.description}</p>
+      <div class="course-title">${escapeHtml(c.name)}</div>
+      <span class="tag">${escapeHtml(c.duration)}</span><span class="tag">${escapeHtml(c.status)}</span>${c.category?`<span class="tag">${escapeHtml(c.category)}</span>`:""}${c.difficulty?`<span class="tag">${escapeHtml(c.difficulty)}</span>`:""}<span class="tag source-tag ${sourceClass}">${sourceLabel}</span><span class="tag course-version">v${escapeHtml(c.version||"1.0.0")}</span>
+      <p class="muted">${escapeHtml(c.description)}</p>
       <div class="course-progress-row"><span>${progress}% complete</span><span>${state.completed.length}/${max} days</span></div>
       <div class="bar"><div class="fill" style="width:${progress}%"></div></div>
-      <div class="course-actions">${loaded?`<button class="good" onclick="launchOrSelectCourse()">▶ Launch ${c.shortName}</button><button class="alt" onclick="unloadCourse()">Unload</button>`:`<button onclick="loadCourse('${c.id}')">Load Course</button>`}</div>
+      <div class="course-actions">${loaded?`<button class="good" onclick="launchOrSelectCourse()">▶ Launch ${escapeHtml(c.shortName)}</button><button class="alt" onclick="unloadCourse()">Unload</button>`:`<button onclick="loadCourse('${c.id}')">Load Course</button>`}${removeButton}</div>
     </div>`;
   }).join(""):'<p class="muted">No courses match those filters.</p>';
+}
+
+async function refreshCourseCatalog(){
+  if(!window.academyCourses?.list) throw new Error("Course Loader bridge is unavailable.");
+  const result=await window.academyCourses.list();
+  if(!result?.ok) throw new Error(result?.error||"Could not read the course catalog.");
+  COURSES=result.courses||[];
+  COURSES.forEach(c=>{ACHIEVEMENTS[c.id]=c.achievements||[]});
+  (result.warnings||[]).forEach((warning,index)=>addNotification(`Course package warning: ${warning}`,"error",`course-package-warning-${index}-${warning}`));
+  populateCatalogFilters();
+  if(selectedCourseId&&!courseById(selectedCourseId)){
+    selectedCourseId="";saveSelectedCourse();DATA={terms:[],months:[],days:[]};LESSONS={};S=defaultProgress("");lessonState={};
+  }
+  render();
+  return result;
+}
+
+async function installCoursePackage(){
+  if(!window.academyCourses?.installPackage){alert("Course package installation is unavailable in this build.");return}
+  const result=await window.academyCourses.installPackage();
+  if(result?.canceled) return;
+  if(!result?.ok){
+    addNotification(`Course package installation failed: ${result?.error||"Unknown error"}`,"error");renderNotifications();
+    alert("Learning Academy could not install that course package.\n\n"+(result?.error||"Unknown error"));return;
+  }
+  delete COURSE_PACKAGES[result.course.id];
+  await refreshCourseCatalog();
+  const verb=result.action==="updated"?`updated from v${result.previousVersion} to v${result.course.version}`:result.action==="reinstalled"?`reinstalled at v${result.course.version}`:`installed at v${result.course.version}`;
+  addNotification(`${result.course.name} ${verb}. Saved progress was preserved.`,"course",`course-package-${result.course.id}-${result.course.version}-${result.action}`);
+  renderNotifications();
+  if(confirm(`${result.course.name} was ${verb}.\n\nWould you like to load this course now?`)) await loadCourse(result.course.id);
+  else {page("courses");renderCourses();}
+}
+
+async function uninstallCoursePackage(id){
+  const course=courseById(id);if(!course?.canUninstall)return;
+  if(!confirm(`Uninstall ${course.name}?\n\nYour saved progress will be kept, so reinstalling the course later will restore your progress.`))return;
+  const result=await window.academyCourses?.uninstallPackage?.(id);
+  if(!result?.ok){alert(result?.error||"Could not uninstall that course package.");return}
+  const wasSelected=selectedCourseId===id;
+  delete COURSE_PACKAGES[id];
+  if(wasSelected){selectedCourseId="";saveSelectedCourse();DATA={terms:[],months:[],days:[]};LESSONS={};S=defaultProgress("");lessonState={};}
+  await refreshCourseCatalog();
+  addNotification(`${result.name} was uninstalled. Your saved progress was preserved.`,"course",`course-uninstall-${id}-${Date.now()}`);renderNotifications();page("courses");
+}
+
+async function openInstalledCourseFolder(){
+  const result=await window.academyCourses?.openInstalledFolder?.();
+  if(result&&!result.ok) alert(result.error||"Could not open the installed course folder.");
 }
 
 function achievementStateFor(id){
@@ -617,16 +696,16 @@ function openLesson(){if(!selectedCourse()){page("courses");return}page("learn")
 function renderLesson(){
   const day=S.day,list=lessonList(day);if(!list.length)return;
   lessonIndex=Math.max(0,Math.min(lessonIndex,list.length-1));const l=list[lessonIndex],completed=list.filter((_,i)=>lessonDone(day,i)).length,pct=Math.round(completed/list.length*100),d=DATA.days[day-1];
-  document.getElementById("lessonDayNum").textContent=day;document.getElementById("lessonSidebarTitle").textContent=d.focus;document.getElementById("lessonOverallFill").style.width=pct+"%";document.getElementById("lessonOverallText").textContent=pct+"% complete";document.getElementById("lessonKicker").textContent=`DAY ${day} • LESSON ${lessonIndex+1} OF ${list.length}`;document.getElementById("lessonTitle").textContent=l.title;document.getElementById("lessonObjective").textContent=l.objective;document.getElementById("lessonContent").innerHTML=l.content;document.getElementById("questionText").textContent=l.q;document.getElementById("answerInput").value="";document.getElementById("lessonFeedback").innerHTML="";document.getElementById("lessonSteps").innerHTML=list.map((x,i)=>`<div class="lesson-step ${i===lessonIndex?"active":""} ${lessonDone(day,i)?"done":""}" onclick="lessonIndex=${i};renderLesson()">${lessonDone(day,i)?"✓":"○"} ${i+1}. ${x.title}</div>`).join("");document.getElementById("nextLessonBtn").textContent=lessonIndex===list.length-1?"Finish Session":"Next →";
+  document.getElementById("lessonDayNum").textContent=day;document.getElementById("lessonSidebarTitle").textContent=d.focus;document.getElementById("lessonOverallFill").style.width=pct+"%";document.getElementById("lessonOverallText").textContent=pct+"% complete";document.getElementById("lessonKicker").textContent=`DAY ${day} • LESSON ${lessonIndex+1} OF ${list.length}`;document.getElementById("lessonTitle").textContent=l.title;document.getElementById("lessonObjective").textContent=l.objective;document.getElementById("lessonContent").innerHTML=safeLessonHtml(l.content);document.getElementById("questionText").textContent=l.q;document.getElementById("answerInput").value="";document.getElementById("lessonFeedback").innerHTML="";document.getElementById("lessonSteps").innerHTML=list.map((x,i)=>`<div class="lesson-step ${i===lessonIndex?"active":""} ${lessonDone(day,i)?"done":""}" onclick="lessonIndex=${i};renderLesson()">${lessonDone(day,i)?"✓":"○"} ${i+1}. ${x.title}</div>`).join("");document.getElementById("nextLessonBtn").textContent=lessonIndex===list.length-1?"Finish Session":"Next →";
 }
 function normalizeAnswer(v){return v.trim().toLowerCase().replace(/\s+/g," ")}
 function submitLessonAnswer(){
   const day=S.day,list=lessonList(day),l=list[lessonIndex],input=document.getElementById("answerInput"),a=normalizeAnswer(input.value),ok=(l.answers||[]).some(x=>normalizeAnswer(String(x))===a),fb=document.getElementById("lessonFeedback");
-  if(ok){fb.innerHTML=`<div class="feedback good"><b>✓ Correct.</b><br>${l.explain}</div>`;if(!lessonDone(day,lessonIndex)){lessonState[lessonKey(day,lessonIndex)]=true;saveLessonState();S.xp+=25;save()}}else{fb.innerHTML=`<div class="feedback bad"><b>Not quite.</b><br>Your answer was <b>${input.value||"(blank)"}</b>. Try again, use a hint, or open the explanation.</div>`}
+  if(ok){fb.innerHTML=`<div class="feedback good"><b>✓ Correct.</b><br>${escapeHtml(l.explain)}</div>`;if(!lessonDone(day,lessonIndex)){lessonState[lessonKey(day,lessonIndex)]=true;saveLessonState();S.xp+=25;save()}}else{fb.innerHTML=`<div class="feedback bad"><b>Not quite.</b><br>Your answer was <b>${input.value||"(blank)"}</b>. Try again, use a hint, or open the explanation.</div>`}
   render();const listNow=lessonList(day),completed=listNow.filter((_,i)=>lessonDone(day,i)).length;document.getElementById("lessonOverallFill").style.width=Math.round(completed/listNow.length*100)+"%";document.getElementById("lessonOverallText").textContent=Math.round(completed/listNow.length*100)+"% complete";document.getElementById("lessonSteps").innerHTML=listNow.map((x,i)=>`<div class="lesson-step ${i===lessonIndex?"active":""} ${lessonDone(day,i)?"done":""}" onclick="lessonIndex=${i};renderLesson()">${lessonDone(day,i)?"✓":"○"} ${i+1}. ${x.title}</div>`).join("");
 }
-function showHint(){const l=lessonList(S.day)[lessonIndex];document.getElementById("lessonFeedback").innerHTML=`<div class="hint"><b>💡 Hint:</b> ${l.hint}</div>`}
-function showWorkedSolution(){const l=lessonList(S.day)[lessonIndex];document.getElementById("lessonFeedback").innerHTML=`<div class="hint"><b>Explanation:</b> ${l.explain}</div>`}
+function showHint(){const l=lessonList(S.day)[lessonIndex];document.getElementById("lessonFeedback").innerHTML=`<div class="hint"><b>💡 Hint:</b> ${escapeHtml(l.hint)}</div>`}
+function showWorkedSolution(){const l=lessonList(S.day)[lessonIndex];document.getElementById("lessonFeedback").innerHTML=`<div class="hint"><b>Explanation:</b> ${escapeHtml(l.explain)}</div>`}
 function finishLessonSession(){
   const list=lessonList(S.day),completed=list.filter((_,i)=>lessonDone(S.day,i)).length;if(completed!==list.length){document.getElementById("lessonFeedback").innerHTML=`<div class="feedback bad"><b>${completed}/${list.length} checks completed.</b><br>Finish the remaining checks before completing this session.</div>`;return}
   const finishedDay=S.day,max=totalDays();if(!S.completed.includes(finishedDay)){S.completed.push(finishedDay);S.completed.sort((a,b)=>a-b);S.xp+=250;addNotification(`Day ${finishedDay} completed — 250 XP earned.${finishedDay<max?` Day ${finishedDay+1} is ready.`:" Course complete!"}`,"lesson",`day-complete-${selectedCourseId}-${finishedDay}`);if(!S.ach.includes("First Day"))S.ach.push("First Day");if(!S.ach.includes("Perfect Day"))S.ach.push("Perfect Day")}
@@ -651,12 +730,7 @@ async function openDiagnosticsFolder(){if(window.academyData?.openDiagnostics)aw
 async function initAcademy(){
   const learnerEl=document.getElementById("learnerProfileId");if(learnerEl)learnerEl.textContent=learnerProfileId;
   try{
-    if(!window.academyCourses?.list) throw new Error("Course Loader bridge is unavailable.");
-    const result=await window.academyCourses.list();
-    if(!result?.ok) throw new Error(result?.error||"Could not read the built-in course catalog.");
-    COURSES=result.courses||[];
-    COURSES.forEach(c=>{ACHIEVEMENTS[c.id]=c.achievements||[]});
-    populateCatalogFilters();
+    await refreshCourseCatalog();
     if(selectedCourseId&&!courseById(selectedCourseId))selectedCourseId="";
     if(!selectedCourseId&&localStorage.getItem("academyFull")&&courseById(PRIMARY_COURSE_ID))selectedCourseId=PRIMARY_COURSE_ID;
     if(selectedCourseId)await activateCourse(selectedCourseId);
