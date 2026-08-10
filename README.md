@@ -1,4 +1,4 @@
-# Learning Academy v1.2.2 — Settings Cleanup
+# Learning Academy v1.2.3 — Settings Cleanup
 
 This small maintenance release removes the visible **Update source** box from Settings. Automatic update checking and installation continue to work exactly as before; the GitHub release source is simply no longer exposed in the user-facing interface.
 
@@ -77,3 +77,14 @@ npm start
 ```
 
 `adm-zip` is bundled with the application when the Windows release is built. Customers do not install Node.js, Git, ZIP software, or any other dependency.
+
+
+## v1.2.3 — Daily Challenge
+- Replaces the redundant Dashboard Continue Learning panel with an Academy-wide Daily Challenge.
+- One submitted attempt per local calendar day.
+- Top-bar flame now displays the current consecutive Daily Challenge win streak and resets to 0 after a missed challenge.
+- Overall Learning Stats tracks the learner's longest Daily Challenge win streak as a permanent best record.
+- Optional XP wager slider allows 0–15% of current Total XP.
+- Correct answer: +75 base XP plus the wager amount. Incorrect answer: wager is deducted.
+- Daily Challenge XP is Academy-wide and does not alter course-specific XP totals.
+- Completed challenge card changes to a persistent win/loss result until the next day.

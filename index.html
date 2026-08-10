@@ -47,8 +47,9 @@
 .note-area{width:100%;min-height:180px;border-radius:12px;border:1px solid var(--line);background:#0b1427;color:var(--txt);padding:12px}
 .queue-item{background:#121d34;border:1px solid var(--line);border-radius:12px;padding:12px;margin:8px 0}.recent-course-item{display:flex;justify-content:space-between;gap:14px;align-items:center;flex-wrap:wrap}.recent-course-item button{white-space:nowrap}.achievement-reward{display:flex;align-items:center;gap:8px;white-space:nowrap}.achievement-check{display:inline-grid;place-items:center;width:24px;height:24px;border-radius:50%;background:var(--g);color:#06140e;font-size:16px;font-weight:950;box-shadow:0 0 0 2px #43d79a22}.notification-item{display:flex;gap:11px;align-items:flex-start}.notification-icon{font-size:20px;line-height:1.2}.notification-meta{font-size:11px;color:var(--muted);margin-top:4px}.update-modal-icon{font-size:52px;margin-bottom:8px}.update-actions{display:flex;justify-content:center;gap:10px;flex-wrap:wrap;margin-top:18px}.update-ready{border-left-color:var(--g)}
 .course-progress-row{display:flex;justify-content:space-between;gap:12px;align-items:center}
+.daily-challenge-card{position:relative;overflow:hidden}.daily-challenge-card:before{content:"";position:absolute;width:180px;height:180px;border-radius:50%;background:#6f86ff18;right:-60px;top:-80px;pointer-events:none}.challenge-header{display:flex;justify-content:space-between;align-items:flex-start;gap:14px;flex-wrap:wrap}.challenge-kicker{font-size:12px;letter-spacing:.12em;color:#9eb0db;font-weight:850}.challenge-badge{display:inline-flex;align-items:center;gap:6px;background:#253354;border:1px solid #3a4c74;border-radius:999px;padding:6px 10px;font-size:12px;font-weight:800}.challenge-question{font-size:20px;font-weight:850;line-height:1.4;margin:14px 0}.challenge-options{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin:12px 0}.challenge-option{background:#182440;border:1px solid #33466f;text-align:left}.challenge-option:hover{background:#213055}.challenge-option.selected{outline:2px solid var(--a);background:#253765}.challenge-wager{background:#0d1528;border:1px solid var(--line);border-radius:14px;padding:14px;margin-top:14px}.challenge-wager-row{display:flex;justify-content:space-between;align-items:center;gap:10px}.challenge-slider{width:100%;accent-color:var(--a);margin:12px 0 4px}.challenge-result{border-radius:14px;padding:18px;margin-top:8px}.challenge-result.win{background:#123629;border:1px solid #2d8d68}.challenge-result.loss{background:#3b1c27;border:1px solid #8c4058}.challenge-result-icon{font-size:38px;margin-bottom:4px}.challenge-xp{font-size:24px;font-weight:900}.challenge-lock{margin-top:10px;font-size:12px;color:var(--muted)}
 .course-package-toolbar{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin:14px 0 6px}.package-note{background:#0e172b;border:1px solid var(--line);border-radius:12px;padding:12px;margin:10px 0}.source-tag{font-weight:800}.source-tag.installed{background:#213b35;color:#c9ffe7}.source-tag.builtin{background:#253354}.course-version{font-variant-numeric:tabular-nums}
-@media(max-width:900px){.course-shell{grid-template-columns:1fr}.course-nav{position:static}.stat-grid{grid-template-columns:1fr 1fr}}
+@media(max-width:900px){.course-shell{grid-template-columns:1fr}.course-nav{position:static}.stat-grid{grid-template-columns:1fr 1fr}.challenge-options{grid-template-columns:1fr}}
 
 </style></head><body>
 <header><div class="brand"><h1>🎓 Learning Academy</h1><div class="muted">Your All in One Learning Hub</div></div>
@@ -78,9 +79,12 @@
 
   <div class="grid">
     <main>
-      <div class="card">
-        <h3>▶ Continue Learning</h3>
-        <div id="continueLearning"></div>
+      <div class="card daily-challenge-card">
+        <div class="challenge-header">
+          <div><div class="challenge-kicker">ACADEMY DAILY</div><h3 style="margin:5px 0 0">🎲 Daily Challenge</h3></div>
+          <div class="challenge-badge">🔥 <span id="challengeCardStreak">0</span> win streak</div>
+        </div>
+        <div id="dailyChallenge"></div>
       </div>
       <div class="card" style="margin-top:14px">
         <h3>🕘 Recent Courses</h3>
@@ -103,7 +107,7 @@
           <div class="mini-card"><div class="muted">Hours</div><b id="overallHours">0</b></div>
           <div class="mini-card"><div class="muted">Courses</div><b id="overallCourses">0</b></div>
           <div class="mini-card"><div class="muted">Achievements</div><b id="overallAchievements">0</b></div>
-          <div class="mini-card"><div class="muted">Longest Streak</div><b id="overallStreak">0</b></div>
+          <div class="mini-card"><div class="muted">Longest Challenge Streak</div><b id="overallStreak">0</b></div>
         </div>
       </div>
     </aside>
@@ -273,6 +277,43 @@ let courseTab="home";
 let lessonIndex=0;
 let lessonState={};
 let backupTimer=null;
+const DAILY_CHALLENGE_STATE_KEY="learningAcademy:dailyChallengeState";
+const ACADEMY_XP_ADJUSTMENT_KEY="learningAcademy:academyXpAdjustment";
+const DAILY_CHALLENGE_BASE_REWARD=75;
+let academyXpAdjustment=Number(localStorage.getItem(ACADEMY_XP_ADJUSTMENT_KEY))||0;
+let challengeSelectedAnswer=null;
+const DAILY_CHALLENGES=[
+  {category:"Logic",difficulty:"★★☆☆☆",question:"A farmer has 17 sheep. All but 9 run away. How many sheep remain?",options:["8","9","17","26"],correct:1,explanation:"All but 9 ran away means 9 stayed."},
+  {category:"Math",difficulty:"★★☆☆☆",question:"What number comes next: 2, 6, 12, 20, 30, ?",options:["36","40","42","44"],correct:2,explanation:"The differences are +4, +6, +8, +10, then +12, giving 42."},
+  {category:"Coding",difficulty:"★☆☆☆☆",question:"Which value is usually used to represent TRUE in a Boolean expression?",options:["0","false","true","null"],correct:2,explanation:"The Boolean literal true represents a true condition."},
+  {category:"Pattern",difficulty:"★★★☆☆",question:"Which letter comes next: A, C, F, J, O, ?",options:["S","T","U","V"],correct:2,explanation:"The jumps are +2, +3, +4, +5, then +6: O + 6 = U."},
+  {category:"Math",difficulty:"★★☆☆☆",question:"If 3 notebooks cost 12 XP coins, what would 5 cost at the same rate?",options:["15","18","20","24"],correct:2,explanation:"Each notebook costs 4, so 5 cost 20."},
+  {category:"Logic",difficulty:"★★★☆☆",question:"You pass the runner in second place. What place are you now in?",options:["First","Second","Third","It depends"],correct:1,explanation:"Passing the person in second puts you in second place."},
+  {category:"Coding",difficulty:"★★☆☆☆",question:"What does a loop primarily help a program do?",options:["Repeat instructions","Store a password","Draw only images","Turn off the computer"],correct:0,explanation:"Loops repeat a block of instructions under defined conditions."},
+  {category:"Math",difficulty:"★★★☆☆",question:"What is 25% of 84?",options:["18","20","21","24"],correct:2,explanation:"25% is one quarter, and 84 ÷ 4 = 21."},
+  {category:"Logic",difficulty:"★★★☆☆",question:"If every Zorp is a Mip and no Mip is a Tav, can any Zorp be a Tav?",options:["Yes","No","Only sometimes","Not enough information"],correct:1,explanation:"Every Zorp is a Mip, and no Mip can be a Tav, so no Zorp can be a Tav."},
+  {category:"Coding",difficulty:"★★★☆☆",question:"Which data structure follows First In, First Out (FIFO)?",options:["Stack","Queue","Tree","Set"],correct:1,explanation:"A queue removes items in the same order they were added."},
+  {category:"Pattern",difficulty:"★★☆☆☆",question:"What comes next: 1, 1, 2, 3, 5, 8, ?",options:["11","12","13","16"],correct:2,explanation:"Each number is the sum of the previous two, so 5 + 8 = 13."},
+  {category:"Math",difficulty:"★★★☆☆",question:"Solve: 4x + 6 = 26",options:["4","5","6","8"],correct:1,explanation:"Subtract 6 to get 4x = 20, then divide by 4: x = 5."},
+  {category:"Logic",difficulty:"★★★★☆",question:"Three boxes are labeled Apples, Oranges, and Mixed. Every label is wrong. Which box should you pick one fruit from first?",options:["Apples","Oranges","Mixed","Any box"],correct:2,explanation:"Because every label is wrong, the box labeled Mixed cannot be mixed; one fruit reveals what it really contains."},
+  {category:"Coding",difficulty:"★★☆☆☆",question:"In most programming languages, what is an if statement used for?",options:["Repeating forever","Making a decision","Naming a file","Installing software"],correct:1,explanation:"An if statement conditionally chooses which code should run."},
+  {category:"Math",difficulty:"★★★★☆",question:"A value increases from 80 to 100. What is the percentage increase?",options:["20%","25%","40%","80%"],correct:1,explanation:"The increase is 20, and 20 ÷ 80 = 0.25 = 25%."},
+  {category:"Logic",difficulty:"★★☆☆☆",question:"Which one does not belong: triangle, square, circle, cube?",options:["Triangle","Square","Circle","Cube"],correct:3,explanation:"Cube is three-dimensional; the others are two-dimensional shapes."},
+  {category:"Coding",difficulty:"★★★☆☆",question:"A variable starts at 3. Code runs x = x * 2, then x = x + 1. What is x?",options:["6","7","8","9"],correct:1,explanation:"3 × 2 = 6, then 6 + 1 = 7."},
+  {category:"Math",difficulty:"★★★☆☆",question:"Which fraction is equal to 0.625?",options:["3/5","5/8","2/3","7/10"],correct:1,explanation:"5 ÷ 8 = 0.625."},
+  {category:"Pattern",difficulty:"★★★★☆",question:"What comes next: 3, 4, 7, 11, 18, 29, ?",options:["40","43","47","51"],correct:2,explanation:"Each term is the sum of the previous two: 18 + 29 = 47."},
+  {category:"Logic",difficulty:"★★★☆☆",question:"A clock shows 3:00. What is the smaller angle between the hour and minute hands?",options:["45°","60°","90°","120°"],correct:2,explanation:"At 3:00 the minute hand is at 12 and the hour hand is at 3, a 90° angle."},
+  {category:"Coding",difficulty:"★★★☆☆",question:"Which operator commonly means 'not equal to'?",options:["==","!=","<=","++"],correct:1,explanation:"!= is commonly used to test whether two values are not equal."},
+  {category:"Math",difficulty:"★★★☆☆",question:"If x/4 = 7, what is x?",options:["11","21","28","32"],correct:2,explanation:"Multiply both sides by 4: x = 28."},
+  {category:"Logic",difficulty:"★★★★☆",question:"Five machines make five parts in five minutes. How long would 100 machines take to make 100 parts?",options:["5 minutes","20 minutes","100 minutes","500 minutes"],correct:0,explanation:"Each machine makes one part in five minutes, so 100 machines make 100 parts in five minutes."},
+  {category:"Coding",difficulty:"★★☆☆☆",question:"What is the main purpose of a function?",options:["Group reusable instructions","Increase screen brightness","Delete every variable","Connect only to Wi-Fi"],correct:0,explanation:"Functions package reusable behavior that can be called when needed."},
+  {category:"Math",difficulty:"★★★★☆",question:"What is the average of 8, 12, 15, and 25?",options:["12","15","16","20"],correct:1,explanation:"Their sum is 60, and 60 ÷ 4 = 15."},
+  {category:"Pattern",difficulty:"★★★☆☆",question:"What comes next: 64, 32, 16, 8, ?",options:["2","4","6","12"],correct:1,explanation:"Each value is half the previous value, so 8 ÷ 2 = 4."},
+  {category:"Logic",difficulty:"★★★☆☆",question:"If yesterday was two days before Friday, what day is today?",options:["Wednesday","Thursday","Friday","Saturday"],correct:1,explanation:"Two days before Friday is Wednesday. If yesterday was Wednesday, today is Thursday."},
+  {category:"Coding",difficulty:"★★★★☆",question:"What will [1, 2, 3].length usually return?",options:["2","3","4","6"],correct:1,explanation:"The collection contains three elements, so its length is 3."},
+  {category:"Math",difficulty:"★★★☆☆",question:"A rectangle has perimeter 30 and length 9. What is its width?",options:["3","6","9","12"],correct:1,explanation:"2(L + W) = 30, so L + W = 15. With L = 9, W = 6."},
+  {category:"Logic",difficulty:"★★★★☆",question:"A bat and ball cost $1.10 total. The bat costs $1 more than the ball. How much is the ball?",options:["$0.05","$0.10","$0.15","$0.20"],correct:0,explanation:"If the ball is $0.05, the bat is $1.05, totaling $1.10."}
+];
 
 function safeJson(value,fallback){
   try{return value?JSON.parse(value):fallback}catch(_){return fallback}
@@ -637,18 +678,78 @@ function saveCourseNotes(){const c=selectedCourse();if(!c)return;courseNotes[c.i
 
 function streakFor(progress){let n=0;for(let d=progress.day;d>=1;d--){if(progress.completed.includes(d))n++;else break}return n}
 function streak(){return streakFor(S)}
-function totalAcademyXp(){
+function baseCourseXpTotal(){
   const prefix="learningAcademy:courseProgress:",ids=new Set(COURSES.map(course=>course.id));
   for(let i=0;i<localStorage.length;i++){const key=localStorage.key(i);if(key&&key.startsWith(prefix))ids.add(key.slice(prefix.length))}
   return [...ids].reduce((total,id)=>{if(id===selectedCourseId)return total+Math.max(0,Number(S.xp)||0);const raw=safeJson(localStorage.getItem(progressKey(id)),null);return total+Math.max(0,Number(raw?.xp)||0)},0);
 }
+function totalAcademyXp(){return Math.max(0,baseCourseXpTotal()+academyXpAdjustment)}
+function saveAcademyXpAdjustment(){localStorage.setItem(ACADEMY_XP_ADJUSTMENT_KEY,String(academyXpAdjustment))}
+function localDayKey(date=new Date()){const y=date.getFullYear(),m=String(date.getMonth()+1).padStart(2,"0"),d=String(date.getDate()).padStart(2,"0");return `${y}-${m}-${d}`}
+function dailyChallengeIndex(dayKey){let hash=0;for(const ch of dayKey)hash=((hash*31)+ch.charCodeAt(0))>>>0;return hash%DAILY_CHALLENGES.length}
+function normalizeDailyChallengeState(raw){
+  const src=raw&&typeof raw==="object"?raw:{};
+  return {dateKey:String(src.dateKey||""),answered:!!src.answered,won:!!src.won,answerIndex:Number.isInteger(src.answerIndex)?src.answerIndex:null,wager:Math.max(0,Number(src.wager)||0),xpChange:Number(src.xpChange)||0,currentStreak:Math.max(0,Number(src.currentStreak)||0),bestStreak:Math.max(0,Number(src.bestStreak)||0),totalWins:Math.max(0,Number(src.totalWins)||0),totalAttempts:Math.max(0,Number(src.totalAttempts)||0)};
+}
+let dailyChallengeState=normalizeDailyChallengeState(safeJson(localStorage.getItem(DAILY_CHALLENGE_STATE_KEY),{}));
+function ensureDailyChallenge(){
+  const today=localDayKey();
+  if(dailyChallengeState.dateKey!==today){
+    dailyChallengeState={...dailyChallengeState,dateKey:today,answered:false,won:false,answerIndex:null,wager:0,xpChange:0};
+    challengeSelectedAnswer=null;
+    localStorage.setItem(DAILY_CHALLENGE_STATE_KEY,JSON.stringify(dailyChallengeState));
+  }
+  return DAILY_CHALLENGES[dailyChallengeIndex(today)];
+}
+function saveDailyChallenge(){localStorage.setItem(DAILY_CHALLENGE_STATE_KEY,JSON.stringify(dailyChallengeState))}
+function maxDailyChallengeWager(){return Math.max(0,Math.floor(totalAcademyXp()*0.15))}
+function updateWagerDisplay(value){const out=document.getElementById("challengeWagerValue");if(out)out.textContent=`${Number(value)||0} XP`}
+function selectChallengeAnswer(index){
+  ensureDailyChallenge();if(dailyChallengeState.answered)return;challengeSelectedAnswer=index;
+  document.querySelectorAll(".challenge-option").forEach((el,i)=>el.classList.toggle("selected",i===index));
+  const submit=document.getElementById("submitChallengeBtn");if(submit)submit.disabled=false;
+}
+function submitDailyChallenge(){
+  const challenge=ensureDailyChallenge();if(dailyChallengeState.answered)return;
+  if(challengeSelectedAnswer===null){alert("Choose an answer before locking in your one attempt.");return}
+  const slider=document.getElementById("challengeWagerSlider"),max=maxDailyChallengeWager();
+  const wager=Math.max(0,Math.min(max,Math.floor(Number(slider?.value)||0)));
+  const won=challengeSelectedAnswer===challenge.correct;
+  let xpChange=0;
+  if(won){
+    xpChange=DAILY_CHALLENGE_BASE_REWARD+wager;academyXpAdjustment+=xpChange;
+    dailyChallengeState.currentStreak+=1;dailyChallengeState.bestStreak=Math.max(dailyChallengeState.bestStreak,dailyChallengeState.currentStreak);dailyChallengeState.totalWins+=1;
+  }else{
+    xpChange=-wager;academyXpAdjustment-=wager;dailyChallengeState.currentStreak=0;
+  }
+  dailyChallengeState.answered=true;dailyChallengeState.won=won;dailyChallengeState.answerIndex=challengeSelectedAnswer;dailyChallengeState.wager=wager;dailyChallengeState.xpChange=xpChange;dailyChallengeState.totalAttempts+=1;
+  saveAcademyXpAdjustment();saveDailyChallenge();
+  addNotification(won?`Daily Challenge won — +${xpChange} XP. Challenge streak: ${dailyChallengeState.currentStreak}.`:`Daily Challenge missed${wager?` — ${wager} XP wager lost`:""}. Challenge streak reset to 0.`,won?"success":"error",`daily-challenge-${dailyChallengeState.dateKey}`);
+  render();
+}
+function renderDailyChallenge(){
+  const box=document.getElementById("dailyChallenge");if(!box)return;const c=ensureDailyChallenge();
+  const cardStreak=document.getElementById("challengeCardStreak");if(cardStreak)cardStreak.textContent=dailyChallengeState.currentStreak;
+  if(dailyChallengeState.answered){
+    const answer=c.options[c.correct],change=dailyChallengeState.xpChange;
+    if(dailyChallengeState.won){
+      box.innerHTML=`<div class="challenge-result win"><div class="challenge-result-icon">🏆</div><div class="challenge-kicker">TODAY'S RESULT</div><h2 style="margin:5px 0">Challenge Won!</h2><p>${escapeHtml(c.explanation)}</p><div class="challenge-xp">+${change} XP</div><p class="muted">Base reward +${DAILY_CHALLENGE_BASE_REWARD} XP${dailyChallengeState.wager?` • Wager won +${dailyChallengeState.wager} XP`:" • No XP wagered"}</p><b>🔥 Current win streak: ${dailyChallengeState.currentStreak}</b><div class="challenge-lock">One attempt per day. A new challenge unlocks tomorrow.</div></div>`;
+    }else{
+      box.innerHTML=`<div class="challenge-result loss"><div class="challenge-result-icon">💥</div><div class="challenge-kicker">TODAY'S RESULT</div><h2 style="margin:5px 0">Challenge Lost</h2><p>Correct answer: <b>${escapeHtml(answer)}</b></p><p>${escapeHtml(c.explanation)}</p><div class="challenge-xp">${dailyChallengeState.wager?`-${dailyChallengeState.wager} XP`:'0 XP lost'}</div><p class="muted">Your Daily Challenge streak has reset to 0.</p><div class="challenge-lock">One attempt per day. A new challenge unlocks tomorrow.</div></div>`;
+    }
+    return;
+  }
+  const max=maxDailyChallengeWager();
+  box.innerHTML=`<div style="margin-top:14px"><span class="challenge-badge">${escapeHtml(c.category)} • ${escapeHtml(c.difficulty)}</span><div class="challenge-question">${escapeHtml(c.question)}</div><div class="challenge-options">${c.options.map((option,i)=>`<button class="challenge-option" onclick="selectChallengeAnswer(${i})">${String.fromCharCode(65+i)}. ${escapeHtml(option)}</button>`).join("")}</div><div class="challenge-wager"><div class="challenge-wager-row"><div><b>⚡ Wager Academy XP</b><div class="muted">Optional • maximum 15% of your current Total XP</div></div><b id="challengeWagerValue">0 XP</b></div><input id="challengeWagerSlider" class="challenge-slider" type="range" min="0" max="${max}" value="0" step="1" oninput="updateWagerDisplay(this.value)"><div class="challenge-wager-row"><span class="muted">0 XP</span><span class="muted">Max ${max} XP</span></div></div><div style="display:flex;justify-content:space-between;gap:12px;align-items:center;flex-wrap:wrap;margin-top:14px"><span class="muted">Win: +${DAILY_CHALLENGE_BASE_REWARD} XP plus your wager • Lose: wager is deducted</span><button id="submitChallengeBtn" disabled onclick="submitDailyChallenge()">Lock In Answer</button></div><div class="challenge-lock">⚠️ You get one submitted answer today. Once locked in, it cannot be changed.</div></div>`;
+}
 function renderDashboard(){
   const c=selectedCourse(),badge=document.getElementById("dashCourseName");
   if(c&&current()){
-    const d=current();badge.classList.remove("hidden");badge.textContent=c.name;document.getElementById("dashHeadline").textContent=`Day ${S.day} — ${d.focus}`;document.getElementById("dashCourseMeta").textContent=`${S.completed.length}/${totalDays()} days complete • ${(S.minutes/60).toFixed(1)} study hours`;document.getElementById("dashLaunchBtn").textContent=`▶ Launch ${c.shortName}`;document.getElementById("continueLearning").innerHTML=`<p><b>${d.title}</b><br><span class="muted">${d.focus}</span></p><button onclick="launchOrSelectCourse()">Continue Course</button>`;
+    const d=current();badge.classList.remove("hidden");badge.textContent=c.name;document.getElementById("dashHeadline").textContent=`Day ${S.day} — ${d.focus}`;document.getElementById("dashCourseMeta").textContent=`${S.completed.length}/${totalDays()} days complete • ${(S.minutes/60).toFixed(1)} study hours`;document.getElementById("dashLaunchBtn").textContent=`▶ Launch ${c.shortName}`;
   }else{
-    badge.classList.add("hidden");document.getElementById("dashHeadline").textContent="No course loaded";document.getElementById("dashCourseMeta").textContent="Choose a course from the Course Library to begin.";document.getElementById("dashLaunchBtn").textContent="Select Course";document.getElementById("continueLearning").innerHTML='<p class="muted">Load a course to see your next lesson here.</p><button onclick="page(\'courses\')">Browse Course Library</button>';
+    badge.classList.add("hidden");document.getElementById("dashHeadline").textContent="No course loaded";document.getElementById("dashCourseMeta").textContent="Choose a course from the Course Library to begin.";document.getElementById("dashLaunchBtn").textContent="Select Course";
   }
+  renderDailyChallenge();
   const recent=recentCourseIds.map(courseById).filter(Boolean);
   document.getElementById("recentCourses").innerHTML=recent.length?recent.map(course=>{const state=course.id===selectedCourseId?S:courseProgressFor(course.id);const max=totalDaysForCourse(course);return `<div class="queue-item recent-course-item"><div><b>${course.name}</b><div class="muted">${state.completed.length}/${max} days • ${Math.round(state.completed.length/max*100)}%</div></div><button ${selectedCourseId===course.id?'class="good"':''} onclick="loadCourse('${course.id}')">${selectedCourseId===course.id?'✓ Loaded':'Load Course'}</button></div>`}).join(""):'<p class="muted">No recent courses yet.</p>';
   renderNotifications();
@@ -658,12 +759,12 @@ function renderDashboard(){
   document.getElementById("overallHours").textContent=(states.reduce((n,x)=>n+x.minutes,0)/60).toFixed(1);
   document.getElementById("overallCourses").textContent=states.filter((x,i)=>x.completed.length||Object.keys(x.tasks).length||COURSES[i].id===selectedCourseId).length;
   document.getElementById("overallAchievements").textContent=COURSES.reduce((n,course)=>n+achievementStateFor(course.id).unlocked.size,0);
-  document.getElementById("overallStreak").textContent=Math.max(0,...states.map(streakFor));
+  document.getElementById("overallStreak").textContent=dailyChallengeState.bestStreak;
 }
 function render(){
   const c=current();
   const xpEl=document.getElementById("xp");if(xpEl)xpEl.textContent=totalAcademyXp();
-  const streakEl=document.getElementById("streak");if(streakEl)streakEl.textContent=selectedCourseId?streak():0;
+  ensureDailyChallenge();const streakEl=document.getElementById("streak");if(streakEl)streakEl.textContent=dailyChallengeState.currentStreak;
   if(c){
     const done=c.tasks.filter((_,i)=>isDone(c.day,i)).length,p=Math.round(done/c.tasks.length*100),sel=document.getElementById("dayselect");
     if(sel)sel.innerHTML=DATA.days.map(d=>`<option value="${d.day}" ${d.day===S.day?"selected":""}>Day ${d.day} — ${d.focus}</option>`).join("");
