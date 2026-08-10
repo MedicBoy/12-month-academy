@@ -1,3 +1,16 @@
+# Learning Academy v1.2.8 — Profile, Leaderboard & Dashboard Layout
+
+- Added a Website tab that opens the external Learning Academy website location; temporarily points to Google for testing.
+- Added a full local learner Profile page with editable display name, headline, bio, persistent profile photo upload, learner ID, XP, courses, achievements, and challenge streak.
+- Added the learner's profile picture button to the top-right header.
+- Added a Leaderboard button beside Academy XP and a dedicated Top 20 leaderboard page with gold/silver/bronze top-three medals.
+- Added a dashboard Top Learners preview card that opens the full leaderboard.
+- The leaderboard is clearly marked as a local development preview until online accounts and backend rankings are connected.
+- Reworked the dashboard layout so Daily Challenge spans alongside Recent Courses + Overall Learning Stats and its bottom aligns with the bottom of Overall Learning Stats.
+- Moved Updates & Notifications into the former Recent Courses area, moved Recent Courses to the right column, and moved Daily Goal beneath Overall Learning Stats.
+
+---
+
 # Learning Academy v1.2.7 — Full Header Branding
 
 This small maintenance release removes the visible **Update source** box from Settings. Automatic update checking and installation continue to work exactly as before; the GitHub release source is simply no longer exposed in the user-facing interface.

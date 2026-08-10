@@ -570,6 +570,17 @@ ipcMain.handle("academy:openDiagnostics", async () => {
   }
 });
 
+ipcMain.handle("academy:openExternal", async (_event, rawUrl) => {
+  try {
+    const url = new URL(String(rawUrl || ""));
+    if (!(["https:", "http:"].includes(url.protocol))) throw new Error("Only web links can be opened externally.");
+    await shell.openExternal(url.toString());
+    return { ok: true };
+  } catch (error) {
+    return { ok: false, error: error.message || String(error) };
+  }
+});
+
 ipcMain.handle("updater:getVersion", () => app.getVersion());
 ipcMain.handle("updater:getState", () => ({ ...updaterState }));
 ipcMain.handle("updater:consumeInstallResult", () => {

@@ -1,7 +1,7 @@
 {
   "name": "learning-academy",
-  "version": "1.2.7",
-  "description": "Learning Academy \u2014 universal multi-course learning client with installable .lacourse packages, Daily Challenges, global Academy XP, corrected centered Windows app icon, full in-app banner branding, per-course progress, backups, and automatic app updates.",
+  "version": "1.2.8",
+  "description": "Learning Academy \u2014 multi-course learning client with learner profiles, leaderboard preview, website access, Daily Challenges, global Academy XP, installable .lacourse packages, progress backups, and automatic updates.",
   "main": "main.js",
   "scripts": {
     "start": "electron .",

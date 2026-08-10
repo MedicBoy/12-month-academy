@@ -27,3 +27,6 @@ contextBridge.exposeInMainWorld("academyData", {
   restoreLatestBackup: (payload) => ipcRenderer.invoke("academy:restoreLatestBackup", payload),
   openDiagnostics: () => ipcRenderer.invoke("academy:openDiagnostics")
 });
+contextBridge.exposeInMainWorld("academySystem", {
+  openExternal: (url) => ipcRenderer.invoke("academy:openExternal", url)
+});

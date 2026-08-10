@@ -51,15 +51,30 @@
 .course-package-toolbar{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin:14px 0 6px}.package-note{background:#0e172b;border:1px solid var(--line);border-radius:12px;padding:12px;margin:10px 0}.source-tag{font-weight:800}.source-tag.installed{background:#213b35;color:#c9ffe7}.source-tag.builtin{background:#253354}.course-version{font-variant-numeric:tabular-nums}
 @media(max-width:900px){.course-shell{grid-template-columns:1fr}.course-nav{position:static}.stat-grid{grid-template-columns:1fr 1fr}.challenge-options{grid-template-columns:1fr}}
 
+
+/* v1.2.8 — profile, leaderboard, website link, and dashboard layout */
+.header-actions{display:flex;align-items:center;gap:14px;flex-wrap:nowrap}.header-metric{display:flex;align-items:center;gap:5px;white-space:nowrap}.header-link{background:transparent;border:1px solid #35466d;padding:8px 11px;border-radius:10px}.header-link:hover{background:#18233c}.header-profile{width:46px;height:46px;padding:0;border-radius:50%;overflow:hidden;border:2px solid #7898ff;background:#1b2947;display:grid;place-items:center;font-weight:900}.header-profile img{width:100%;height:100%;object-fit:cover;display:block}.header-avatar-fallback{width:100%;height:100%;display:grid;place-items:center}
+.dashboard-layout{display:grid;grid-template-columns:1.4fr .6fr;grid-template-areas:"challenge recent" "challenge stats" "updates goal" "updates top";gap:14px;align-items:stretch}.dash-challenge{grid-area:challenge;height:100%}.dash-recent{grid-area:recent}.dash-stats{grid-area:stats}.dash-updates{grid-area:updates}.dash-goal{grid-area:goal}.dash-top{grid-area:top}.dash-challenge,.dash-stats{min-height:100%}
+.profile-layout{display:grid;grid-template-columns:320px 1fr;gap:18px}.profile-card{text-align:center}.profile-avatar-large{width:180px;height:180px;border-radius:50%;margin:4px auto 16px;overflow:hidden;border:4px solid #7898ff;background:#1b2947;display:grid;place-items:center;font-size:54px;font-weight:900}.profile-avatar-large img{width:100%;height:100%;object-fit:cover}.profile-fields{display:grid;gap:12px}.field-label{font-size:12px;color:var(--muted);font-weight:800;letter-spacing:.04em}.profile-input,.profile-textarea{width:100%;padding:12px;border-radius:11px;border:1px solid var(--line);background:#0d1528;color:var(--txt);font:inherit}.profile-textarea{min-height:110px;resize:vertical}.profile-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:14px}.profile-stat-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-top:16px}.profile-note{background:#0e172b;border:1px solid var(--line);border-radius:12px;padding:12px;margin-top:16px}
+.leaderboard-table{display:grid;gap:8px;margin-top:14px}.leader-row{display:grid;grid-template-columns:64px 54px minmax(180px,1fr) 120px 120px;gap:12px;align-items:center;background:var(--p2);border:1px solid var(--line);border-radius:14px;padding:11px 14px}.leader-row.me{outline:2px solid var(--a);background:#1b2947}.leader-rank{font-size:18px;font-weight:900;text-align:center}.leader-avatar{width:44px;height:44px;border-radius:50%;overflow:hidden;background:#253354;display:grid;place-items:center;font-weight:900;border:1px solid #41557f}.leader-avatar img{width:100%;height:100%;object-fit:cover}.leader-name{font-weight:850}.leader-you{font-size:11px;background:#7898ff;color:white;padding:3px 7px;border-radius:999px;margin-left:6px}.leader-xp,.leader-streak{text-align:right;font-weight:850}.leaderboard-note{background:#0e172b;border:1px solid var(--line);border-radius:12px;padding:12px;margin:12px 0}.top-learners{display:flex;gap:10px;justify-content:space-around;align-items:flex-end;padding-top:8px}.top-learner{text-align:center;min-width:0}.top-learner .leader-avatar{margin:0 auto 6px;width:48px;height:48px}.top-learner-name{font-size:11px;max-width:82px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.top-medal{font-size:20px;display:block;margin-bottom:3px}
+@media(max-width:1050px){.header-actions{gap:8px}.header-link{padding:7px 9px}.header-profile{width:40px;height:40px}.dashboard-layout{grid-template-columns:1fr;grid-template-areas:"challenge" "recent" "stats" "updates" "goal" "top"}.profile-layout{grid-template-columns:1fr}.profile-stat-grid{grid-template-columns:1fr 1fr}.leader-row{grid-template-columns:50px 48px minmax(120px,1fr) 90px}.leader-streak{display:none}}
+
 </style></head><body>
 <header><div class="brand"><img class="brand-banner" src="assets/learning-academy-banner.png" alt="Learning Academy — Your All in One Learning Hub"></div>
-<div>⭐ <b id="xp">0</b> Total XP &nbsp; 🔥 <b id="streak">0</b></div></header>
+<div class="header-actions">
+  <button class="header-link" onclick="page('leaderboard')">🏆 Leaderboard</button>
+  <div class="header-metric">⭐ <b id="xp">0</b> XP</div>
+  <div class="header-metric">🔥 <b id="streak">0</b></div>
+  <button class="header-profile" onclick="page('profile')" title="Open Profile" aria-label="Open Profile"><span id="headerProfileAvatar" class="header-avatar-fallback">LA</span></button>
+</div></header>
 <div class="wrap">
 <div class="nav">
 <button onclick="page('dash')">Dashboard</button>
 <button onclick="page('courses')">Course Library</button>
 <button onclick="page('ach')">Achievements</button>
 <button onclick="page('settings')">Settings</button>
+<button onclick="openWebsite()">🌐 Website</button>
+<button onclick="page('profile')">👤 Profile</button>
 </div>
 
 
@@ -77,40 +92,46 @@
     </div>
   </div>
 
-  <div class="grid">
-    <main>
-      <div class="card daily-challenge-card">
-        <div class="challenge-header">
-          <div><div class="challenge-kicker">ACADEMY DAILY</div><h3 style="margin:5px 0 0">🎲 Daily Challenge</h3></div>
-          <div class="challenge-badge">🔥 <span id="challengeCardStreak">0</span> win streak</div>
-        </div>
-        <div id="dailyChallenge"></div>
+  <div class="dashboard-layout">
+    <div class="card daily-challenge-card dash-challenge">
+      <div class="challenge-header">
+        <div><div class="challenge-kicker">ACADEMY DAILY</div><h3 style="margin:5px 0 0">🎲 Daily Challenge</h3></div>
+        <div class="challenge-badge">🔥 <span id="challengeCardStreak">0</span> win streak</div>
       </div>
-      <div class="card" style="margin-top:14px">
-        <h3>🕘 Recent Courses</h3>
-        <div id="recentCourses"></div>
+      <div id="dailyChallenge"></div>
+    </div>
+
+    <div class="card dash-recent">
+      <h3>🕘 Recent Courses</h3>
+      <div id="recentCourses"></div>
+    </div>
+
+    <div class="card dash-stats">
+      <h3>👤 Overall Learning Stats</h3>
+      <div class="stat-grid">
+        <div class="mini-card"><div class="muted">Hours</div><b id="overallHours">0</b></div>
+        <div class="mini-card"><div class="muted">Courses</div><b id="overallCourses">0</b></div>
+        <div class="mini-card"><div class="muted">Achievements</div><b id="overallAchievements">0</b></div>
+        <div class="mini-card"><div class="muted">Longest Challenge Streak</div><b id="overallStreak">0</b></div>
       </div>
-      <div class="card" style="margin-top:14px">
-        <h3>🔔 Updates & Notifications</h3>
-        <div id="notifications"></div>
-      </div>
-    </main>
-    <aside>
-      <div class="card">
-        <h3>🎯 Daily Goal</h3>
-        <div class="big" id="dailyGoalText">0 / 5 blocks</div>
-        <div class="bar"><div class="green-fill" id="dailyGoalFill" style="width:0%"></div></div>
-      </div>
-      <div class="card" style="margin-top:14px">
-        <h3>👤 Overall Learning Stats</h3>
-        <div class="stat-grid">
-          <div class="mini-card"><div class="muted">Hours</div><b id="overallHours">0</b></div>
-          <div class="mini-card"><div class="muted">Courses</div><b id="overallCourses">0</b></div>
-          <div class="mini-card"><div class="muted">Achievements</div><b id="overallAchievements">0</b></div>
-          <div class="mini-card"><div class="muted">Longest Challenge Streak</div><b id="overallStreak">0</b></div>
-        </div>
-      </div>
-    </aside>
+    </div>
+
+    <div class="card dash-updates">
+      <h3>🔔 Updates & Notifications</h3>
+      <div id="notifications"></div>
+    </div>
+
+    <div class="card dash-goal">
+      <h3>🎯 Daily Goal</h3>
+      <div class="big" id="dailyGoalText">0 / 5 blocks</div>
+      <div class="bar"><div class="green-fill" id="dailyGoalFill" style="width:0%"></div></div>
+    </div>
+
+    <div class="card dash-top" onclick="page('leaderboard')" style="cursor:pointer">
+      <h3 style="margin-bottom:4px">🏆 Top Learners</h3>
+      <div class="muted" style="font-size:12px">Open the full leaderboard</div>
+      <div id="topLearners" class="top-learners"></div>
+    </div>
   </div>
 </div>
 </section>
@@ -246,6 +267,45 @@
   </div>
 </section>
 
+<section id="profile" class="hidden">
+  <div class="profile-layout">
+    <div class="card profile-card">
+      <div class="muted">LEARNER PROFILE</div>
+      <div id="profileAvatarLarge" class="profile-avatar-large">LA</div>
+      <input id="profilePhotoInput" type="file" accept="image/png,image/jpeg,image/webp" class="hidden" onchange="handleProfilePictureUpload(event)">
+      <button onclick="document.getElementById('profilePhotoInput').click()">📷 Upload Profile Picture</button>
+      <button class="alt" style="margin-top:8px" onclick="removeProfilePicture()">Remove Picture</button>
+      <div class="profile-note"><b>Local Profile</b><div class="muted" style="margin-top:5px">Your profile and photo are stored on this computer for now. Online account sync can be connected later.</div></div>
+    </div>
+    <div class="card">
+      <div class="muted">PROFILE DETAILS</div>
+      <h2 style="margin-top:6px">Your Learning Academy Profile</h2>
+      <div class="profile-fields">
+        <div><div class="field-label">DISPLAY NAME</div><input id="profileDisplayName" class="profile-input" maxlength="40" placeholder="Learner name"></div>
+        <div><div class="field-label">HEADLINE</div><input id="profileHeadline" class="profile-input" maxlength="80" placeholder="What are you learning toward?"></div>
+        <div><div class="field-label">ABOUT ME</div><textarea id="profileBio" class="profile-textarea" maxlength="300" placeholder="A short learning bio, goal, or motivation..."></textarea></div>
+      </div>
+      <div class="profile-actions"><button class="good" onclick="saveProfileFromForm()">Save Profile</button></div>
+      <div class="profile-stat-grid">
+        <div class="mini-card"><div class="muted">Total XP</div><div class="big" id="profileXP">0</div></div>
+        <div class="mini-card"><div class="muted">Courses Started</div><div class="big" id="profileCourses">0</div></div>
+        <div class="mini-card"><div class="muted">Achievements</div><div class="big" id="profileAchievements">0</div></div>
+        <div class="mini-card"><div class="muted">Challenge Streak</div><div class="big" id="profileStreak">0</div></div>
+      </div>
+      <div class="profile-note"><b>Member since:</b> <span id="profileJoined"></span><br><b>Local learner ID:</b> <span id="profileLearnerId"></span></div>
+    </div>
+  </div>
+</section>
+
+<section id="leaderboard" class="hidden">
+  <div class="card">
+    <div class="course-progress-row"><div><div class="muted">ACADEMY RANKINGS</div><h2 style="margin:5px 0">🏆 Leaderboard</h2></div><button class="alt" onclick="page('profile')">View My Profile</button></div>
+    <div class="leaderboard-note"><b>Leaderboard Preview</b><div class="muted">This is a local development preview while Learning Academy is still offline. Your real profile and XP are included; live multi-user rankings will connect to the account server in a later phase.</div></div>
+    <div class="leader-row" style="background:#0e172b;font-size:12px;color:var(--muted);font-weight:800"><div>RANK</div><div></div><div>LEARNER</div><div style="text-align:right">XP</div><div class="leader-streak" style="text-align:right">STREAK</div></div>
+    <div id="leaderboardRows" class="leaderboard-table"></div>
+  </div>
+</section>
+
 </div>
 <div class="modal" id="modal"><div class="modalbox"><div class="check">✓</div><h2 id="mtitle">DAY COMPLETE!</h2><p id="mtext"></p><button onclick="closeModal()">Continue</button></div></div>
 <div class="modal" id="updateModal"><div class="modalbox">
@@ -337,6 +397,13 @@ function makeLearnerId(){
 }
 let learnerProfileId=localStorage.getItem("learningAcademy:learnerId")||makeLearnerId();
 localStorage.setItem("learningAcademy:learnerId",learnerProfileId);
+const ACADEMY_PROFILE_KEY="learningAcademy:profile";
+function normalizeAcademyProfile(raw){
+  const src=raw&&typeof raw==="object"?raw:{};
+  return {displayName:String(src.displayName||"Learner").slice(0,40),headline:String(src.headline||"Learning Academy Learner").slice(0,80),bio:String(src.bio||"").slice(0,300),joined:String(src.joined||new Date().toISOString().slice(0,10)),picture:typeof src.picture==="string"?src.picture:""};
+}
+let academyProfile=normalizeAcademyProfile(safeJson(localStorage.getItem(ACADEMY_PROFILE_KEY),{}));
+localStorage.setItem(ACADEMY_PROFILE_KEY,JSON.stringify(academyProfile));
 
 function notificationIcon(type){
   return {success:"✅",update:"⬆️",achievement:"🏆",course:"📚",lesson:"🎓",error:"⚠️"}[type]||"🔔";
@@ -624,10 +691,53 @@ function current(){
 }
 function taskKey(d,i){return d+"-"+i}
 function isDone(d,i){return !!S.tasks[taskKey(d,i)]}
+async function openWebsite(){
+  const url="https://www.google.com";
+  if(window.academySystem?.openExternal){const result=await window.academySystem.openExternal(url);if(result&&!result.ok)alert(result.error||"Could not open the website.");return}
+  window.open(url,"_blank","noopener,noreferrer");
+}
+function profileInitials(name=academyProfile.displayName){
+  const parts=String(name||"Learner").trim().split(/\s+/).filter(Boolean);return (parts.slice(0,2).map(x=>x[0]).join("")||"LA").toUpperCase();
+}
+function avatarHtml(picture,name,cls="leader-avatar"){
+  return `<div class="${cls}">${picture?`<img src="${picture}" alt="${escapeHtml(name)} profile picture">`:`<span>${escapeHtml(profileInitials(name))}</span>`}</div>`;
+}
+function updateHeaderProfile(){
+  const el=document.getElementById("headerProfileAvatar");if(!el)return;
+  if(academyProfile.picture)el.innerHTML=`<img src="${academyProfile.picture}" alt="Profile picture">`;else el.textContent=profileInitials();
+}
+function profileStats(){
+  const states=COURSES.map(course=>course.id===selectedCourseId?S:courseProgressFor(course.id));
+  return {courses:states.filter((x,i)=>x.completed.length||Object.keys(x.tasks||{}).length||COURSES[i]?.id===selectedCourseId).length,achievements:COURSES.reduce((n,course)=>n+achievementStateFor(course.id).unlocked.size,0)};
+}
+function renderProfile(){
+  const large=document.getElementById("profileAvatarLarge");if(!large)return;
+  large.innerHTML=academyProfile.picture?`<img src="${academyProfile.picture}" alt="Profile picture">`:escapeHtml(profileInitials());
+  const name=document.getElementById("profileDisplayName"),headline=document.getElementById("profileHeadline"),bio=document.getElementById("profileBio");
+  if(name&&document.activeElement!==name)name.value=academyProfile.displayName;if(headline&&document.activeElement!==headline)headline.value=academyProfile.headline;if(bio&&document.activeElement!==bio)bio.value=academyProfile.bio;
+  const stats=profileStats();document.getElementById("profileXP").textContent=totalAcademyXp();document.getElementById("profileCourses").textContent=stats.courses;document.getElementById("profileAchievements").textContent=stats.achievements;document.getElementById("profileStreak").textContent=dailyChallengeState.currentStreak;document.getElementById("profileJoined").textContent=new Date(academyProfile.joined+"T00:00:00").toLocaleDateString();document.getElementById("profileLearnerId").textContent=learnerProfileId;
+}
+function saveProfileFromForm(){
+  academyProfile.displayName=(document.getElementById("profileDisplayName").value.trim()||"Learner").slice(0,40);academyProfile.headline=(document.getElementById("profileHeadline").value.trim()||"Learning Academy Learner").slice(0,80);academyProfile.bio=document.getElementById("profileBio").value.trim().slice(0,300);localStorage.setItem(ACADEMY_PROFILE_KEY,JSON.stringify(academyProfile));updateHeaderProfile();renderLeaderboard();renderTopLearners();showUpdateModal("✅","Profile Saved","Your local learner profile was updated successfully.","close","Continue",false);
+}
+function handleProfilePictureUpload(event){
+  const file=event.target.files?.[0];if(!file)return;if(!/^image\/(png|jpeg|webp)$/i.test(file.type)){alert("Choose a PNG, JPG, or WebP image.");return}if(file.size>8*1024*1024){alert("Choose an image smaller than 8 MB.");return}
+  const reader=new FileReader();reader.onload=()=>{const img=new Image();img.onload=()=>{const size=Math.min(img.width,img.height),sx=(img.width-size)/2,sy=(img.height-size)/2,canvas=document.createElement("canvas");canvas.width=320;canvas.height=320;const ctx=canvas.getContext("2d");ctx.drawImage(img,sx,sy,size,size,0,0,320,320);academyProfile.picture=canvas.toDataURL("image/jpeg",0.86);localStorage.setItem(ACADEMY_PROFILE_KEY,JSON.stringify(academyProfile));event.target.value="";render();};img.onerror=()=>alert("That image could not be loaded.");img.src=reader.result};reader.readAsDataURL(file);
+}
+function removeProfilePicture(){academyProfile.picture="";localStorage.setItem(ACADEMY_PROFILE_KEY,JSON.stringify(academyProfile));const input=document.getElementById("profilePhotoInput");if(input)input.value="";render()}
+const DEMO_LEADERBOARD=[
+  ["CodeComet",9820,21],["NovaScholar",9130,17],["LogicLegend",8640,15],["ByteBuilder",7920,13],["MathMaven",7310,12],["CircuitSage",6750,11],["StudySpark",6120,10],["PixelProfessor",5480,9],["QuantumQuest",4930,8],["SyntaxStar",4410,8],["AlgebraAce",3890,7],["FocusForge",3380,6],["CuriousCoder",2890,6],["SkillSeeker",2410,5],["Brainwave",1960,4],["LearnLoop",1510,4],["NextChapter",1120,3],["BrightPath",780,2],["FreshStart",320,1]
+].map(([name,xp,streak])=>({name,xp,streak,picture:"",me:false}));
+function leaderboardEntries(){return [...DEMO_LEADERBOARD,{name:academyProfile.displayName||"Learner",xp:totalAcademyXp(),streak:dailyChallengeState.currentStreak,picture:academyProfile.picture,me:true}].sort((a,b)=>b.xp-a.xp||b.streak-a.streak).slice(0,20)}
+function rankBadge(rank){return rank===1?"🥇":rank===2?"🥈":rank===3?"🥉":`#${rank}`}
+function renderLeaderboard(){const box=document.getElementById("leaderboardRows");if(!box)return;box.innerHTML=leaderboardEntries().map((entry,i)=>`<div class="leader-row ${entry.me?"me":""}"><div class="leader-rank">${rankBadge(i+1)}</div>${avatarHtml(entry.picture,entry.name)}<div class="leader-name">${escapeHtml(entry.name)}${entry.me?'<span class="leader-you">YOU</span>':''}</div><div class="leader-xp">⭐ ${entry.xp.toLocaleString()} XP</div><div class="leader-streak">🔥 ${entry.streak}</div></div>`).join("")}
+function renderTopLearners(){const box=document.getElementById("topLearners");if(!box)return;box.innerHTML=leaderboardEntries().slice(0,3).map((entry,i)=>`<div class="top-learner"><span class="top-medal">${rankBadge(i+1)}</span>${avatarHtml(entry.picture,entry.name)}<div class="top-learner-name">${escapeHtml(entry.name)}</div><div class="muted" style="font-size:10px">${entry.xp.toLocaleString()} XP</div></div>`).join("")}
 function page(id){
-  ["dash","today","map","ach","settings","learn","courses","course"].forEach(x=>{const el=document.getElementById(x);if(el)el.classList.toggle("hidden",x!==id)});
+  ["dash","today","map","ach","settings","learn","courses","course","profile","leaderboard"].forEach(x=>{const el=document.getElementById(x);if(el)el.classList.toggle("hidden",x!==id)});
   render();
   if(id==="course") renderCourseTab();
+  if(id==="profile") renderProfile();
+  if(id==="leaderboard") renderLeaderboard();
 }
 
 function showCourseTab(tab){
@@ -760,10 +870,12 @@ function renderDashboard(){
   document.getElementById("overallCourses").textContent=states.filter((x,i)=>x.completed.length||Object.keys(x.tasks).length||COURSES[i].id===selectedCourseId).length;
   document.getElementById("overallAchievements").textContent=COURSES.reduce((n,course)=>n+achievementStateFor(course.id).unlocked.size,0);
   document.getElementById("overallStreak").textContent=dailyChallengeState.bestStreak;
+  renderTopLearners();
 }
 function render(){
   const c=current();
   const xpEl=document.getElementById("xp");if(xpEl)xpEl.textContent=totalAcademyXp();
+  updateHeaderProfile();
   ensureDailyChallenge();const streakEl=document.getElementById("streak");if(streakEl)streakEl.textContent=dailyChallengeState.currentStreak;
   if(c){
     const done=c.tasks.filter((_,i)=>isDone(c.day,i)).length,p=Math.round(done/c.tasks.length*100),sel=document.getElementById("dayselect");
@@ -776,7 +888,7 @@ function render(){
     if(document.getElementById("daypct"))document.getElementById("daypct").textContent=p+"%";
     if(document.getElementById("finish"))document.getElementById("finish").classList.toggle("hidden",p!==100||S.completed.includes(c.day));
   }
-  renderMap();renderCourses();renderAchievementCourses();renderDashboard();
+  renderMap();renderCourses();renderAchievementCourses();renderDashboard();renderProfile();renderLeaderboard();
   const courseSection=document.getElementById("course");if(courseSection&&!courseSection.classList.contains("hidden"))renderCourseTab();
 }
 function toggle(i){const c=current();if(!c)return;const k=taskKey(c.day,i);if(S.tasks[k]){S.tasks[k]=false;S.xp=Math.max(0,S.xp-c.tasks[i][2]);S.minutes=Math.max(0,S.minutes-c.tasks[i][2])}else{S.tasks[k]=true;S.xp+=c.tasks[i][2];S.minutes+=c.tasks[i][2]}save();render()}
