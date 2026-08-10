@@ -1,0 +1,29 @@
+{
+  "name": "12-month-academy",
+  "version": "1.0.1",
+  "description": "A 365-day school-style learning academy.",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron .",
+    "build": "electron-builder --win"
+  },
+  "devDependencies": {
+    "electron": "^37.0.0",
+    "electron-builder": "^26.0.0"
+  },
+  "build": {
+    "appId": "com.personal.12monthacademy",
+    "productName": "12-Month Academy",
+    "files": [
+      "index.html",
+      "main.js"
+    ],
+    "win": {
+      "target": "nsis"
+    }
+  },
+  "allowScripts": {
+    "electron@37.10.3": true,
+    "electron-winstaller@5.4.0": true
+  }
+}
