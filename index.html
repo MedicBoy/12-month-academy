@@ -707,7 +707,7 @@ function renderLesson(){
   document.getElementById("answerInput").value="";
   document.getElementById("lessonFeedback").innerHTML="";
   document.getElementById("lessonSteps").innerHTML=list.map((x,i)=>`<div class="lesson-step ${i===lessonIndex?"active":""} ${lessonDone(day,i)?"done":""}" onclick="lessonIndex=${i};renderLesson()">${lessonDone(day,i)?"✓":"○"} ${i+1}. ${x.title}</div>`).join("");
-  document.getElementById("nextLessonBtn").textContent=lessonIndex===list.length-1?"Finish Lesson":"Next →";
+  document.getElementById("nextLessonBtn").textContent=lessonIndex===list.length-1?"Finish Session":"Next →";
 }
 
 function normalizeAnswer(v){return v.trim().toLowerCase().replace(/\s+/g," ");}
@@ -741,14 +741,60 @@ function showWorkedSolution(){
   const l=lessonList(S.day)[lessonIndex];
   document.getElementById("lessonFeedback").innerHTML=`<div class="hint"><b>Explanation:</b> ${l.explain}</div>`;
 }
+function finishLessonSession(){
+  const list=lessonList(S.day);
+  const completed=list.filter((_,i)=>lessonDone(S.day,i)).length;
+
+  if(completed!==list.length){
+    document.getElementById("lessonFeedback").innerHTML=
+      `<div class="feedback bad"><b>${completed}/${list.length} checks completed.</b><br>Finish the remaining checks before completing this session.</div>`;
+    return;
+  }
+
+  const finishedDay=S.day;
+
+  // Mark the study day complete only once.
+  if(!S.completed.includes(finishedDay)){
+    S.completed.push(finishedDay);
+    S.completed.sort((a,b)=>a-b);
+    S.xp+=250;
+
+    // Keep compatibility with the original achievement system.
+    if(!S.ach.includes("First Day")) S.ach.push("First Day");
+    if(!S.ach.includes("Perfect Day")) S.ach.push("Perfect Day");
+  }
+
+  // Day 365 is the end of the course.
+  if(finishedDay>=365){
+    save();
+    page("course");
+    showCourseTab("home");
+    const box=document.getElementById("courseTabContent");
+    if(box){
+      box.insertAdjacentHTML("afterbegin",
+        `<div class="feedback good"><b>Course complete!</b><br>You finished Day 365 and completed the course.</div>`);
+    }
+    return;
+  }
+
+  // Advance to the next study session and open it at lesson 1.
+  S.day=finishedDay+1;
+  lessonIndex=0;
+  save();
+  render();
+  renderLesson();
+
+  document.getElementById("lessonFeedback").innerHTML=
+    `<div class="feedback good"><b>Day ${finishedDay} complete.</b><br>+250 completion XP. You are now at the start of Day ${S.day}.</div>`;
+}
+
 function nextLessonStep(){
   const list=lessonList(S.day);
-  if(lessonIndex<list.length-1){lessonIndex++;renderLesson();}
-  else{
-    const completed=list.filter((_,i)=>lessonDone(S.day,i)).length;
-    document.getElementById("lessonFeedback").innerHTML=completed===list.length
-      ? `<div class="feedback good"><b>🎉 Lesson complete.</b><br>You completed all ${list.length} interactive checks for Day ${S.day}.</div>`
-      : `<div class="feedback bad"><b>${completed}/${list.length} checks completed.</b><br>Finish the remaining checks before marking this lesson complete.</div>`;
+  if(lessonIndex<list.length-1){
+    lessonIndex++;
+    renderLesson();
+  }else{
+    finishLessonSession();
   }
 }
 function prevLessonStep(){if(lessonIndex>0){lessonIndex--;renderLesson();}}

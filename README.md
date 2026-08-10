@@ -1,19 +1,12 @@
-# Learning Academy v1.0.7 — Full JavaScript Repair
+# Learning Academy v1.0.8 — Session Completion Flow
 
-This repair release fixes the v1.0.6 interface failure.
-
-Fixes:
-- Removed the stray openLesson() call and unmatched closing brace.
-- Replaced the damaged dashboard render() block.
-- Removed stale references left over from the old dashboard layout.
-- Added null-safe rendering for redesigned UI elements.
-- Added a JavaScript validation step.
-- Future `npm run build` and `npm run release` commands now stop automatically if index.html contains invalid JavaScript syntax.
-
-Before publishing, test locally with:
-  npm install --package-lock-only
-  npm run validate
-  npm start
-
-The validator should print:
-  ✓ Learning Academy JavaScript validation passed.
+## Changes
+- Renamed the final lesson button from "Finish Lesson" to "Finish Session".
+- Finishing a fully completed session now marks that study day complete.
+- Awards the normal +250 day-completion XP once.
+- Automatically advances the active course to the next study day.
+- Opens the next session immediately at its first lesson/activity.
+- Shows a confirmation message indicating the previous day was completed and the next day has started.
+- Prevents advancing if required lesson checks are still incomplete.
+- Day 365 returns to Course Home with a course-completion message.
+- Existing JavaScript validation remains required before build/release.
