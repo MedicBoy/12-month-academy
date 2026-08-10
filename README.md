@@ -1,4 +1,4 @@
-# Learning Academy v1.2.3 — Settings Cleanup
+# Learning Academy v1.2.4 — Branded App Icon
 
 This small maintenance release removes the visible **Update source** box from Settings. Automatic update checking and installation continue to work exactly as before; the GitHub release source is simply no longer exposed in the user-facing interface.
 
@@ -78,6 +78,14 @@ npm start
 
 `adm-zip` is bundled with the application when the Windows release is built. Customers do not install Node.js, Git, ZIP software, or any other dependency.
 
+
+
+## v1.2.4 — Branded App Icon
+
+- Sets the new Learning Academy logo as the Windows application/executable icon.
+- Uses the same logo for the Electron window/taskbar icon.
+- Adds the logo beside the Learning Academy name inside the app header.
+- Packages both PNG and ICO branding assets with the application.
 
 ## v1.2.3 — Daily Challenge
 - Replaces the redundant Dashboard Continue Learning panel with an Academy-wide Daily Challenge.

@@ -1,7 +1,7 @@
 {
   "name": "learning-academy",
-  "version": "1.2.3",
-  "description": "Learning Academy \u2014 universal multi-course learning client with installable .lacourse packages, Daily Challenges with Academy XP wagering, per-course progress, backups, and automatic app updates.",
+  "version": "1.2.4",
+  "description": "Learning Academy — universal multi-course learning client with installable .lacourse packages, Daily Challenges, global Academy XP, branded desktop icon, per-course progress, backups, and automatic app updates.",
   "main": "main.js",
   "scripts": {
     "start": "electron .",
@@ -21,10 +21,12 @@
       "main.js",
       "preload.js",
       "validate.js",
-      "courses/**/*"
+      "courses/**/*",
+      "assets/**/*"
     ],
     "win": {
-      "target": "nsis"
+      "target": "nsis",
+      "icon": "assets/learning-academy.ico"
     },
     "publish": [
       {
