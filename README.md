@@ -1,4 +1,4 @@
-# Learning Academy v1.2.6 — Full Header Branding
+# Learning Academy v1.2.7 — Full Header Branding
 
 This small maintenance release removes the visible **Update source** box from Settings. Automatic update checking and installation continue to work exactly as before; the GitHub release source is simply no longer exposed in the user-facing interface.
 
@@ -98,14 +98,19 @@ npm start
 - Completed challenge card changes to a persistent win/loss result until the next day.
 
 
-## v1.2.6 — Full Header Branding
+## v1.2.7 — Full Header Branding
 
 - Replaced the old small header icon plus separate text branding with the approved full Learning Academy banner logo.
 - The Windows application icon remains unchanged.
 - Added responsive header-logo sizing for smaller windows.
 
 
-## v1.2.6
+## v1.2.7
 - Corrected the Windows application/desktop shortcut icon positioning.
 - Enlarged the icon artwork within the ICO canvas so it appears larger and evenly centered.
 - Rebuilt the multi-resolution Windows ICO used by both Electron and electron-builder.
+
+## v1.2.7 Header Branding Polish
+- Removed the visible line under the header branding.
+- Matched the header background to the application background for a seamless blend.
+- Increased the header logo size while keeping the full wordmark and tagline visible.
