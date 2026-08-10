@@ -79,18 +79,23 @@ if (!fs.existsSync(courseDir)) {
 }
 
 const pkg = JSON.parse(fs.readFileSync("package.json", "utf8"));
-if (pkg.version !== "1.2.4") fail(`package.json version must be 1.2.4, found ${pkg.version}.`);
-else ok("Application version is 1.2.4");
+if (pkg.version !== "1.2.5") fail(`package.json version must be 1.2.5, found ${pkg.version}.`);
+else ok("Application version is 1.2.5");
 if (!pkg.build?.files?.some(entry => String(entry).startsWith("courses/"))) fail("package.json build.files must include courses/**/*.");
 else ok("Built-in course packages included in Windows build");
 if (!pkg.build?.files?.some(entry => String(entry).startsWith("assets/"))) fail("package.json build.files must include assets/**/*.");
 else ok("Branding assets included in Windows build");
 if (pkg.build?.win?.icon !== "assets/learning-academy.ico") fail("package.json build.win.icon must use assets/learning-academy.ico.");
 else ok("Windows application icon configured");
-for (const asset of ["assets/learning-academy.ico", "assets/learning-academy.png"]) {
+for (const asset of ["assets/learning-academy.ico", "assets/learning-academy.png", "assets/learning-academy-banner.png"]) {
   if (!fs.existsSync(asset)) fail(`Missing branding asset: ${asset}`);
   else ok(`${asset} present`);
 }
+
+const indexHtml = fs.readFileSync("index.html", "utf8");
+if (!indexHtml.includes('class="brand-banner"') || !indexHtml.includes('assets/learning-academy-banner.png')) fail("index.html must use the full Learning Academy banner in the header.");
+else ok("Full Learning Academy banner configured in app header");
+
 if (!pkg.dependencies?.["adm-zip"]) fail("package.json dependencies must include adm-zip for .lacourse support.");
 else ok(".lacourse archive dependency declared");
 if (!fs.readFileSync("preload.js", "utf8").includes("installPackage")) fail("preload.js is missing the course-package install bridge.");
