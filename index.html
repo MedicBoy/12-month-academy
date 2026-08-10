@@ -4,11 +4,29 @@
 <style>
 :root{--bg:#090e1d;--p:#121a2d;--p2:#18233c;--line:#2a385a;--txt:#eef3ff;--muted:#aab7d2;--a:#7898ff;--g:#43d79a;--gold:#ffd166;--r:#ff7181}
 *{box-sizing:border-box}body{margin:0;background:linear-gradient(135deg,#090e1d,#101a31);color:var(--txt);font-family:Inter,system-ui,Arial,sans-serif}header{padding:26px 5%;border-bottom:1px solid var(--line);display:flex;justify-content:space-between;align-items:center;gap:18px;position:sticky;top:0;background:#090e1df2;backdrop-filter:blur(12px);z-index:5}.brand h1{margin:0;font-size:25px}.muted{color:var(--muted)}button{border:0;border-radius:11px;padding:10px 14px;background:var(--a);color:#fff;font-weight:750;cursor:pointer}button.alt{background:#253354}button.good{background:var(--g);color:#06140e}.wrap{max-width:1350px;margin:auto;padding:25px 5%}.nav{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:18px}.grid{display:grid;grid-template-columns:1.4fr .6fr;gap:18px}.cards{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}.card{background:var(--p);border:1px solid var(--line);border-radius:18px;padding:18px;box-shadow:0 10px 35px #0002}.big{font-size:32px;font-weight:850}.bar{height:12px;border-radius:99px;background:#253354;overflow:hidden;margin:10px 0}.fill{height:100%;width:0;background:linear-gradient(90deg,var(--a),#9d79ff);transition:.3s}.task{display:flex;gap:12px;align-items:flex-start;padding:14px 4px;border-bottom:1px solid var(--line)}.task:last-child{border-bottom:0}.task input{width:21px;height:21px;accent-color:var(--g);margin-top:2px}.tag{display:inline-block;padding:4px 8px;border-radius:999px;background:#253354;color:#dce5ff;font-size:11px}.weekgrid{display:grid;grid-template-columns:repeat(7,1fr);gap:7px}.dot{min-height:48px;border-radius:10px;background:#202d4b;display:grid;place-items:center;font-size:12px}.dot.done{background:var(--g);color:#06140e}.dot.today{outline:2px solid var(--a)}.month{margin:12px 0;background:var(--p2);border:1px solid var(--line);border-radius:15px;padding:16px}.month h3{margin:0 0 6px}.pill{padding:4px 8px;border-radius:99px;background:#253354;font-size:11px;display:inline-block;margin:2px}.notice{border-left:4px solid var(--a);background:#17233d;padding:14px;border-radius:10px}.hidden{display:none}.modal{position:fixed;inset:0;background:#000a;display:none;align-items:center;justify-content:center;padding:20px;z-index:20}.modalbox{max-width:560px;width:100%;background:var(--p);border:1px solid #41557f;border-radius:24px;padding:30px;text-align:center}.check{font-size:64px;color:var(--g)}.search{width:100%;padding:12px;border-radius:11px;border:1px solid var(--line);background:#0d1528;color:var(--txt);margin:8px 0 15px}.select{padding:10px;border-radius:10px;background:#17233d;color:#fff;border:1px solid var(--line)}@media(max-width:900px){.grid,.cards{grid-template-columns:1fr}.wrap{padding:18px 4%}header{padding:18px 4%}}
+
+.lesson-shell{display:grid;grid-template-columns:260px 1fr;gap:18px}
+.lesson-sidebar{background:var(--p);border:1px solid var(--line);border-radius:18px;padding:14px;height:max-content;position:sticky;top:95px}
+.lesson-step{padding:10px;border-radius:10px;margin:6px 0;background:#18233c;cursor:pointer;border:1px solid transparent}
+.lesson-step.active{border-color:var(--a);background:#202f55}
+.lesson-step.done{background:#183b32}
+.lesson-main{background:var(--p);border:1px solid var(--line);border-radius:18px;padding:22px}
+.lesson-card{background:var(--p2);border:1px solid var(--line);border-radius:14px;padding:16px;margin:14px 0}
+.example{background:#0e172b;border-left:4px solid var(--a);padding:14px;border-radius:10px;margin:12px 0}
+.question-box{background:#0d1528;border:1px solid var(--line);border-radius:14px;padding:18px;margin-top:16px}
+.answer-input{width:100%;padding:13px;border-radius:10px;border:1px solid var(--line);background:#091120;color:var(--txt);font-size:17px;margin:10px 0}
+.feedback{padding:12px;border-radius:10px;margin-top:10px}
+.feedback.good{background:#123c2e;color:#c8ffe6}
+.feedback.bad{background:#40202a;color:#ffd5dc}
+.hint{background:#2b2748;color:#eee5ff;padding:12px;border-radius:10px;margin-top:10px}
+.progress-mini{display:flex;align-items:center;gap:10px}
+@media(max-width:900px){.lesson-shell{grid-template-columns:1fr}.lesson-sidebar{position:static}}
+
 </style></head><body>
 <header><div class="brand"><h1>🎓 12-Month Academy</h1><div class="muted">365-day school-style curriculum • 5+ hour study days</div></div>
 <div>⭐ <b id="xp">0</b> XP &nbsp; 🔥 <b id="streak">0</b></div></header>
 <div class="wrap">
-<div class="nav"><button onclick="page('dash')">Dashboard</button><button onclick="page('today')">Today's Work</button><button onclick="page('map')">365-Day Map</button><button onclick="page('ach')">Achievements</button></div>
+<div class="nav"><button onclick="page('dash')">Dashboard</button><button onclick="page('today')">Today's Work</button><button onclick="openLesson()">Learn</button><button onclick="page('map')">365-Day Map</button><button onclick="page('ach')">Achievements</button><button onclick="page('settings')">Settings</button></div>
 
 <section id="dash"><div class="grid"><main>
 <div class="card">
@@ -18,7 +36,7 @@
     <h2 id="title"></h2>
     <div class="muted" id="desc"></div>
   </div>
-  <button id="startLearningBtn" onclick="page('today')" style="font-size:16px;padding:14px 22px;min-width:170px">▶ Start Learning</button>
+  <button id="startLearningBtn" onclick="openLesson()" style="font-size:16px;padding:14px 22px;min-width:170px">▶ Start Learning</button>
 </div>
 <div class="big" id="pct">0%</div>
 <div class="bar"><div class="fill" id="fill"></div></div>
@@ -37,6 +55,67 @@
 <section id="map" class="hidden"><div class="card"><h2>🗺️ Full 365-Day Curriculum</h2><input class="search" id="search" placeholder="Search days, topics, Python, algebra, calculus..." oninput="renderMap()"><div id="maplist"></div></div></section>
 
 <section id="ach" class="hidden"><div class="card"><h2>🏆 Achievements</h2><div id="achlist"></div></div></section>
+
+
+<section id="learn" class="hidden">
+  <div class="lesson-shell">
+    <aside class="lesson-sidebar">
+      <div class="muted">DAY <span id="lessonDayNum">1</span></div>
+      <h3 id="lessonSidebarTitle">Lesson</h3>
+      <div class="bar"><div class="fill" id="lessonOverallFill"></div></div>
+      <div class="muted" id="lessonOverallText">0% complete</div>
+      <div id="lessonSteps"></div>
+      <button class="alt" style="width:100%;margin-top:10px" onclick="page('dash')">← Dashboard</button>
+    </aside>
+    <main class="lesson-main">
+      <div class="muted" id="lessonKicker">LESSON</div>
+      <h2 id="lessonTitle">Loading…</h2>
+      <p class="muted" id="lessonObjective"></p>
+      <div id="lessonContent"></div>
+      <div class="question-box" id="questionBox">
+        <div class="muted">CHECK YOUR UNDERSTANDING</div>
+        <h3 id="questionText"></h3>
+        <input id="answerInput" class="answer-input" placeholder="Type your answer here" onkeydown="if(event.key==='Enter')submitLessonAnswer()">
+        <div style="display:flex;gap:10px;flex-wrap:wrap">
+          <button onclick="submitLessonAnswer()">Submit Answer</button>
+          <button class="alt" onclick="showHint()">💡 Hint</button>
+          <button class="alt" onclick="showWorkedSolution()">Show Explanation</button>
+        </div>
+        <div id="lessonFeedback"></div>
+      </div>
+      <div style="display:flex;justify-content:space-between;gap:10px;margin-top:18px">
+        <button class="alt" onclick="prevLessonStep()">← Previous</button>
+        <button id="nextLessonBtn" onclick="nextLessonStep()">Next →</button>
+      </div>
+    </main>
+  </div>
+</section>
+
+<section id="settings" class="hidden">
+  <div class="card">
+    <h2>⚙️ Settings</h2>
+    <div class="month">
+      <h3>Application Updates</h3>
+      <p class="muted">The Academy can check your GitHub Releases page for newer installed versions.</p>
+      <p><b>Installed version:</b> <span id="appVersion">Loading…</span></p>
+      <div id="updateStatus" class="notice">Ready to check for updates.</div>
+      <div id="updateProgressWrap" class="hidden" style="margin-top:14px">
+        <div class="bar"><div class="fill" id="updateProgress"></div></div>
+        <div class="muted" id="updateProgressText">0%</div>
+      </div>
+      <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:14px">
+        <button id="checkUpdateBtn" onclick="checkForUpdates()">🔄 Check for Updates</button>
+        <button id="downloadUpdateBtn" class="alt hidden" onclick="downloadUpdate()">⬇ Download Update</button>
+        <button id="installUpdateBtn" class="good hidden" onclick="installUpdate()">↻ Restart & Install</button>
+      </div>
+    </div>
+    <div class="notice" style="margin-top:14px">
+      <b>Update source</b><br>
+      GitHub Releases: MedicBoy / 12-month-academy
+    </div>
+  </div>
+</section>
+
 </div>
 <div class="modal" id="modal"><div class="modalbox"><div class="check">✓</div><h2 id="mtitle">DAY COMPLETE!</h2><p id="mtext"></p><button onclick="closeModal()">Continue</button></div></div>
 
@@ -45,7 +124,7 @@ const DATA={"terms":[["Term 1 \u2014 Foundations","Months 1\u20133",[["Mathemati
 let S=JSON.parse(localStorage.getItem("academyFull")||"null")||{day:1,tasks:{},completed:[],xp:0,minutes:0,ach:[]};
 function save(){localStorage.setItem("academyFull",JSON.stringify(S))}
 function current(){return DATA.days[S.day-1]}
-function page(id){["dash","today","map","ach"].forEach(x=>document.getElementById(x).classList.toggle("hidden",x!==id));render()}
+function page(id){["dash","today","map","ach","settings","learn"].forEach(x=>document.getElementById(x).classList.toggle("hidden",x!==id));render()}
 function taskKey(d,i){return d+"-"+i}
 function isDone(d,i){return !!S.tasks[taskKey(d,i)]}
 function render(){
@@ -74,5 +153,280 @@ function nextDay(){S.day=Math.min(365,S.day+1);save();render()}
 function jumpDay(){S.day=+document.getElementById("dayselect").value;save();render()}
 function renderMap(){let q=(document.getElementById("search")?.value||"").toLowerCase();document.getElementById("maplist").innerHTML=DATA.days.filter(d=>!q||JSON.stringify(d).toLowerCase().includes(q)).map(d=>`<div class="month"><b>Day ${d.day}</b> — ${d.title}<br><span class="pill">${d.type}</span><span class="pill">${d.hours}h</span><div class="muted">${d.scope}</div></div>`).join("")}
 function renderAch(){let defs=[["First Day","Complete Day 1"],["Perfect Day","Complete any day 100%"],["7-Day Streak","Complete seven consecutive days"],["30-Day Streak","Complete thirty consecutive days"],["100 Days","Complete 100 days"],["500 XP","Earn 500 XP"],["Midyear","Complete Day 181"],["Graduation","Complete Day 365"]];document.getElementById("achlist").innerHTML=defs.map(x=>`<div class="task"><span style="font-size:25px">${S.ach.includes(x[0])?"🏆":"🔒"}</span><div><b>${x[0]}</b><div class="muted">${x[1]}</div></div></div>`).join("")}
+
+
+const LESSONS = {
+  1: [
+    {
+      title:"Arithmetic Foundations",
+      objective:"Strengthen signed-number arithmetic and order of operations before moving deeper into algebra.",
+      content:`<div class="lesson-card"><h3>1. Signed numbers</h3>
+      <p>Positive and negative numbers behave predictably. When adding numbers with different signs, compare their absolute values and keep the sign of the number with the larger absolute value.</p>
+      <div class="example"><b>Example</b><br>-7 + 12 = 5 because 12 is 5 greater than 7.</div>
+      <p>For multiplication and division: same signs give a positive result; different signs give a negative result.</p></div>`,
+      q:"Evaluate: -8 + 13",
+      answers:["5","+5"],
+      hint:"Compare 13 and 8. The positive number has the larger absolute value.",
+      explain:"13 - 8 = 5, and the larger absolute value came from +13, so the result is +5."
+    },
+    {
+      title:"Order of Operations",
+      objective:"Apply parentheses, exponents, multiplication/division, then addition/subtraction in the correct order.",
+      content:`<div class="lesson-card"><h3>2. PEMDAS / BEDMAS</h3>
+      <p>Do not simply work left-to-right through every symbol. Parentheses come first, then exponents, then multiplication/division left-to-right, then addition/subtraction left-to-right.</p>
+      <div class="example"><b>Example</b><br>3 + 4 × 2 = 3 + 8 = 11</div></div>`,
+      q:"Evaluate: 6 + 3 × 4",
+      answers:["18"],
+      hint:"Do the multiplication before the addition.",
+      explain:"3 × 4 = 12, then 6 + 12 = 18."
+    },
+    {
+      title:"Equivalent Fractions",
+      objective:"Create equivalent fractions by multiplying or dividing numerator and denominator by the same non-zero number.",
+      content:`<div class="lesson-card"><h3>3. Equivalent fractions</h3>
+      <p>A fraction keeps the same value when you multiply both top and bottom by the same number.</p>
+      <div class="example"><b>Example</b><br>3/5 × 4/4 = 12/20</div></div>`,
+      q:"Convert 2/3 to an equivalent fraction with denominator 12.",
+      answers:["8/12","8 / 12"],
+      hint:"What number turns 3 into 12?",
+      explain:"3 × 4 = 12, so multiply the numerator by 4 as well: 2 × 4 = 8. The result is 8/12."
+    },
+    {
+      title:"Simplifying Fractions",
+      objective:"Use common factors and the greatest common factor to reduce fractions.",
+      content:`<div class="lesson-card"><h3>4. Simplifying</h3>
+      <p>Divide the numerator and denominator by the same common factor. If you divide by the greatest common factor, the fraction reaches simplest form in one step.</p>
+      <div class="example"><b>Example</b><br>18/24 ÷ 6/6 = 3/4</div></div>`,
+      q:"Simplify 15/25 completely.",
+      answers:["3/5","3 / 5"],
+      hint:"The greatest common factor of 15 and 25 is 5.",
+      explain:"15 ÷ 5 = 3 and 25 ÷ 5 = 5, so 15/25 = 3/5."
+    },
+    {
+      title:"Adding Unlike Fractions",
+      objective:"Find a common denominator, rewrite equivalent fractions, then add numerators.",
+      content:`<div class="lesson-card"><h3>5. Unlike denominators</h3>
+      <p>You cannot directly add fractions with different denominators. First rewrite both fractions using a common denominator.</p>
+      <div class="example"><b>Example</b><br>1/2 + 1/4 = 2/4 + 1/4 = 3/4</div></div>`,
+      q:"Compute: 5/6 + 3/8",
+      answers:["29/24","29 / 24","1 5/24","1 5 / 24"],
+      hint:"A common denominator for 6 and 8 is 24.",
+      explain:"5/6 = 20/24 and 3/8 = 9/24. Add: 20/24 + 9/24 = 29/24, which is also 1 5/24."
+    },
+    {
+      title:"Algebra: Combining Like Terms",
+      objective:"Recognize like terms and combine their coefficients without changing the variable part.",
+      content:`<div class="lesson-card"><h3>6. Like terms</h3>
+      <p>Terms are like terms when their variable parts match exactly. Add or subtract only their coefficients.</p>
+      <div class="example"><b>Example</b><br>7x - 10x = -3x</div></div>`,
+      q:"Simplify: 4x + 7 - 2x + 3",
+      answers:["2x+10","2x + 10","10+2x","10 + 2x"],
+      hint:"Combine x-terms together and constants together.",
+      explain:"4x - 2x = 2x, and 7 + 3 = 10, giving 2x + 10."
+    },
+    {
+      title:"Algebra: Solving Equations",
+      objective:"Use inverse operations to isolate the variable while preserving equality.",
+      content:`<div class="lesson-card"><h3>7. Solving step-by-step</h3>
+      <p>Whatever operation you perform on one side of an equation, perform on the other side too.</p>
+      <div class="example"><b>Example</b><br>3x - 8 = 10 → 3x = 18 → x = 6</div></div>`,
+      q:"Solve: 3(x - 4) + 2x = 23",
+      answers:["7","x=7","x = 7"],
+      hint:"Distribute the 3 first: 3x - 12 + 2x = 23.",
+      explain:"3x - 12 + 2x = 23 → 5x - 12 = 23 → 5x = 35 → x = 7."
+    },
+    {
+      title:"Logic & Reasoning",
+      objective:"Use pattern recognition and explicit reasoning rather than guessing.",
+      content:`<div class="lesson-card"><h3>8. Pattern reasoning</h3>
+      <p>When a sequence changes regularly, identify the operation between consecutive terms. Then test whether that rule fits every transition.</p>
+      <div class="example"><b>Example</b><br>2, 5, 8, 11… increases by 3 each time.</div></div>`,
+      q:"What comes next? 4, 9, 14, 19, __",
+      answers:["24"],
+      hint:"Compare each number with the number before it.",
+      explain:"Each term increases by 5, so 19 + 5 = 24."
+    },
+    {
+      title:"Programming Preview",
+      objective:"Understand variables and expressions before writing larger programs.",
+      content:`<div class="lesson-card"><h3>9. Variables</h3>
+      <p>In Python, a variable stores a value. The line <code>x = 5</code> assigns the value 5 to the name x.</p>
+      <div class="example"><b>Example</b><br><code>x = 5<br>y = x + 2</code><br>Now y stores 7.</div></div>`,
+      q:"If x = 6 and y = x * 3, what value does y contain?",
+      answers:["18"],
+      hint:"Replace x with 6 in the expression x × 3.",
+      explain:"y = 6 × 3 = 18."
+    }
+  ]
+};
+
+function genericLessonForDay(day){
+  const d=DATA.days[day-1];
+  return d.tasks.map((t,i)=>({
+    title:t[0],
+    objective:t[1],
+    content:`<div class="lesson-card"><h3>${t[0]}</h3><p>${t[1]}</p><p class="muted">This lesson is part of ${d.focus}. More detailed guided content will continue to be added through Academy updates.</p></div>`,
+    q:`Reflection check: type "done" after completing this activity.`,
+    answers:["done"],
+    hint:"Complete the activity described above, then type done.",
+    explain:"This activity is currently tracked as a structured study task. Future updates can replace it with a richer interactive lesson."
+  }));
+}
+
+let lessonState = JSON.parse(localStorage.getItem("academyLessonState")||"{}");
+let lessonIndex = 0;
+
+function lessonList(day){
+  return LESSONS[day] || genericLessonForDay(day);
+}
+function lessonKey(day,i){return day+"-"+i}
+function lessonDone(day,i){return !!lessonState[lessonKey(day,i)]}
+function saveLessonState(){localStorage.setItem("academyLessonState",JSON.stringify(lessonState))}
+
+function openLesson(){
+  page("learn");
+  lessonIndex=0;
+  renderLesson();
+}
+function renderLesson(){
+  const day=S.day;
+  const list=lessonList(day);
+  lessonIndex=Math.max(0,Math.min(lessonIndex,list.length-1));
+  const l=list[lessonIndex];
+  const completed=list.filter((_,i)=>lessonDone(day,i)).length;
+  const pct=Math.round(completed/list.length*100);
+
+  document.getElementById("lessonDayNum").textContent=day;
+  document.getElementById("lessonSidebarTitle").textContent=DATA.days[day-1].focus;
+  document.getElementById("lessonOverallFill").style.width=pct+"%";
+  document.getElementById("lessonOverallText").textContent=pct+"% complete";
+  document.getElementById("lessonKicker").textContent=`DAY ${day} • LESSON ${lessonIndex+1} OF ${list.length}`;
+  document.getElementById("lessonTitle").textContent=l.title;
+  document.getElementById("lessonObjective").textContent=l.objective;
+  document.getElementById("lessonContent").innerHTML=l.content;
+  document.getElementById("questionText").textContent=l.q;
+  document.getElementById("answerInput").value="";
+  document.getElementById("lessonFeedback").innerHTML="";
+  document.getElementById("lessonSteps").innerHTML=list.map((x,i)=>`<div class="lesson-step ${i===lessonIndex?"active":""} ${lessonDone(day,i)?"done":""}" onclick="lessonIndex=${i};renderLesson()">${lessonDone(day,i)?"✓":"○"} ${i+1}. ${x.title}</div>`).join("");
+  document.getElementById("nextLessonBtn").textContent=lessonIndex===list.length-1?"Finish Lesson":"Next →";
+}
+
+function normalizeAnswer(v){return v.trim().toLowerCase().replace(/\s+/g," ");}
+function submitLessonAnswer(){
+  const day=S.day, list=lessonList(day), l=list[lessonIndex];
+  const a=normalizeAnswer(document.getElementById("answerInput").value);
+  const ok=l.answers.some(x=>normalizeAnswer(x)===a);
+  const fb=document.getElementById("lessonFeedback");
+  if(ok){
+    fb.innerHTML=`<div class="feedback good"><b>✓ Correct.</b><br>${l.explain}</div>`;
+    if(!lessonDone(day,lessonIndex)){
+      lessonState[lessonKey(day,lessonIndex)]=true;
+      saveLessonState();
+      S.xp+=25;
+      save();
+    }
+  }else{
+    fb.innerHTML=`<div class="feedback bad"><b>Not quite.</b><br>Your answer was <b>${document.getElementById("answerInput").value||"(blank)"}</b>. Try again, use a hint, or open the explanation.</div>`;
+  }
+  render();
+  const listNow=lessonList(day), completed=listNow.filter((_,i)=>lessonDone(day,i)).length;
+  document.getElementById("lessonOverallFill").style.width=Math.round(completed/listNow.length*100)+"%";
+  document.getElementById("lessonOverallText").textContent=Math.round(completed/listNow.length*100)+"% complete";
+  document.getElementById("lessonSteps").innerHTML=listNow.map((x,i)=>`<div class="lesson-step ${i===lessonIndex?"active":""} ${lessonDone(day,i)?"done":""}" onclick="lessonIndex=${i};renderLesson()">${lessonDone(day,i)?"✓":"○"} ${i+1}. ${x.title}</div>`).join("");
+}
+function showHint(){
+  const l=lessonList(S.day)[lessonIndex];
+  document.getElementById("lessonFeedback").innerHTML=`<div class="hint"><b>💡 Hint:</b> ${l.hint}</div>`;
+}
+function showWorkedSolution(){
+  const l=lessonList(S.day)[lessonIndex];
+  document.getElementById("lessonFeedback").innerHTML=`<div class="hint"><b>Explanation:</b> ${l.explain}</div>`;
+}
+function nextLessonStep(){
+  const list=lessonList(S.day);
+  if(lessonIndex<list.length-1){lessonIndex++;renderLesson();}
+  else{
+    const completed=list.filter((_,i)=>lessonDone(S.day,i)).length;
+    document.getElementById("lessonFeedback").innerHTML=completed===list.length
+      ? `<div class="feedback good"><b>🎉 Lesson complete.</b><br>You completed all ${list.length} interactive checks for Day ${S.day}.</div>`
+      : `<div class="feedback bad"><b>${completed}/${list.length} checks completed.</b><br>Finish the remaining checks before marking this lesson complete.</div>`;
+  }
+}
+function prevLessonStep(){if(lessonIndex>0){lessonIndex--;renderLesson();}}
+
+let updateAvailable = false;
+
+async function initUpdaterUI(){
+  if (!window.academyUpdater) {
+    document.getElementById("appVersion").textContent = "Unavailable";
+    document.getElementById("updateStatus").textContent = "Updater bridge is unavailable.";
+    return;
+  }
+  try {
+    document.getElementById("appVersion").textContent = await window.academyUpdater.getVersion();
+  } catch(e) {
+    document.getElementById("appVersion").textContent = "Unknown";
+  }
+
+  window.academyUpdater.onStatus((s) => {
+    const status = document.getElementById("updateStatus");
+    const check = document.getElementById("checkUpdateBtn");
+    const download = document.getElementById("downloadUpdateBtn");
+    const install = document.getElementById("installUpdateBtn");
+    const wrap = document.getElementById("updateProgressWrap");
+    const bar = document.getElementById("updateProgress");
+    const label = document.getElementById("updateProgressText");
+
+    if (s.type === "checking") {
+      status.textContent = "Checking GitHub for a newer Academy version…";
+      check.disabled = true;
+    } else if (s.type === "available") {
+      updateAvailable = true;
+      status.textContent = "Update available: v" + s.version;
+      check.disabled = false;
+      download.classList.remove("hidden");
+    } else if (s.type === "not-available") {
+      updateAvailable = false;
+      status.textContent = "✅ You're up to date.";
+      check.disabled = false;
+      download.classList.add("hidden");
+    } else if (s.type === "progress") {
+      wrap.classList.remove("hidden");
+      bar.style.width = s.percent + "%";
+      label.textContent = "Downloading… " + s.percent + "%";
+      status.textContent = "Downloading update…";
+    } else if (s.type === "downloaded") {
+      wrap.classList.remove("hidden");
+      bar.style.width = "100%";
+      label.textContent = "Download complete";
+      status.textContent = "✅ Update v" + s.version + " is ready to install.";
+      download.classList.add("hidden");
+      install.classList.remove("hidden");
+      check.disabled = false;
+    } else if (s.type === "dev") {
+      status.textContent = "ℹ️ " + s.message;
+      check.disabled = false;
+    } else if (s.type === "error") {
+      status.textContent = "⚠️ Update error: " + s.message;
+      check.disabled = false;
+    }
+  });
+}
+
+async function checkForUpdates(){
+  document.getElementById("checkUpdateBtn").disabled = true;
+  document.getElementById("updateStatus").textContent = "Checking…";
+  await window.academyUpdater.check();
+}
+async function downloadUpdate(){
+  document.getElementById("downloadUpdateBtn").disabled = true;
+  await window.academyUpdater.download();
+}
+async function installUpdate(){
+  document.getElementById("installUpdateBtn").disabled = true;
+  await window.academyUpdater.install();
+}
+
 render();
+initUpdaterUI();
 </script></body></html>

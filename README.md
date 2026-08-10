@@ -1,13 +1,20 @@
-12-Month Academy v1.0.1
+# 12-Month Academy v1.0.3
 
-Update:
-- Adds a large Start Learning button on the dashboard beside the current day.
-- Once progress has begun, the button changes to Continue Learning.
-- The button opens Today's Work for the selected day.
+## New in v1.0.3
+- Start Learning now opens a dedicated lesson interface.
+- One-question-at-a-time learning flow.
+- Immediate answer checking.
+- Hints and worked explanations.
+- XP earned for correct interactive checks.
+- Lesson progress sidebar.
+- Day 1 contains detailed guided lessons for:
+  arithmetic, order of operations, fractions, algebra, logic, and programming.
+- Other days use the structured lesson engine and can be enriched in later updates.
+- Existing GitHub updater remains enabled.
 
-To rebuild:
-1. Open Command Prompt in this folder.
-2. npm install
-3. If npm blocks scripts: npm approve-scripts electron electron-winstaller
-4. npm install
-5. npm run build
+## Build
+npm install
+npm run build
+
+## Publish
+Bump versions for later releases and publish through GitHub Releases / electron-builder.

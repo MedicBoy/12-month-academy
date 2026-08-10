@@ -1,26 +1,39 @@
 {
   "name": "12-month-academy",
-  "version": "1.0.1",
+  "version": "1.0.3",
   "description": "A 365-day school-style learning academy.",
   "main": "main.js",
   "scripts": {
     "start": "electron .",
-    "build": "electron-builder --win"
+    "build": "electron-builder --win --publish never",
+    "release": "electron-builder --win --publish always"
   },
   "devDependencies": {
     "electron": "^37.0.0",
     "electron-builder": "^26.0.0"
   },
   "build": {
-    "appId": "com.personal.12monthacademy",
-    "productName": "12-Month Academy",
-    "files": [
-      "index.html",
-      "main.js"
-    ],
+  "appId": "com.personal.12monthacademy",
+  "productName": "12-Month Academy",
+  "artifactName": "12-Month-Academy-Setup-${version}.${ext}",
+  "files": [
+    "index.html",
+    "main.js",
+    "preload.js"
+  ],
     "win": {
       "target": "nsis"
-    }
+    },
+    "publish": [
+      {
+        "provider": "github",
+        "owner": "MedicBoy",
+        "repo": "12-month-academy"
+      }
+    ]
+  },
+  "dependencies": {
+    "electron-updater": "^6.6.2"
   },
   "allowScripts": {
     "electron@37.10.3": true,
