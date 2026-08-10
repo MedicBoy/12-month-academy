@@ -1,12 +1,13 @@
 {
   "name": "learning-academy",
-  "version": "1.0.6",
+  "version": "1.0.7",
   "description": "Learning Academy \u2014 Your All in One Learning Hub.",
   "main": "main.js",
   "scripts": {
     "start": "electron .",
-    "build": "electron-builder --win --publish never",
-    "release": "electron-builder --win --publish always"
+    "build": "npm run validate && electron-builder --win --publish never",
+    "release": "npm run validate && electron-builder --win --publish always",
+    "validate": "node validate.js"
   },
   "devDependencies": {
     "electron": "^37.0.0",
@@ -18,7 +19,8 @@
     "files": [
       "index.html",
       "main.js",
-      "preload.js"
+      "preload.js",
+      "validate.js"
     ],
     "win": {
       "target": "nsis"

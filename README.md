@@ -1,16 +1,19 @@
-# Learning Academy v1.0.6
+# Learning Academy v1.0.7 — Full JavaScript Repair
 
-Major platform redesign:
-- Global navigation simplified to Dashboard, Course Library, Achievements, Settings.
-- Removed duplicate Learn / Course Selection navigation.
-- 365-day roadmap moved inside the individual Computing & STEM course.
-- Added course-specific navigation:
-  Course Home, Today's Lesson, Roadmap, Review, Projects, Exams, Course Stats.
-- Added Review tab with weak-area queue, bookmarks, and notes.
-- Added Dashboard Continue Learning, Recent Courses, Notifications, Daily Goal, and global stats.
-- Redesigned Achievements into course-specific Xbox-style collections.
-- Course achievement card shows unlocked/total count and a green progress bar.
-- Added Achievement Points (AP).
-- Added course completion state / certificate placeholder.
-- Course tabs are feature-driven so future courses can hide sections they do not use.
-- Preserved updater support and automatic GitHub release configuration.
+This repair release fixes the v1.0.6 interface failure.
+
+Fixes:
+- Removed the stray openLesson() call and unmatched closing brace.
+- Replaced the damaged dashboard render() block.
+- Removed stale references left over from the old dashboard layout.
+- Added null-safe rendering for redesigned UI elements.
+- Added a JavaScript validation step.
+- Future `npm run build` and `npm run release` commands now stop automatically if index.html contains invalid JavaScript syntax.
+
+Before publishing, test locally with:
+  npm install --package-lock-only
+  npm run validate
+  npm start
+
+The validator should print:
+  ✓ Learning Academy JavaScript validation passed.

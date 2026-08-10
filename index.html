@@ -294,8 +294,6 @@ function launchOrSelectCourse(){
   page("course");
   showCourseTab("home");
 }
-  openLesson();
-}
 function renderCourses(){
   const grid=document.getElementById("courseGrid");
   if(!grid) return;
@@ -495,30 +493,55 @@ function renderDashboard(){
 }
 
 function render(){
-document.getElementById("xp").textContent=S.xp;document.getElementById("streak").textContent=streak();document.getElementById("streak2").textContent=streak();
-let c=current(), done=c.tasks.filter((_,i)=>isDone(c.day,i)).length, p=Math.round(done/c.tasks.length*100);
-const course=selectedCourse();
+  const c=current();
+  const done=c.tasks.filter((_,i)=>isDone(c.day,i)).length;
+  const p=Math.round(done/c.tasks.length*100);
 
-document.getElementById("loadedCourseName").textContent=course?course.name:"";
+  const xpEl=document.getElementById("xp");
+  if(xpEl) xpEl.textContent=S.xp;
 
+  const streakEl=document.getElementById("streak");
+  if(streakEl) streakEl.textContent=streak();
 
+  const sel=document.getElementById("dayselect");
+  if(sel){
+    sel.innerHTML=DATA.days.map(d=>`<option value="${d.day}" ${d.day===S.day?"selected":""}>Day ${d.day} — ${d.focus}</option>`).join("");
+  }
 
+  const dtitle=document.getElementById("dtitle");
+  if(dtitle) dtitle.textContent=c.title;
 
+  const dmeta=document.getElementById("dmeta");
+  if(dmeta) dmeta.textContent=`${c.type} • Month ${c.month} • Week ${c.week} • Target ${c.hours} hours`;
 
+  const dscope=document.getElementById("dscope");
+  if(dscope) dscope.textContent=c.scope;
 
-{
-  const start=Math.max(1,Math.min(S.day-6,365-13));
-      return `<div class="dot ${S.completed.includes(d)?"done":""} ${d===S.day?"today":""}" title="Day ${d}">D${d}</div>`;
-  }).join("");
+  const tasklist=document.getElementById("tasklist");
+  if(tasklist){
+    tasklist.innerHTML=c.tasks.map((t,i)=>`<div class="task"><input type="checkbox" ${isDone(c.day,i)?"checked":""} onchange="toggle(${i})"><div style="flex:1"><b>${i+1}. ${t[0]}</b><div class="muted">${t[1]}</div></div><span class="tag">+${t[2]} XP</span></div>`).join("");
+  }
+
+  const dayfill=document.getElementById("dayfill");
+  if(dayfill) dayfill.style.width=p+"%";
+
+  const daypct=document.getElementById("daypct");
+  if(daypct) daypct.textContent=p+"%";
+
+  const finish=document.getElementById("finish");
+  if(finish) finish.classList.toggle("hidden",p!==100||S.completed.includes(c.day));
+
+  renderMap();
+  renderCourses();
+  renderAchievementCourses();
+  renderDashboard();
+
+  const courseSection=document.getElementById("course");
+  if(courseSection && !courseSection.classList.contains("hidden")){
+    renderCourseTab();
+  }
 }
-let sel=document.getElementById("dayselect");sel.innerHTML=DATA.days.map(d=>`<option value="${d.day}" ${d.day===S.day?"selected":""}>Day ${d.day} — ${d.focus}</option>`).join("");
-document.getElementById("dtitle").textContent=c.title;document.getElementById("dmeta").textContent=`${c.type} • Month ${c.month} • Week ${c.week} • Target ${c.hours} hours`;
-document.getElementById("dscope").textContent=c.scope;
-document.getElementById("tasklist").innerHTML=c.tasks.map((t,i)=>`<div class="task"><input type="checkbox" ${isDone(c.day,i)?"checked":""} onchange="toggle(${i})"><div style="flex:1"><b>${i+1}. ${t[0]}</b><div class="muted">${t[1]}</div></div><span class="tag">+${t[2]} XP</span></div>`).join("");
-document.getElementById("dayfill").style.width=p+"%";document.getElementById("daypct").textContent=p+"%";
-document.getElementById("finish").classList.toggle("hidden",p!==100||S.completed.includes(c.day));
-renderMap();renderCourses();renderAchievementCourses();renderDashboard();
-}
+
 function toggle(i){let c=current(),k=taskKey(c.day,i);if(S.tasks[k]){S.tasks[k]=false;S.xp=Math.max(0,S.xp-c.tasks[i][2]);S.minutes=Math.max(0,S.minutes-c.tasks[i][2]);}else{S.tasks[k]=true;S.xp+=c.tasks[i][2];S.minutes+=c.tasks[i][2];}save();render()}
 function finishDay(){let d=current().day;if(!S.completed.includes(d)){S.completed.push(d);S.xp+=250;S.ach.push("First Day","Perfect Day");}save();document.getElementById("mtitle").textContent=`🎉 DAY ${d} COMPLETE!`;document.getElementById("mtext").textContent=`+250 completion XP. Current streak: ${streak()} day(s). Tomorrow is Day ${Math.min(365,d+1)}.`;document.getElementById("modal").style.display="flex";render()}
 function closeModal(){document.getElementById("modal").style.display="none"}
