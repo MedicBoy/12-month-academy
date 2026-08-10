@@ -1,6 +1,6 @@
 {
   "name": "learning-academy",
-  "version": "1.2.1",
+  "version": "1.2.2",
   "description": "Learning Academy — universal multi-course learning client with installable .lacourse packages, independent course updates, per-course progress, backups, and automatic app updates.",
   "main": "main.js",
   "scripts": {

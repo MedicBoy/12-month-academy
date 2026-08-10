@@ -1,3 +1,9 @@
+# Learning Academy v1.2.2 — Settings Cleanup
+
+This small maintenance release removes the visible **Update source** box from Settings. Automatic update checking and installation continue to work exactly as before; the GitHub release source is simply no longer exposed in the user-facing interface.
+
+---
+
 # Learning Academy v1.2.1 — Course Navigation & Global XP Fix
 
 This maintenance release fixes two issues found while testing the multi-course package system.
