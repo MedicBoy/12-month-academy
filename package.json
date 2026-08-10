@@ -1,7 +1,7 @@
 {
-  "name": "12-month-academy",
-  "version": "1.0.4",
-  "description": "A 365-day school-style learning academy.",
+  "name": "learning-academy",
+  "version": "1.0.5",
+  "description": "Learning Academy \u2014 Your All in One Learning Hub.",
   "main": "main.js",
   "scripts": {
     "start": "electron .",
@@ -14,8 +14,7 @@
   },
   "build": {
     "appId": "com.personal.12monthacademy",
-    "productName": "12-Month Academy",
-    "artifactName": "12-Month-Academy-Setup-${version}.${ext}",
+    "productName": "Learning Academy",
     "files": [
       "index.html",
       "main.js",
@@ -31,13 +30,10 @@
         "repo": "12-month-academy",
         "releaseType": "release"
       }
-    ]
+    ],
+    "artifactName": "Learning-Academy-Setup-${version}.${ext}"
   },
   "dependencies": {
     "electron-updater": "^6.6.2"
-  },
-  "allowScripts": {
-    "electron@37.10.3": true,
-    "electron-winstaller@5.4.0": true
   }
 }
