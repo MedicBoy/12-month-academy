@@ -1,6 +1,6 @@
 {
   "name": "12-month-academy",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "A 365-day school-style learning academy.",
   "main": "main.js",
   "scripts": {
@@ -13,14 +13,14 @@
     "electron-builder": "^26.0.0"
   },
   "build": {
-  "appId": "com.personal.12monthacademy",
-  "productName": "12-Month Academy",
-  "artifactName": "12-Month-Academy-Setup-${version}.${ext}",
-  "files": [
-    "index.html",
-    "main.js",
-    "preload.js"
-  ],
+    "appId": "com.personal.12monthacademy",
+    "productName": "12-Month Academy",
+    "artifactName": "12-Month-Academy-Setup-${version}.${ext}",
+    "files": [
+      "index.html",
+      "main.js",
+      "preload.js"
+    ],
     "win": {
       "target": "nsis"
     },
