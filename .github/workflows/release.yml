@@ -4,6 +4,7 @@ on:
   push:
     tags:
       - "v*"
+  workflow_dispatch:
 
 permissions:
   contents: write
@@ -25,7 +26,66 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      - name: Build and publish Windows release
+      - name: Validate application
+        run: npm run validate
+
+      - name: Build Windows installer
+        run: npx electron-builder --win --publish never
+
+      - name: Verify release files
+        shell: pwsh
+        run: |
+          $version = node -p "require('./package.json').version"
+
+          $exe = "dist/Learning-Academy-Setup-$version.exe"
+          $blockmap = "dist/Learning-Academy-Setup-$version.exe.blockmap"
+          $latest = "dist/latest.yml"
+
+          if (!(Test-Path $exe)) {
+            throw "Missing installer: $exe"
+          }
+
+          if (!(Test-Path $blockmap)) {
+            throw "Missing blockmap: $blockmap"
+          }
+
+          if (!(Test-Path $latest)) {
+            throw "Missing latest.yml"
+          }
+
+          Write-Host "All updater files are present:"
+          Write-Host $exe
+          Write-Host $blockmap
+          Write-Host $latest
+
+      - name: Create or update GitHub Release
+        shell: pwsh
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: npm run release
+        run: |
+          $version = node -p "require('./package.json').version"
+
+          if ("${{ github.event_name }}" -eq "workflow_dispatch") {
+            $tag = "v$version"
+          } else {
+            $tag = "${{ github.ref_name }}"
+          }
+
+          $exe = "dist/Learning-Academy-Setup-$version.exe"
+          $blockmap = "dist/Learning-Academy-Setup-$version.exe.blockmap"
+          $latest = "dist/latest.yml"
+
+          gh release view $tag 2>$null
+
+          if ($LASTEXITCODE -ne 0) {
+            gh release create $tag `
+              --title "Learning Academy v$version" `
+              --notes "Learning Academy v$version" `
+              --latest
+          }
+
+          gh release upload $tag `
+            $exe `
+            $blockmap `
+            $latest `
+            --clobber
