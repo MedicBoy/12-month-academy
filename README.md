@@ -1,4 +1,6 @@
-# Learning Academy v1.3.3 — Login Screen Visual Polish
+# Learning Academy v1.3.4 — Login Layout Refinement
+
+This update refines the new login experience so the layout breathes better on fullscreen displays. It adds more space above the branding, reduces the size and density of the lower showcase cards, and restores bottom breathing room so the lower content is fully visible without feeling cramped.
 
 This release adds the production-grade client-side account architecture for Learning Academy. The app now opens to a dedicated Login / Sign Up experience before the learning client, supports secure Remember me sessions through Electron safeStorage, external-browser OAuth with PKCE/deep-link return handling, logout, email password reset flow, and server-authoritative Owner/Learner role support through authenticated app metadata.
 
