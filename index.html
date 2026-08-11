@@ -59,6 +59,34 @@
 .leaderboard-table{display:grid;gap:8px;margin-top:14px}.leader-row{display:grid;grid-template-columns:64px 54px minmax(180px,1fr) 120px 120px;gap:12px;align-items:center;background:var(--p2);border:1px solid var(--line);border-radius:14px;padding:11px 14px}.leader-row.me{outline:2px solid var(--a);background:#1b2947}.leader-rank{font-size:18px;font-weight:900;text-align:center}.leader-avatar{width:44px;height:44px;border-radius:50%;overflow:hidden;background:#253354;display:grid;place-items:center;font-weight:900;border:1px solid #41557f}.leader-avatar img{width:100%;height:100%;object-fit:cover}.leader-name{font-weight:850}.leader-you{font-size:11px;background:#7898ff;color:white;padding:3px 7px;border-radius:999px;margin-left:6px}.leader-xp,.leader-streak{text-align:right;font-weight:850}.leaderboard-note{background:#0e172b;border:1px solid var(--line);border-radius:12px;padding:12px;margin:12px 0}.top-learners{display:flex;gap:10px;justify-content:space-around;align-items:flex-end;padding-top:8px}.top-learner{text-align:center;min-width:0}.top-learner .leader-avatar{margin:0 auto 6px;width:48px;height:48px}.top-learner-name{font-size:11px;max-width:82px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.top-medal{font-size:20px;display:block;margin-bottom:3px}
 @media(max-width:1050px){.header-actions{gap:8px}.header-link{padding:7px 9px}.header-profile{width:40px;height:40px}.dashboard-layout{grid-template-columns:1fr;grid-template-areas:"challenge" "recent" "stats" "updates" "goal" "top"}.profile-layout{grid-template-columns:1fr}.profile-stat-grid{grid-template-columns:1fr 1fr}.leader-row{grid-template-columns:50px 48px minmax(120px,1fr) 90px}.leader-streak{display:none}}
 
+
+/* v1.2.12 — Commercial UI polish: dashboard, profile, leaderboard and navigation */
+:root{--soft-line:#334469;--panel-hi:#1b2741}
+header{padding-top:12px;padding-bottom:12px}
+.header-actions{gap:10px}
+.header-metric{min-height:38px;padding:0 11px;border:1px solid #263655;border-radius:11px;background:#0e1729;font-size:13px}
+.header-link{min-height:38px;display:inline-flex;align-items:center;gap:7px;border-color:#33466d;background:#101a2e;transition:background .18s,border-color .18s,transform .18s}
+.header-link:hover{background:#1b2947;border-color:#607bbb;transform:translateY(-1px)}
+.header-profile{transition:border-color .18s,transform .18s,box-shadow .18s}
+.header-profile:hover{transform:translateY(-1px);box-shadow:0 0 0 4px #7898ff18}
+.header-profile.owner{border-color:var(--academy-gold);box-shadow:0 0 0 3px #fbcc1a18}
+.nav{width:max-content;max-width:100%;padding:6px;background:#0d1628;border:1px solid #233250;border-radius:14px;gap:4px;box-shadow:0 8px 26px #0002}
+.nav button{background:transparent;color:#bdc8df;border:1px solid transparent;border-radius:10px;padding:9px 12px;transition:background .18s,color .18s,border-color .18s,transform .18s}
+.nav button:hover{background:#18243c;color:#fff;border-color:#2b3c60;transform:translateY(-1px)}
+.nav button.nav-active{background:linear-gradient(135deg,#6f8eff,#859fff);color:#fff;border-color:#8da5ff;box-shadow:0 5px 16px #526ee833}
+.nav button.nav-external{color:#c9d5ec}
+.nav button.nav-external:after{content:' ↗';font-size:11px;color:#8596bb}
+.dashboard-layout>.card{padding:20px}.dashboard-layout h3{margin:0 0 14px}.dash-recent,.dash-stats,.dash-goal,.dash-top,.dash-updates{background:linear-gradient(145deg,var(--p),#121c32)}
+.dash-stats .stat-grid{gap:9px}.dash-stats .mini-card{padding:12px}.dash-goal .big{font-size:27px}.dash-top{transition:border-color .18s,transform .18s}.dash-top:hover{border-color:#4d65a0;transform:translateY(-1px)}
+.dashboard-section-sub{font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:#8193b8;font-weight:850;margin-bottom:5px}
+
+.profile-layout{grid-template-columns:330px minmax(0,1fr);align-items:start}.profile-card{position:sticky;top:140px;padding:22px}.profile-role-label{display:inline-flex;align-items:center;justify-content:center;width:auto;padding:6px 11px;border-radius:999px;border:1px solid #3b4a69;background:#172039;font-size:12px;margin-bottom:13px}.profile-role-label.owner{border-color:#7a651a;background:#2b260f;color:var(--academy-gold);box-shadow:0 0 0 3px #fbcc1a0b}.profile-role-label.owner:before{content:'👑';margin-right:6px}.profile-role-label.learner:before{content:'🎓';margin-right:6px}.profile-avatar-large{width:190px;height:190px;border-color:#6f8eff;box-shadow:0 16px 42px #0005}.profile-card.owner-profile .profile-avatar-large{border-color:var(--academy-gold);box-shadow:0 0 0 4px #fbcc1a12,0 16px 42px #0005}.profile-identity{margin-bottom:6px}.profile-identity b{font-size:22px}.profile-headline-preview{color:#b7c3dc;font-size:13px;line-height:1.45;max-width:270px;margin:0 auto 14px}.profile-photo-actions{display:grid;gap:8px}.profile-photo-actions button{width:100%}.profile-detail-card{padding:22px}.profile-detail-head{display:flex;justify-content:space-between;align-items:flex-start;gap:14px;flex-wrap:wrap;margin-bottom:14px}.profile-detail-head h2{margin:4px 0}.profile-member-chip{padding:7px 10px;border:1px solid #34466e;border-radius:999px;background:#101a2e;color:#b9c6df;font-size:12px;white-space:nowrap}.profile-level-card{display:grid;grid-template-columns:170px 1fr;gap:18px;align-items:center;background:linear-gradient(135deg,#15223e,#1d2945);border:1px solid #35496f;border-radius:16px;padding:16px;margin:0 0 18px}.profile-level-number{font-size:30px;font-weight:950;margin-top:3px}.profile-level-meta{font-size:12px;color:var(--muted);display:flex;justify-content:space-between;gap:10px}.profile-level-card .bar{height:9px;margin:8px 0}.profile-fields{grid-template-columns:1fr 1fr;gap:14px}.profile-fields .profile-field-wide{grid-column:1/-1}.profile-stat-grid{grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}.profile-stat-grid .mini-card{background:#131f36}.profile-stat-grid .big{font-size:28px}.profile-note.profile-account-note{text-align:left;line-height:1.65}.profile-actions{justify-content:flex-end}.profile-actions button{min-width:150px}
+
+.leaderboard-shell{padding:22px}.leaderboard-head{display:flex;justify-content:space-between;gap:18px;align-items:center;flex-wrap:wrap}.leaderboard-head h2{margin:4px 0}.leaderboard-podium{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin:18px 0}.podium-card{position:relative;text-align:center;background:linear-gradient(145deg,#17223b,#101a2f);border:1px solid #33466d;border-radius:18px;padding:18px 12px 15px;overflow:hidden}.podium-card:before{content:'';position:absolute;inset:0 0 auto;height:3px;background:#637ee8}.podium-card.first{background:linear-gradient(145deg,#2b260f,#182039);border-color:#74611d;transform:translateY(-5px)}.podium-card.first:before{background:var(--academy-gold)}.podium-card.second:before{background:#c7d0dd}.podium-card.third:before{background:#c88955}.podium-rank{font-size:26px;margin-bottom:8px}.podium-avatar{width:76px;height:76px;border-radius:50%;overflow:hidden;background:#253354;display:grid;place-items:center;font-size:24px;font-weight:950;border:3px solid #52678f;margin:0 auto 9px}.podium-card.first .podium-avatar{width:88px;height:88px;border-color:var(--academy-gold)}.podium-avatar img{width:100%;height:100%;object-fit:cover}.podium-name{font-size:15px;font-weight:900;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.podium-xp{font-weight:850;margin-top:5px}.leader-role{display:inline-flex;align-items:center;font-size:10px;font-weight:950;letter-spacing:.04em;color:var(--academy-gold);border:1px solid #705e1d;background:#29240e;border-radius:999px;padding:2px 6px;margin-left:6px}.leaderboard-table{gap:7px}.leader-row{transition:background .16s,border-color .16s,transform .16s}.leader-row:not(.leader-head-row):hover{background:#1c2946;border-color:#405580;transform:translateX(2px)}.leader-row.me{outline:2px solid #7898ff;background:linear-gradient(90deg,#1c2b4e,#17233d);box-shadow:0 0 0 4px #7898ff0e}.leader-row.me .leader-avatar{border-color:#7898ff}.leader-row.me.owner-row{outline-color:var(--academy-gold);box-shadow:0 0 0 4px #fbcc1a0c}.leader-row.me.owner-row .leader-avatar{border-color:var(--academy-gold)}.leader-name{min-width:0}.leader-name-main{display:flex;align-items:center;gap:0;min-width:0}.leader-name-sub{font-size:11px;color:var(--muted);margin-top:3px}.leader-you{vertical-align:1px}.leader-head-row{background:#0e172b!important}.top-learners{gap:8px;padding-top:12px}.top-learner{flex:1;padding:9px 5px;border-radius:12px;background:#111c31;border:1px solid #263756}.top-learner:first-child{border-color:#6e5e21;background:#211f17;transform:translateY(-3px)}.top-learner .leader-avatar{width:52px;height:52px;border-width:2px}.top-learner:first-child .leader-avatar{border-color:var(--academy-gold);width:58px;height:58px}.top-learner-name{max-width:100%;font-size:11px;font-weight:800}.top-medal{font-size:22px}.top-view-link{font-size:11px;color:#9fb0d5;margin-top:10px;text-align:center}
+
+@media(max-width:1050px){.nav{width:100%}.profile-card{position:static}.profile-level-card{grid-template-columns:1fr}.profile-fields{grid-template-columns:1fr}.profile-fields .profile-field-wide{grid-column:auto}.leaderboard-podium{grid-template-columns:1fr}.podium-card.first{transform:none}.leaderboard-head{align-items:flex-start}}
+@media(max-width:650px){.header-actions .header-link{display:none}.header-metric{padding:0 7px;font-size:12px}.profile-avatar-large{width:155px;height:155px}.profile-stat-grid{grid-template-columns:1fr 1fr}.leader-row{grid-template-columns:45px 42px minmax(110px,1fr) 78px;padding:9px 8px;gap:7px}.leader-avatar{width:38px;height:38px}.leader-xp{font-size:12px}.country-flag{width:16px;height:12px}}
+
 </style></head><body>
 <header><div class="brand"><img class="brand-banner" src="assets/learning-academy-banner.png" alt="Learning Academy — Your All in One Learning Hub"></div>
 <div class="header-actions">
@@ -69,12 +97,12 @@
 </div></header>
 <div class="wrap">
 <div class="nav">
-<button onclick="page('dash')">Dashboard</button>
-<button onclick="page('courses')">Course Library</button>
-<button onclick="page('ach')">Achievements</button>
-<button onclick="page('settings')">Settings</button>
-<button onclick="openWebsite()">🌐 Website</button>
-<button onclick="page('profile')">👤 Profile</button>
+<button class="nav-active" data-page="dash" onclick="page('dash')">🏠 Dashboard</button>
+<button data-page="courses" onclick="page('courses')">📚 Course Library</button>
+<button data-page="ach" onclick="page('ach')">🏆 Achievements</button>
+<button data-page="settings" onclick="page('settings')">⚙️ Settings</button>
+<button class="nav-external" onclick="openWebsite()">🌐 Website</button>
+<button data-page="profile" onclick="page('profile')">👤 Profile</button>
 </div>
 
 
@@ -102,12 +130,12 @@
     </div>
 
     <div class="card dash-recent">
-      <h3>🕘 Recent Courses</h3>
+      <div class="dashboard-section-sub">YOUR LIBRARY</div><h3>🕘 Recent Courses</h3>
       <div id="recentCourses"></div>
     </div>
 
     <div class="card dash-stats">
-      <h3>👤 Overall Learning Stats</h3>
+      <div class="dashboard-section-sub">ACADEMY TOTALS</div><h3>👤 Overall Learning Stats</h3>
       <div class="stat-grid">
         <div class="mini-card"><div class="muted">Hours</div><b id="overallHours">0</b></div>
         <div class="mini-card"><div class="muted">Courses</div><b id="overallCourses">0</b></div>
@@ -117,20 +145,20 @@
     </div>
 
     <div class="card dash-updates">
-      <h3>🔔 Updates & Notifications</h3>
+      <div class="dashboard-section-sub">ACTIVITY</div><h3>🔔 Updates & Notifications</h3>
       <div id="notifications"></div>
     </div>
 
     <div class="card dash-goal">
-      <h3>🎯 Daily Goal</h3>
+      <div class="dashboard-section-sub">TODAY</div><h3>🎯 Daily Goal</h3>
       <div class="big" id="dailyGoalText">0 / 5 blocks</div>
       <div class="bar"><div class="green-fill" id="dailyGoalFill" style="width:0%"></div></div>
     </div>
 
     <div class="card dash-top" onclick="page('leaderboard')" style="cursor:pointer">
-      <h3 style="margin-bottom:4px">🏆 Top Learners</h3>
-      <div class="muted" style="font-size:12px">Open the full leaderboard</div>
-      <div id="topLearners" class="top-learners"></div>
+      <div class="dashboard-section-sub">COMMUNITY</div><h3 style="margin-bottom:4px">🏆 Top Learners</h3>
+      <div class="muted" style="font-size:12px">Current Academy leaders</div>
+      <div id="topLearners" class="top-learners"></div><div class="top-view-link">View full leaderboard →</div>
     </div>
   </div>
 </div>
@@ -269,23 +297,29 @@
 
 <section id="profile" class="hidden">
   <div class="profile-layout">
-    <div class="card profile-card">
+    <div id="profileSummaryCard" class="card profile-card">
       <div id="profileRoleLabel" class="profile-role-label learner">Learner Profile</div>
       <div id="profileAvatarLarge" class="profile-avatar-large">LA</div>
       <div id="profileIdentity" class="profile-identity"></div>
+      <div id="profileHeadlinePreview" class="profile-headline-preview">Build skills. Track progress. Keep moving forward.</div>
       <input id="profilePhotoInput" type="file" accept="image/png,image/jpeg,image/webp" class="hidden" onchange="handleProfilePictureUpload(event)">
-      <button onclick="document.getElementById('profilePhotoInput').click()">📷 Upload Profile Picture</button>
-      <button class="alt" style="margin-top:8px" onclick="removeProfilePicture()">Remove Picture</button>
+      <div class="profile-photo-actions">
+        <button onclick="document.getElementById('profilePhotoInput').click()">📷 Upload Profile Picture</button>
+        <button class="alt" onclick="removeProfilePicture()">Remove Picture</button>
+      </div>
       <div class="profile-note"><b>Local Profile</b><div class="muted" style="margin-top:5px">Your profile and photo are stored on this computer for now. Online account sync can be connected later.</div></div>
     </div>
-    <div class="card">
-      <div class="muted">PROFILE DETAILS</div>
-      <h2 style="margin-top:6px">Your Learning Academy Profile</h2>
+    <div class="card profile-detail-card">
+      <div class="profile-detail-head"><div><div class="muted">PROFILE DETAILS</div><h2>Your Learning Academy Profile</h2></div><div id="profileMemberChip" class="profile-member-chip">Member</div></div>
+      <div class="profile-level-card">
+        <div><div class="field-label">ACADEMY LEVEL</div><div class="profile-level-number">Level <span id="profileLevel">1</span></div></div>
+        <div><div class="profile-level-meta"><span id="profileLevelProgressText">0 / 500 XP</span><span id="profileLevelNext">500 XP to next level</span></div><div class="bar"><div class="fill" id="profileLevelFill" style="width:0%"></div></div></div>
+      </div>
       <div class="profile-fields">
         <div><div class="field-label">DISPLAY NAME</div><input id="profileDisplayName" class="profile-input" maxlength="40" placeholder="Learner name"></div>
         <div><div class="field-label">COUNTRY</div><select id="profileCountry" class="profile-input"><option value="">Select your country...</option></select></div>
-        <div><div class="field-label">HEADLINE</div><input id="profileHeadline" class="profile-input" maxlength="80" placeholder="What are you learning toward?"></div>
-        <div><div class="field-label">ABOUT ME</div><textarea id="profileBio" class="profile-textarea" maxlength="300" placeholder="A short learning bio, goal, or motivation..."></textarea></div>
+        <div class="profile-field-wide"><div class="field-label">HEADLINE</div><input id="profileHeadline" class="profile-input" maxlength="80" placeholder="What are you learning toward?"></div>
+        <div class="profile-field-wide"><div class="field-label">ABOUT ME</div><textarea id="profileBio" class="profile-textarea" maxlength="300" placeholder="A short learning bio, goal, or motivation..."></textarea></div>
       </div>
       <div class="profile-actions"><button class="good" onclick="saveProfileFromForm()">Save Profile</button></div>
       <div class="profile-stat-grid">
@@ -294,16 +328,17 @@
         <div class="mini-card"><div class="muted">Achievements</div><div class="big" id="profileAchievements">0</div></div>
         <div class="mini-card"><div class="muted">Challenge Streak</div><div class="big" id="profileStreak">0</div></div>
       </div>
-      <div class="profile-note"><b>Member since:</b> <span id="profileJoined"></span><br><b>Local learner ID:</b> <span id="profileLearnerId"></span></div>
+      <div class="profile-note profile-account-note"><b>Member since:</b> <span id="profileJoined"></span><br><b>Local learner ID:</b> <span id="profileLearnerId"></span></div>
     </div>
   </div>
 </section>
 
 <section id="leaderboard" class="hidden">
-  <div class="card">
-    <div class="course-progress-row"><div><div class="muted">ACADEMY RANKINGS</div><h2 style="margin:5px 0">🏆 Leaderboard</h2></div><button class="alt" onclick="page('profile')">View My Profile</button></div>
+  <div class="card leaderboard-shell">
+    <div class="leaderboard-head"><div><div class="muted">ACADEMY RANKINGS</div><h2>🏆 Leaderboard</h2><div class="muted">Top 20 learners ranked by Academy XP.</div></div><button class="alt" onclick="page('profile')">👤 View My Profile</button></div>
+    <div id="leaderboardPodium" class="leaderboard-podium"></div>
     <div class="leaderboard-note"><b>Leaderboard Preview</b><div class="muted">This is a local development preview while Learning Academy is still offline. Your real profile and XP are included; live multi-user rankings will connect to the account server in a later phase.</div></div>
-    <div class="leader-row" style="background:#0e172b;font-size:12px;color:var(--muted);font-weight:800"><div>RANK</div><div></div><div>LEARNER</div><div style="text-align:right">XP</div><div class="leader-streak" style="text-align:right">STREAK</div></div>
+    <div class="leader-row leader-head-row" style="font-size:12px;color:var(--muted);font-weight:800"><div>RANK</div><div></div><div>LEARNER</div><div style="text-align:right">XP</div><div class="leader-streak" style="text-align:right">STREAK</div></div>
     <div id="leaderboardRows" class="leaderboard-table"></div>
   </div>
 </section>
@@ -730,20 +765,32 @@ function avatarHtml(picture,name,cls="leader-avatar"){
 function updateHeaderProfile(){
   const el=document.getElementById("headerProfileAvatar");if(!el)return;
   if(academyProfile.picture)el.innerHTML=`<img src="${academyProfile.picture}" alt="Profile picture">`;else el.textContent=profileInitials();
+  const btn=el.closest(".header-profile");if(btn){btn.classList.toggle("owner",academyProfile.role==="owner");btn.title=`${academyProfile.displayName||"Learner"} — ${academyProfile.role==="owner"?"Owner":"Learner"} Profile`;}
 }
 function profileStats(){
   const states=COURSES.map(course=>course.id===selectedCourseId?S:courseProgressFor(course.id));
   return {courses:states.filter((x,i)=>x.completed.length||Object.keys(x.tasks||{}).length||COURSES[i]?.id===selectedCourseId).length,achievements:COURSES.reduce((n,course)=>n+achievementStateFor(course.id).unlocked.size,0)};
 }
+function academyLevelInfo(){
+  const xp=Math.max(0,totalAcademyXp()),step=500,level=Math.floor(xp/step)+1,into=xp%step;
+  return {xp,step,level,into,next:step-into,pct:Math.round(into/step*100)};
+}
 function renderProfile(){
   const large=document.getElementById("profileAvatarLarge");if(!large)return;
+  const isOwner=academyProfile.role==="owner";
   large.innerHTML=academyProfile.picture?`<img src="${academyProfile.picture}" alt="Profile picture">`:escapeHtml(profileInitials());
-  const roleLabel=document.getElementById("profileRoleLabel");if(roleLabel){const isOwner=academyProfile.role==="owner";roleLabel.textContent=isOwner?"Owner":"Learner Profile";roleLabel.className=`profile-role-label ${isOwner?"owner":"learner"}`}
+  const summary=document.getElementById("profileSummaryCard");if(summary)summary.classList.toggle("owner-profile",isOwner);
+  const roleLabel=document.getElementById("profileRoleLabel");if(roleLabel){roleLabel.textContent=isOwner?"Owner":"Learner Profile";roleLabel.className=`profile-role-label ${isOwner?"owner":"learner"}`}
   const name=document.getElementById("profileDisplayName"),headline=document.getElementById("profileHeadline"),bio=document.getElementById("profileBio");
   if(name&&document.activeElement!==name)name.value=academyProfile.displayName;if(headline&&document.activeElement!==headline)headline.value=academyProfile.headline;if(bio&&document.activeElement!==bio)bio.value=academyProfile.bio;
   populateCountrySelect();
   const identity=document.getElementById("profileIdentity");if(identity){const cName=countryName(academyProfile.countryCode);identity.innerHTML=`<b>${escapeHtml(academyProfile.displayName)}</b>${countryFlagHtml(academyProfile.countryCode)}<div class="country-name">${cName?escapeHtml(cName):"No country selected"}</div>`}
-  const stats=profileStats();document.getElementById("profileXP").textContent=totalAcademyXp();document.getElementById("profileCourses").textContent=stats.courses;document.getElementById("profileAchievements").textContent=stats.achievements;document.getElementById("profileStreak").textContent=dailyChallengeState.currentStreak;document.getElementById("profileJoined").textContent=new Date(academyProfile.joined+"T00:00:00").toLocaleDateString();document.getElementById("profileLearnerId").textContent=learnerProfileId;
+  const headlinePreview=document.getElementById("profileHeadlinePreview");if(headlinePreview)headlinePreview.textContent=academyProfile.headline||"Learning Academy Learner";
+  const level=academyLevelInfo();
+  const levelEl=document.getElementById("profileLevel"),levelFill=document.getElementById("profileLevelFill"),levelText=document.getElementById("profileLevelProgressText"),levelNext=document.getElementById("profileLevelNext");
+  if(levelEl)levelEl.textContent=level.level;if(levelFill)levelFill.style.width=level.pct+"%";if(levelText)levelText.textContent=`${level.into.toLocaleString()} / ${level.step.toLocaleString()} XP`;if(levelNext)levelNext.textContent=`${level.next.toLocaleString()} XP to Level ${level.level+1}`;
+  const joinedText=new Date(academyProfile.joined+"T00:00:00").toLocaleDateString();const memberChip=document.getElementById("profileMemberChip");if(memberChip)memberChip.textContent=`Member since ${joinedText}`;
+  const stats=profileStats();document.getElementById("profileXP").textContent=level.xp.toLocaleString();document.getElementById("profileCourses").textContent=stats.courses;document.getElementById("profileAchievements").textContent=stats.achievements;document.getElementById("profileStreak").textContent=dailyChallengeState.currentStreak;document.getElementById("profileJoined").textContent=joinedText;document.getElementById("profileLearnerId").textContent=learnerProfileId;
 }
 function saveProfileFromForm(){
   academyProfile.displayName=(document.getElementById("profileDisplayName").value.trim()||"Learner").slice(0,40);academyProfile.countryCode=String(document.getElementById("profileCountry").value||"").toUpperCase();academyProfile.headline=(document.getElementById("profileHeadline").value.trim()||"Learning Academy Learner").slice(0,80);academyProfile.bio=document.getElementById("profileBio").value.trim().slice(0,300);localStorage.setItem(ACADEMY_PROFILE_KEY,JSON.stringify(academyProfile));updateHeaderProfile();renderProfile();renderLeaderboard();renderTopLearners();showUpdateModal("✅","Profile Saved","Your local learner profile was updated successfully.","close","Continue",false);
@@ -756,12 +803,17 @@ function removeProfilePicture(){academyProfile.picture="";localStorage.setItem(A
 const DEMO_LEADERBOARD=[
   ["CodeComet",9820,21],["NovaScholar",9130,17],["LogicLegend",8640,15],["ByteBuilder",7920,13],["MathMaven",7310,12],["CircuitSage",6750,11],["StudySpark",6120,10],["PixelProfessor",5480,9],["QuantumQuest",4930,8],["SyntaxStar",4410,8],["AlgebraAce",3890,7],["FocusForge",3380,6],["CuriousCoder",2890,6],["SkillSeeker",2410,5],["Brainwave",1960,4],["LearnLoop",1510,4],["NextChapter",1120,3],["BrightPath",780,2],["FreshStart",320,1]
 ].map(([name,xp,streak])=>({name,xp,streak,picture:"",countryCode:"",me:false}));
-function leaderboardEntries(){const me={name:academyProfile.displayName||"Learner",xp:totalAcademyXp(),streak:dailyChallengeState.currentStreak,picture:academyProfile.picture,countryCode:academyProfile.countryCode||"",me:true};const others=[...DEMO_LEADERBOARD].sort((a,b)=>b.xp-a.xp||b.streak-a.streak);if(academyProfile.role==="owner")return [me,...others].slice(0,20);return [...others,me].sort((a,b)=>b.xp-a.xp||b.streak-a.streak).slice(0,20)}
+function leaderboardEntries(){const me={name:academyProfile.displayName||"Learner",xp:totalAcademyXp(),streak:dailyChallengeState.currentStreak,picture:academyProfile.picture,countryCode:academyProfile.countryCode||"",role:academyProfile.role||"learner",me:true};const others=[...DEMO_LEADERBOARD].map(x=>({...x,role:"learner"})).sort((a,b)=>b.xp-a.xp||b.streak-a.streak);if(academyProfile.role==="owner")return [me,...others].slice(0,20);return [...others,me].sort((a,b)=>b.xp-a.xp||b.streak-a.streak).slice(0,20)}
 function rankBadge(rank){return rank===1?"🥇":rank===2?"🥈":rank===3?"🥉":`#${rank}`}
-function renderLeaderboard(){const box=document.getElementById("leaderboardRows");if(!box)return;box.innerHTML=leaderboardEntries().map((entry,i)=>`<div class="leader-row ${entry.me?"me":""}"><div class="leader-rank">${rankBadge(i+1)}</div>${avatarHtml(entry.picture,entry.name)}<div class="leader-name">${escapeHtml(entry.name)}${countryFlagHtml(entry.countryCode)}${entry.me?'<span class="leader-you">YOU</span>':''}</div><div class="leader-xp">⭐ ${entry.xp.toLocaleString()} XP</div><div class="leader-streak">🔥 ${entry.streak}</div></div>`).join("")}
+function renderLeaderboard(){
+  const box=document.getElementById("leaderboardRows"),podium=document.getElementById("leaderboardPodium");if(!box)return;const entries=leaderboardEntries();
+  if(podium)podium.innerHTML=entries.slice(0,3).map((entry,i)=>`<div class="podium-card ${i===0?"first":i===1?"second":"third"}"><div class="podium-rank">${rankBadge(i+1)}</div>${avatarHtml(entry.picture,entry.name,"podium-avatar")}<div class="podium-name">${escapeHtml(entry.name)}${countryFlagHtml(entry.countryCode)}</div><div class="podium-xp">⭐ ${entry.xp.toLocaleString()} XP</div><div class="muted" style="font-size:11px;margin-top:4px">🔥 ${entry.streak} streak${entry.role==="owner"?' · <span style="color:var(--academy-gold);font-weight:900">OWNER</span>':''}</div></div>`).join("");
+  box.innerHTML=entries.map((entry,i)=>`<div class="leader-row ${entry.me?"me":""} ${entry.me&&entry.role==="owner"?"owner-row":""}"><div class="leader-rank">${rankBadge(i+1)}</div>${avatarHtml(entry.picture,entry.name)}<div class="leader-name"><div class="leader-name-main">${escapeHtml(entry.name)}${countryFlagHtml(entry.countryCode)}${entry.role==="owner"?'<span class="leader-role">OWNER</span>':''}${entry.me?'<span class="leader-you">YOU</span>':''}</div><div class="leader-name-sub">${entry.me?"Your Academy profile":"Academy learner"}</div></div><div class="leader-xp">⭐ ${entry.xp.toLocaleString()} XP</div><div class="leader-streak">🔥 ${entry.streak}</div></div>`).join("");
+}
 function renderTopLearners(){const box=document.getElementById("topLearners");if(!box)return;box.innerHTML=leaderboardEntries().slice(0,3).map((entry,i)=>`<div class="top-learner"><span class="top-medal">${rankBadge(i+1)}</span>${avatarHtml(entry.picture,entry.name)}<div class="top-learner-name">${escapeHtml(entry.name)}${countryFlagHtml(entry.countryCode)}</div><div class="muted" style="font-size:10px">${entry.xp.toLocaleString()} XP</div></div>`).join("")}
 function page(id){
   ["dash","today","map","ach","settings","learn","courses","course","profile","leaderboard"].forEach(x=>{const el=document.getElementById(x);if(el)el.classList.toggle("hidden",x!==id)});
+  document.querySelectorAll(".nav [data-page]").forEach(btn=>btn.classList.toggle("nav-active",btn.dataset.page===id));
   render();
   if(id==="course") renderCourseTab();
   if(id==="profile") renderProfile();

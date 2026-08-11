@@ -79,8 +79,8 @@ if (!fs.existsSync(courseDir)) {
 }
 
 const pkg = JSON.parse(fs.readFileSync("package.json", "utf8"));
-if (pkg.version !== "1.2.11") fail(`package.json version must be 1.2.11, found ${pkg.version}.`);
-else ok("Application version is 1.2.11");
+if (pkg.version !== "1.2.12") fail(`package.json version must be 1.2.12, found ${pkg.version}.`);
+else ok("Application version is 1.2.12");
 if (!pkg.build?.files?.some(entry => String(entry).startsWith("courses/"))) fail("package.json build.files must include courses/**/*.");
 else ok("Built-in course packages included in Windows build");
 if (!pkg.build?.files?.some(entry => String(entry).startsWith("assets/"))) fail("package.json build.files must include assets/**/*.");
@@ -107,6 +107,14 @@ if (!indexHtml.includes('if(academyProfile.role==="owner")return [me,...others].
 else ok("Only Owner is pinned to preview leaderboard rank #1");
 if (!indexHtml.includes('openWebsite()') || !fs.readFileSync("preload.js", "utf8").includes("academySystem")) fail("Website external-link bridge is missing.");
 else ok("Website external-link bridge configured");
+if (!indexHtml.includes('id="profileLevel"') || !indexHtml.includes('academyLevelInfo()') || !indexHtml.includes('id="profileLevelFill"')) fail("Profile Academy Level UI is missing.");
+else ok("Profile Academy Level UI configured");
+if (!indexHtml.includes('id="leaderboardPodium"') || !indexHtml.includes('podium-card') || !indexHtml.includes('leader-role')) fail("Polished leaderboard podium/role UI is missing.");
+else ok("Leaderboard podium and Owner badge UI configured");
+if (!indexHtml.includes('data-page="dash"') || !indexHtml.includes('nav-active') || !indexHtml.includes('nav-external')) fail("Polished active navigation UI is missing.");
+else ok("Active navigation and external Website styling configured");
+if (!indexHtml.includes('grid-template-areas:"challenge recent" "challenge stats" "updates goal" "updates top"')) fail("Requested dashboard card layout has changed unexpectedly.");
+else ok("Requested dashboard card layout preserved");
 
 if (!pkg.dependencies?.["adm-zip"]) fail("package.json dependencies must include adm-zip for .lacourse support.");
 else ok(".lacourse archive dependency declared");

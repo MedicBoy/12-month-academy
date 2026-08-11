@@ -1,3 +1,13 @@
+# Learning Academy v1.2.12 — Commercial UI Polish
+
+## v1.2.12 changes
+- Dashboard polish: more consistent card spacing, section labels, typography, hover states, and visual weight while preserving the requested dashboard layout.
+- Profile polish: stronger account header, Owner-specific gold treatment, Academy Level with XP-to-next-level progress, member-since chip, cleaner editable fields, and refined avatar controls.
+- Leaderboard polish: Top 3 podium cards, cleaner Top 20 rows, clearer current-user highlighting, Owner badge, profile pictures, country flags, XP, and streaks.
+- Navigation polish: unified pill-style navigation with active-page highlighting; Website remains an external-link action and Profile fits the same navigation system.
+- Header account polish: metric pills and an Owner-colored profile ring while preserving the existing profile photo.
+- Existing saved progress, profile picture, country, role, course data, and Daily Challenge state remain intact.
+
 # Learning Academy v1.2.11 — Real Country Flag Icons
 
 ## v1.2.11 changes
