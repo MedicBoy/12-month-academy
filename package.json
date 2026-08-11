@@ -1,7 +1,7 @@
 {
   "name": "learning-academy",
-  "version": "1.3.1",
-  "description": "Learning Academy \u2014 commercial learning platform with secure account authentication foundation, first-run onboarding, learner profiles, goals, Academy XP/levels, country flags, leaderboard, installable .lacourse packages, progress backups, and automatic updates.",
+  "version": "1.3.2",
+  "description": "Learning Academy \u2014 commercial learning platform with a redesigned, more vibrant account authentication experience, secure account foundation, onboarding, learner profiles, goals, XP, flags, leaderboard, installable .lacourse packages, backups, and automatic updates.",
   "main": "main.js",
   "scripts": {
     "start": "electron .",

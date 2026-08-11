@@ -5,7 +5,7 @@ const { autoUpdater } = require("electron-updater");
 const AdmZip = require("adm-zip");
 
 
-// v1.3.1 — Secure account authentication foundation.
+// v1.3.2 — Secure account authentication foundation with lively login showcase.
 // Supabase credentials are intentionally blank in source until the production
 // backend project is connected. The publishable key is safe to ship in a client;
 // never place a Supabase service-role key or OAuth provider secret in this app.
