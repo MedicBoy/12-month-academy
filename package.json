@@ -1,7 +1,7 @@
 {
   "name": "learning-academy",
-  "version": "1.2.8",
-  "description": "Learning Academy \u2014 multi-course learning client with learner profiles, leaderboard preview, website access, Daily Challenges, global Academy XP, installable .lacourse packages, progress backups, and automatic updates.",
+  "version": "1.2.10",
+  "description": "Learning Academy \u2014 multi-course learning client with per-profile Owner/Learner roles, country flags, leaderboard preview, website access, Daily Challenges, global Academy XP, installable .lacourse packages, progress backups, and automatic updates.",
   "main": "main.js",
   "scripts": {
     "start": "electron .",

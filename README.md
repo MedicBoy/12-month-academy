@@ -1,3 +1,20 @@
+# Learning Academy v1.2.10 — Per-Profile Owner Role
+
+- Adds a real local profile `role` field instead of globally hard-coding **Owner** for everyone.
+- The existing development profile from v1.2.9 migrates once to **Owner** and keeps the gold Academy-style role label.
+- Fresh installs and newly created local profiles default to **Learner Profile**.
+- Profile edits cannot change the role.
+- Only the Owner profile is pinned to preview leaderboard rank **#1**; normal learner profiles are ranked by XP in the local preview.
+- Keeps country flags, profile photos, leaderboard, dashboard, course, XP, Daily Challenge, and update features unchanged.
+
+# Learning Academy v1.2.9 — Owner Profile & Country Flags
+
+- Renames the local account label from **Learner Profile** to **Owner**, styled in the gold used by the Academy wordmark.
+- Adds a country selector to Profile and stores the selected country locally.
+- Shows the selected country flag next to the Owner name on the full Leaderboard and Top Learners dashboard preview.
+- Pins the local Owner to preview rank **#1** so the gold-medal/profile-photo layout can be tested before the online leaderboard backend exists.
+- Keeps all existing v1.2.8 profile photo, website, leaderboard, dashboard, course, XP, Daily Challenge, and update features.
+
 # Learning Academy v1.2.8 — Profile, Leaderboard & Dashboard Layout
 
 - Added a Website tab that opens the external Learning Academy website location; temporarily points to Google for testing.

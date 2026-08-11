@@ -79,8 +79,8 @@ if (!fs.existsSync(courseDir)) {
 }
 
 const pkg = JSON.parse(fs.readFileSync("package.json", "utf8"));
-if (pkg.version !== "1.2.8") fail(`package.json version must be 1.2.8, found ${pkg.version}.`);
-else ok("Application version is 1.2.8");
+if (pkg.version !== "1.2.10") fail(`package.json version must be 1.2.10, found ${pkg.version}.`);
+else ok("Application version is 1.2.10");
 if (!pkg.build?.files?.some(entry => String(entry).startsWith("courses/"))) fail("package.json build.files must include courses/**/*.");
 else ok("Built-in course packages included in Windows build");
 if (!pkg.build?.files?.some(entry => String(entry).startsWith("assets/"))) fail("package.json build.files must include assets/**/*.");
@@ -99,6 +99,12 @@ else ok("Full Learning Academy banner configured in app header");
 
 if (!indexHtml.includes('id="profile"') || !indexHtml.includes('id="leaderboard"')) fail("index.html must include Profile and Leaderboard pages.");
 else ok("Profile and Leaderboard pages configured");
+if (!indexHtml.includes('id="profileRoleLabel"') || !indexHtml.includes('id="profileCountry"') || !indexHtml.includes("countryFlagHtml")) fail("Role-aware profile country/flag UI is missing.");
+else ok("Role-aware profile and country flag UI configured");
+if (!indexHtml.includes('src.role==="owner"') || !indexHtml.includes('defaultRole="learner"') || !indexHtml.includes('hasLegacyLocalProfile?"owner":"learner"')) fail("Per-profile Owner/Learner role migration is missing.");
+else ok("Per-profile Owner/Learner roles configured");
+if (!indexHtml.includes('if(academyProfile.role==="owner")return [me,...others].slice(0,20)')) fail("Only the Owner profile should be pinned to preview leaderboard rank #1.");
+else ok("Only Owner is pinned to preview leaderboard rank #1");
 if (!indexHtml.includes('openWebsite()') || !fs.readFileSync("preload.js", "utf8").includes("academySystem")) fail("Website external-link bridge is missing.");
 else ok("Website external-link bridge configured");
 
