@@ -30,3 +30,19 @@ contextBridge.exposeInMainWorld("academyData", {
 contextBridge.exposeInMainWorld("academySystem", {
   openExternal: (url) => ipcRenderer.invoke("academy:openExternal", url)
 });
+
+
+contextBridge.exposeInMainWorld("academyAuth", {
+  getState: () => ipcRenderer.invoke("auth:getState"),
+  signIn: (payload) => ipcRenderer.invoke("auth:signIn", payload),
+  signUp: (payload) => ipcRenderer.invoke("auth:signUp", payload),
+  social: (payload) => ipcRenderer.invoke("auth:social", payload),
+  resetPassword: (payload) => ipcRenderer.invoke("auth:resetPassword", payload),
+  updatePassword: (payload) => ipcRenderer.invoke("auth:updatePassword", payload),
+  logout: () => ipcRenderer.invoke("auth:logout"),
+  onState: (callback) => {
+    const handler = (_event, data) => callback(data);
+    ipcRenderer.on("auth:state", handler);
+    return () => ipcRenderer.removeListener("auth:state", handler);
+  }
+});

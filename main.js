@@ -1,8 +1,226 @@
-const { app, BrowserWindow, ipcMain, shell, dialog } = require("electron");
+const { app, BrowserWindow, ipcMain, shell, dialog, safeStorage } = require("electron");
 const path = require("path");
 const fs = require("fs");
 const { autoUpdater } = require("electron-updater");
 const AdmZip = require("adm-zip");
+
+
+// v1.3.0 — Secure account authentication foundation.
+// Supabase credentials are intentionally blank in source until the production
+// backend project is connected. The publishable key is safe to ship in a client;
+// never place a Supabase service-role key or OAuth provider secret in this app.
+const PACKAGE_CONFIG = require("./package.json");
+const AUTH_CONFIG = PACKAGE_CONFIG.learningAcademyBackend || {};
+const AUTH_PROTOCOL = "learning-academy";
+let supabaseClient = null;
+let currentAuthSession = null;
+let rememberAuthSession = false;
+let pendingOAuthRemember = true;
+let oauthFlowStartedAt = 0;
+let pendingDeepLink = "";
+let authRestorePromise = null;
+
+function authConfigured() {
+  return /^https:\/\/[A-Za-z0-9.-]+\.supabase\.co\/?$/i.test(String(AUTH_CONFIG.url || "").trim()) &&
+    String(AUTH_CONFIG.publishableKey || "").trim().length > 20;
+}
+
+function authSessionPath() {
+  return path.join(app.getPath("userData"), "secure-auth-session.bin");
+}
+
+function clearSavedAuthSession() {
+  try { if (fs.existsSync(authSessionPath())) fs.unlinkSync(authSessionPath()); } catch (_) {}
+}
+
+function saveAuthSessionSecurely(session) {
+  if (!session?.access_token || !session?.refresh_token) return false;
+  if (!safeStorage.isEncryptionAvailable()) return false;
+  const payload = JSON.stringify({
+    access_token: session.access_token,
+    refresh_token: session.refresh_token,
+    savedAt: new Date().toISOString()
+  });
+  fs.writeFileSync(authSessionPath(), safeStorage.encryptString(payload));
+  return true;
+}
+
+function readSavedAuthSession() {
+  try {
+    if (!fs.existsSync(authSessionPath()) || !safeStorage.isEncryptionAvailable()) return null;
+    const decrypted = safeStorage.decryptString(fs.readFileSync(authSessionPath()));
+    const parsed = JSON.parse(decrypted);
+    if (!parsed?.access_token || !parsed?.refresh_token) return null;
+    return parsed;
+  } catch (error) {
+    writeDiagnostic("Saved authentication session could not be read", error.message || String(error));
+    clearSavedAuthSession();
+    return null;
+  }
+}
+
+function publicAuthUser(user) {
+  if (!user) return null;
+  const metadata = user.user_metadata && typeof user.user_metadata === "object" ? user.user_metadata : {};
+  const appMetadata = user.app_metadata && typeof user.app_metadata === "object" ? user.app_metadata : {};
+  const displayName = String(metadata.display_name || metadata.full_name || metadata.name || "").slice(0, 80);
+  return {
+    id: String(user.id || ""),
+    email: String(user.email || ""),
+    displayName,
+    avatarUrl: typeof metadata.avatar_url === "string" ? metadata.avatar_url : "",
+    role: appMetadata.role === "owner" ? "owner" : "learner",
+    provider: String(appMetadata.provider || "email"),
+    createdAt: String(user.created_at || "")
+  };
+}
+
+function authStatePayload(extra = {}) {
+  return {
+    configured: authConfigured(),
+    authenticated: !!currentAuthSession?.user,
+    rememberMe: rememberAuthSession,
+    user: publicAuthUser(currentAuthSession?.user),
+    provider: AUTH_CONFIG.provider || "supabase",
+    redirectUri: AUTH_CONFIG.authRedirect || `${AUTH_PROTOCOL}://auth/callback`,
+    ...extra
+  };
+}
+
+function sendAuthState(type, extra = {}) {
+  if (mainWindow && !mainWindow.isDestroyed()) {
+    mainWindow.webContents.send("auth:state", { type, ...authStatePayload(extra) });
+  }
+}
+
+function getSupabaseClient() {
+  if (!authConfigured()) throw new Error("Learning Academy account services are not connected to the production backend yet.");
+  if (supabaseClient) return supabaseClient;
+  let createClient;
+  try { ({ createClient } = require("@supabase/supabase-js")); }
+  catch (_) { throw new Error("The authentication package is missing. Reinstall Learning Academy or run npm install in the development project."); }
+  supabaseClient = createClient(String(AUTH_CONFIG.url).trim(), String(AUTH_CONFIG.publishableKey).trim(), {
+    auth: {
+      flowType: "pkce",
+      persistSession: false,
+      autoRefreshToken: true,
+      detectSessionInUrl: false
+    }
+  });
+  supabaseClient.auth.onAuthStateChange((event, session) => {
+    currentAuthSession = session || null;
+    if (session && rememberAuthSession) saveAuthSessionSecurely(session);
+    if (!session) clearSavedAuthSession();
+    sendAuthState(String(event || "AUTH_STATE_CHANGED").toLowerCase());
+  });
+  return supabaseClient;
+}
+
+async function ensureAuthRestored() {
+  if (!authConfigured()) return authStatePayload({ developmentMode: true });
+  if (currentAuthSession?.user) return authStatePayload();
+  if (authRestorePromise) return authRestorePromise;
+  authRestorePromise = (async () => {
+    const saved = readSavedAuthSession();
+    if (!saved) return authStatePayload();
+    try {
+      const client = getSupabaseClient();
+      rememberAuthSession = true;
+      const { data, error } = await client.auth.setSession({
+        access_token: saved.access_token,
+        refresh_token: saved.refresh_token
+      });
+      if (error || !data?.session?.user) throw error || new Error("Saved session is no longer valid.");
+      currentAuthSession = data.session;
+      saveAuthSessionSecurely(data.session);
+      return authStatePayload({ restored: true });
+    } catch (error) {
+      clearSavedAuthSession();
+      currentAuthSession = null;
+      rememberAuthSession = false;
+      writeDiagnostic("Saved authentication session expired", error?.message || String(error));
+      return authStatePayload({ restored: false });
+    }
+  })().finally(() => { authRestorePromise = null; });
+  return authRestorePromise;
+}
+
+function validateAuthEmail(raw) {
+  const email = String(raw || "").trim().toLowerCase();
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email) || email.length > 254) throw new Error("Enter a valid email address.");
+  return email;
+}
+
+function validateAuthPassword(raw) {
+  const password = String(raw || "");
+  if (password.length < 8) throw new Error("Password must contain at least 8 characters.");
+  if (password.length > 128) throw new Error("Password is too long.");
+  return password;
+}
+
+async function handleAuthDeepLink(rawUrl) {
+  try {
+    oauthFlowStartedAt = 0;
+    const url = new URL(String(rawUrl || ""));
+    if (url.protocol !== `${AUTH_PROTOCOL}:`) throw new Error("Invalid Learning Academy authentication link.");
+    if (url.searchParams.get("error") || url.searchParams.get("error_description")) {
+      const message = url.searchParams.get("error_description") || url.searchParams.get("error") || "Authentication was cancelled.";
+      sendAuthState("oauth-error", { error: message });
+      return;
+    }
+    const code = url.searchParams.get("code");
+    if (!code) throw new Error("Authentication callback did not include an authorization code.");
+    const client = getSupabaseClient();
+    rememberAuthSession = pendingOAuthRemember;
+    const { data, error } = await client.auth.exchangeCodeForSession(code);
+    if (error || !data?.session?.user) throw error || new Error("Could not complete sign in.");
+    currentAuthSession = data.session;
+    if (rememberAuthSession) {
+      if (!saveAuthSessionSecurely(data.session)) {
+        rememberAuthSession = false;
+        clearSavedAuthSession();
+        sendAuthState("signed-in", { warning: "Signed in, but Windows secure credential storage was unavailable, so Remember me was disabled." });
+      }
+    } else clearSavedAuthSession();
+    const recovery = url.hostname === "auth" && url.pathname.replace(/\/+$/, "") === "/reset";
+    sendAuthState(recovery ? "password-recovery" : "signed-in");
+  } catch (error) {
+    writeDiagnostic("Authentication callback failed", error?.message || String(error));
+    sendAuthState("oauth-error", { error: error?.message || String(error) });
+  }
+}
+
+function registerAuthProtocol() {
+  try {
+    if (process.defaultApp && process.argv.length >= 2) {
+      app.setAsDefaultProtocolClient(AUTH_PROTOCOL, process.execPath, [path.resolve(process.argv[1])]);
+    } else {
+      app.setAsDefaultProtocolClient(AUTH_PROTOCOL);
+    }
+  } catch (error) {
+    writeDiagnostic("Could not register authentication protocol", error?.message || String(error));
+  }
+}
+
+const singleInstanceLock = app.requestSingleInstanceLock();
+if (!singleInstanceLock) {
+  app.quit();
+} else {
+  app.on("second-instance", (_event, argv) => {
+    const deepLink = argv.find(arg => String(arg).startsWith(`${AUTH_PROTOCOL}://`));
+    if (deepLink) handleAuthDeepLink(deepLink);
+    if (mainWindow && !mainWindow.isDestroyed()) {
+      if (mainWindow.isMinimized()) mainWindow.restore();
+      mainWindow.show();
+      mainWindow.focus();
+    }
+  });
+  app.on("open-url", (event, url) => {
+    event.preventDefault();
+    if (mainWindow && !mainWindow.isDestroyed()) handleAuthDeepLink(url);
+    else pendingDeepLink = url;
+  });
+}
 
 let mainWindow;
 let updaterStage = "idle";
@@ -389,6 +607,7 @@ function createWindow() {
   mainWindow.loadFile(path.join(__dirname, "index.html"));
   mainWindow.webContents.once("did-finish-load", () => {
     setTimeout(() => checkForUpdates("startup"), 1200);
+    if (pendingDeepLink) { const link = pendingDeepLink; pendingDeepLink = ""; setTimeout(() => handleAuthDeepLink(link), 250); }
   });
 }
 
@@ -581,6 +800,134 @@ ipcMain.handle("academy:openExternal", async (_event, rawUrl) => {
   }
 });
 
+
+
+ipcMain.handle("auth:getState", async () => {
+  try { return { ok: true, ...(await ensureAuthRestored()) }; }
+  catch (error) { return { ok: false, ...authStatePayload(), error: error?.message || String(error) }; }
+});
+
+ipcMain.handle("auth:signIn", async (_event, payload) => {
+  try {
+    const email = validateAuthEmail(payload?.email);
+    const password = validateAuthPassword(payload?.password);
+    const client = getSupabaseClient();
+    rememberAuthSession = !!payload?.rememberMe;
+    const { data, error } = await client.auth.signInWithPassword({ email, password });
+    if (error || !data?.session?.user) throw error || new Error("Sign in failed.");
+    currentAuthSession = data.session;
+    let warning = "";
+    if (rememberAuthSession) {
+      if (!saveAuthSessionSecurely(data.session)) {
+        rememberAuthSession = false;
+        warning = "Signed in, but secure Remember me storage is unavailable on this device.";
+      }
+    } else clearSavedAuthSession();
+    writeDiagnostic("Account signed in", publicAuthUser(data.user)?.email || "authenticated user");
+    return { ok: true, ...authStatePayload({ warning }) };
+  } catch (error) {
+    writeDiagnostic("Account sign in failed", error?.message || String(error));
+    return { ok: false, ...authStatePayload(), error: error?.message || "Could not sign in." };
+  }
+});
+
+ipcMain.handle("auth:signUp", async (_event, payload) => {
+  try {
+    const email = validateAuthEmail(payload?.email);
+    const password = validateAuthPassword(payload?.password);
+    const displayName = String(payload?.displayName || "").trim().slice(0, 80);
+    if (!displayName) throw new Error("Enter your name.");
+    const client = getSupabaseClient();
+    rememberAuthSession = !!payload?.rememberMe;
+    const { data, error } = await client.auth.signUp({
+      email,
+      password,
+      options: { data: { display_name: displayName } }
+    });
+    if (error) throw error;
+    currentAuthSession = data?.session || null;
+    if (currentAuthSession && rememberAuthSession) {
+      if (!saveAuthSessionSecurely(currentAuthSession)) rememberAuthSession = false;
+    } else if (!rememberAuthSession) clearSavedAuthSession();
+    const confirmationRequired = !!data?.user && !data?.session;
+    writeDiagnostic("Account sign up submitted", email);
+    return { ok: true, ...authStatePayload({ confirmationRequired, signUpEmail: email }) };
+  } catch (error) {
+    writeDiagnostic("Account sign up failed", error?.message || String(error));
+    return { ok: false, ...authStatePayload(), error: error?.message || "Could not create the account." };
+  }
+});
+
+ipcMain.handle("auth:social", async (_event, payload) => {
+  try {
+    const now = Date.now();
+    if (oauthFlowStartedAt && now - oauthFlowStartedAt < 120000) throw new Error("A browser sign-in is already in progress. Finish or wait a moment before starting another provider.");
+    const provider = String(payload?.provider || "").toLowerCase();
+    if (!["google", "azure", "facebook", "x"].includes(provider)) throw new Error("Unsupported sign-in provider.");
+    const client = getSupabaseClient();
+    pendingOAuthRemember = !!payload?.rememberMe;
+    oauthFlowStartedAt = now;
+    const options = {
+      redirectTo: AUTH_CONFIG.authRedirect || `${AUTH_PROTOCOL}://auth/callback`,
+      skipBrowserRedirect: true
+    };
+    if (provider === "azure") options.scopes = "email";
+    const { data, error } = await client.auth.signInWithOAuth({ provider, options });
+    if (error || !data?.url) throw error || new Error("The provider did not return a sign-in URL.");
+    await shell.openExternal(data.url);
+    return { ok: true, waitingForBrowser: true, provider };
+  } catch (error) {
+    if (!String(error?.message || "").includes("already in progress")) oauthFlowStartedAt = 0;
+    writeDiagnostic("Social sign in failed", error?.message || String(error));
+    return { ok: false, ...authStatePayload(), error: error?.message || "Could not start social sign in." };
+  }
+});
+
+ipcMain.handle("auth:resetPassword", async (_event, payload) => {
+  try {
+    const email = validateAuthEmail(payload?.email);
+    const client = getSupabaseClient();
+    const { error } = await client.auth.resetPasswordForEmail(email, {
+      redirectTo: AUTH_CONFIG.passwordResetRedirect || `${AUTH_PROTOCOL}://auth/reset`
+    });
+    if (error) throw error;
+    return { ok: true, message: "If an account exists for that email, password reset instructions have been sent." };
+  } catch (error) {
+    return { ok: false, error: error?.message || "Could not send password reset instructions." };
+  }
+});
+
+ipcMain.handle("auth:updatePassword", async (_event, payload) => {
+  try {
+    const password = validateAuthPassword(payload?.password);
+    const client = getSupabaseClient();
+    const { data, error } = await client.auth.updateUser({ password });
+    if (error) throw error;
+    if (data?.user && currentAuthSession) currentAuthSession = { ...currentAuthSession, user: data.user };
+    return { ok: true, ...authStatePayload() };
+  } catch (error) {
+    return { ok: false, error: error?.message || "Could not update the password." };
+  }
+});
+
+ipcMain.handle("auth:logout", async () => {
+  try {
+    if (authConfigured()) {
+      try { await getSupabaseClient().auth.signOut({ scope: "local" }); } catch (_) {}
+    }
+    currentAuthSession = null;
+    rememberAuthSession = false;
+    clearSavedAuthSession();
+    writeDiagnostic("Account signed out");
+    return { ok: true, ...authStatePayload() };
+  } catch (error) {
+    currentAuthSession = null;
+    rememberAuthSession = false;
+    clearSavedAuthSession();
+    return { ok: true, ...authStatePayload(), warning: error?.message || String(error) };
+  }
+});
+
 ipcMain.handle("updater:getVersion", () => app.getVersion());
 ipcMain.handle("updater:getState", () => ({ ...updaterState }));
 ipcMain.handle("updater:consumeInstallResult", () => {
@@ -650,8 +997,11 @@ ipcMain.handle("updater:install", () => {
 });
 
 app.whenReady().then(() => {
+  registerAuthProtocol();
   updaterState.currentVersion = app.getVersion();
   installResult = inspectPreviousInstallAttempt();
+  const launchDeepLink = process.argv.find(arg => String(arg).startsWith(`${AUTH_PROTOCOL}://`));
+  if (launchDeepLink) pendingDeepLink = launchDeepLink;
   createWindow();
 
   app.on("activate", () => {

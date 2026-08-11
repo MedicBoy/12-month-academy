@@ -91,7 +91,65 @@ header{padding-top:12px;padding-bottom:12px}
 .onboarding-overlay.hidden{display:none}.onboarding-overlay{position:fixed;inset:0;z-index:100;background:radial-gradient(circle at 20% 15%,#1c2b52 0,#0a1021 36%,#070b16 100%);display:flex;align-items:center;justify-content:center;padding:24px;overflow:auto}.onboarding-shell{width:min(980px,100%);background:linear-gradient(145deg,#121b31,#0d1527);border:1px solid #33476f;border-radius:28px;box-shadow:0 30px 90px #000a;overflow:hidden}.onboarding-top{display:flex;justify-content:space-between;align-items:center;gap:16px;padding:18px 24px;border-bottom:1px solid #29395a;background:#0d1425}.onboarding-brand{height:64px;max-width:420px;object-fit:contain}.onboarding-step-label{font-size:12px;color:#aebcdc;font-weight:850;letter-spacing:.08em;white-space:nowrap}.onboarding-progress{height:6px;background:#1e2b49}.onboarding-progress>div{height:100%;background:linear-gradient(90deg,#7898ff,#9d79ff);transition:width .25s ease}.onboarding-body{padding:32px}.onboarding-panel{max-width:760px;margin:auto}.onboarding-kicker{font-size:12px;font-weight:900;letter-spacing:.12em;color:#9eb0db}.onboarding-title{font-size:34px;line-height:1.1;margin:8px 0 12px}.onboarding-copy{font-size:16px;line-height:1.65;color:#b8c4dd;max-width:680px}.onboarding-actions{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;margin-top:26px}.onboarding-actions-right{display:flex;gap:10px;flex-wrap:wrap;margin-left:auto}.onboarding-actions button{min-width:130px}.onboarding-welcome-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:24px}.onboarding-benefit{background:#141f36;border:1px solid #2b3c60;border-radius:16px;padding:16px}.onboarding-benefit .icon{font-size:24px;margin-bottom:8px}.onboarding-benefit b{display:block;margin-bottom:5px}.onboarding-form-grid{display:grid;grid-template-columns:160px 1fr;gap:22px;align-items:start;margin-top:22px}.onboarding-avatar{width:150px;height:150px;border-radius:50%;background:#1d2a49;border:4px solid #7898ff;display:grid;place-items:center;overflow:hidden;font-size:42px;font-weight:950;margin:auto}.onboarding-avatar img{width:100%;height:100%;object-fit:cover}.onboarding-photo-actions{display:grid;gap:7px;margin-top:10px}.onboarding-fields{display:grid;gap:14px}.onboarding-goals{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin-top:20px}.onboarding-choice{border:1px solid #33476c;background:#141f36;color:#edf3ff;border-radius:14px;padding:14px;text-align:left;cursor:pointer;transition:.16s}.onboarding-choice:hover{border-color:#6582cc;background:#192643}.onboarding-choice.selected{border-color:#7898ff;background:#1d2e56;box-shadow:0 0 0 3px #7898ff14}.onboarding-choice b{display:block;font-size:14px}.onboarding-choice span{display:block;color:#aebbd4;font-size:12px;margin-top:4px;line-height:1.4}.onboarding-course-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:11px;margin-top:18px;max-height:365px;overflow:auto;padding:2px}.onboarding-course-card{border:1px solid #304263;background:#131d32;border-radius:16px;padding:15px;cursor:pointer;transition:.16s}.onboarding-course-card:hover{transform:translateY(-1px);border-color:#5a72ad}.onboarding-course-card.selected{border-color:var(--g);box-shadow:0 0 0 3px #43d79a13;background:#152b2b}.onboarding-course-card h3{margin:7px 0}.onboarding-course-card p{font-size:12px;line-height:1.45}.onboarding-goal-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-top:22px}.onboarding-goal-option{text-align:center;border:1px solid #33476c;background:#141f36;border-radius:16px;padding:18px 10px;cursor:pointer}.onboarding-goal-option.selected{border-color:var(--academy-gold);background:#2b260f;box-shadow:0 0 0 3px #fbcc1a10}.onboarding-goal-number{font-size:30px;font-weight:950}.onboarding-summary{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin-top:22px}.onboarding-summary-card{background:#141f36;border:1px solid #2d3f63;border-radius:15px;padding:15px}.onboarding-summary-card .label{font-size:11px;letter-spacing:.08em;color:#94a5c8;font-weight:850}.onboarding-summary-card .value{margin-top:5px;font-weight:850}.onboarding-error{background:#40202a;color:#ffd5dc;border:1px solid #6a3341;padding:10px 12px;border-radius:10px;margin-top:14px}.onboarding-complete-icon{font-size:64px;margin-bottom:8px}.setup-setting-row{display:flex;justify-content:space-between;gap:18px;align-items:center;flex-wrap:wrap}.setup-setting-row .muted{max-width:680px}
 @media(max-width:760px){.onboarding-overlay{padding:10px}.onboarding-body{padding:22px 18px}.onboarding-top{padding:14px 18px}.onboarding-brand{height:48px;max-width:62vw}.onboarding-title{font-size:28px}.onboarding-welcome-grid,.onboarding-goals,.onboarding-goal-grid,.onboarding-summary{grid-template-columns:1fr}.onboarding-form-grid{grid-template-columns:1fr}.onboarding-avatar{width:125px;height:125px}.onboarding-step-label{font-size:10px}}
 
-</style></head><body>
+
+
+/* v1.3.0 — Account login / signup gate */
+body.auth-locked>header,body.auth-locked>.wrap{display:none}.auth-gate.hidden{display:none}.auth-gate{position:fixed;inset:0;z-index:200;display:grid;grid-template-columns:minmax(420px,1fr) minmax(420px,560px);background:radial-gradient(circle at 16% 20%,#1d315f 0,#0b1224 34%,#070b16 75%);overflow:auto}.auth-showcase{display:flex;flex-direction:column;justify-content:center;padding:56px 7vw;min-height:100vh}.auth-showcase-logo{width:min(610px,88%);height:auto;object-fit:contain;margin-bottom:32px}.auth-showcase h1{font-size:46px;line-height:1.05;margin:0 0 16px;max-width:680px}.auth-showcase p{font-size:17px;line-height:1.7;color:#b8c5df;max-width:620px}.auth-feature-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;max-width:650px;margin-top:22px}.auth-feature{background:#101b31;border:1px solid #2a3c61;border-radius:15px;padding:14px}.auth-feature .icon{font-size:23px;margin-bottom:7px}.auth-feature b{display:block;font-size:13px}.auth-panel-wrap{background:#090f1d;display:flex;align-items:center;justify-content:center;padding:36px;min-height:100vh;border-left:1px solid #223252}.auth-panel{width:min(440px,100%)}.auth-panel-head{margin-bottom:22px}.auth-panel-head h2{font-size:30px;margin:5px 0 7px}.auth-tabs{display:grid;grid-template-columns:1fr 1fr;background:#111b2f;border:1px solid #2b3c60;border-radius:13px;padding:4px;margin:18px 0}.auth-tab{background:transparent;color:#9eacc8;border-radius:9px}.auth-tab.active{background:#24345a;color:#fff}.auth-form{display:grid;gap:12px}.auth-field label{display:block;font-size:11px;font-weight:850;letter-spacing:.07em;color:#9baac8;margin-bottom:6px}.auth-input{width:100%;border:1px solid #33476c;border-radius:11px;background:#0d1628;color:#fff;padding:13px 14px;font:inherit;outline:none}.auth-input:focus{border-color:#7898ff;box-shadow:0 0 0 3px #7898ff18}.auth-password-wrap{position:relative}.auth-password-wrap .auth-input{padding-right:76px}.auth-password-toggle{position:absolute;right:6px;top:6px;padding:7px 9px;background:transparent;color:#9eacc8;font-size:11px}.auth-row{display:flex;align-items:center;justify-content:space-between;gap:12px;font-size:13px}.auth-check{display:flex;align-items:center;gap:8px;color:#c0cae0}.auth-check input{width:17px;height:17px;accent-color:#7898ff}.auth-link{background:transparent;padding:0;color:#91a9ff;font-weight:750}.auth-submit{width:100%;padding:13px;font-size:15px;margin-top:3px}.auth-divider{display:flex;align-items:center;gap:10px;color:#6f7f9e;font-size:11px;font-weight:800;margin:18px 0}.auth-divider:before,.auth-divider:after{content:"";height:1px;background:#263653;flex:1}.auth-social-grid{display:grid;grid-template-columns:1fr 1fr;gap:9px}.auth-social{background:#131e34;border:1px solid #304467;color:#eef3ff;padding:11px 10px}.auth-social:hover{background:#182641}.auth-status{min-height:18px;margin-top:12px;font-size:12px;line-height:1.45;color:#aebbd4}.auth-status.error{color:#ff9cac}.auth-status.good{color:#77e1b5}.auth-status.warn{color:#ffd980}.auth-dev{margin-top:18px;padding:13px;border:1px dashed #685a27;background:#241f0d;border-radius:12px;font-size:12px;color:#d9c47b}.auth-dev button{width:100%;margin-top:10px;background:#67571f}.auth-backend-badge{display:inline-flex;gap:6px;align-items:center;font-size:11px;border:1px solid #33476c;border-radius:999px;padding:5px 9px;color:#aebbd4;background:#111b30}.auth-spinner{width:30px;height:30px;border:3px solid #2a3b5f;border-top-color:#7898ff;border-radius:50%;animation:authspin .8s linear infinite;margin:20px auto}@keyframes authspin{to{transform:rotate(360deg)}}.nav-logout{margin-left:auto;color:#ffb0ba!important}.account-chip{display:inline-flex;align-items:center;gap:7px;padding:6px 10px;border:1px solid #33466d;border-radius:999px;background:#101a2d;color:#c6d1e8;font-size:12px}.account-dot{width:8px;height:8px;border-radius:50%;background:#43d79a}.account-dot.dev{background:#ffd166}.profile-auth-note{margin-top:10px}.profile-auth-email{word-break:break-all}.auth-recovery-actions{display:grid;gap:10px}
+@media(max-width:980px){.auth-gate{grid-template-columns:1fr}.auth-showcase{display:none}.auth-panel-wrap{border-left:0;padding:24px;min-height:100vh}.auth-panel{max-width:480px}.auth-social-grid{grid-template-columns:1fr 1fr}}@media(max-width:520px){.auth-panel-wrap{padding:20px 16px}.auth-social-grid{grid-template-columns:1fr}.auth-panel-head h2{font-size:27px}}
+
+</style></head><body class="auth-locked">
+
+<div id="authGate" class="auth-gate" role="dialog" aria-modal="true" aria-label="Learning Academy account sign in">
+  <div class="auth-showcase">
+    <img class="auth-showcase-logo" src="assets/learning-academy-banner.png" alt="Learning Academy">
+    <div class="auth-backend-badge">🔐 Secure account access</div>
+    <h1>Your learning, progress, and identity — in one account.</h1>
+    <p>Sign in to Learning Academy to access your profile and prepare for cloud progress, purchases, achievements, and community features across devices.</p>
+    <div class="auth-feature-grid">
+      <div class="auth-feature"><div class="icon">☁️</div><b>Cloud-ready progress</b></div>
+      <div class="auth-feature"><div class="icon">🏆</div><b>Account leaderboards</b></div>
+      <div class="auth-feature"><div class="icon">📚</div><b>Course ownership</b></div>
+    </div>
+  </div>
+  <div class="auth-panel-wrap">
+    <div class="auth-panel">
+      <div id="authLoadingState">
+        <div class="auth-spinner"></div><div class="muted" style="text-align:center">Checking your saved Learning Academy session…</div>
+      </div>
+      <div id="authInteractive" class="hidden">
+        <div class="auth-panel-head"><div class="muted" style="font-size:12px;font-weight:850;letter-spacing:.08em">LEARNING ACADEMY ACCOUNT</div><h2 id="authHeading">Welcome back</h2><div id="authSubheading" class="muted">Sign in to continue learning.</div></div>
+        <div id="authStandardArea">
+          <div class="auth-tabs"><button id="authLoginTab" class="auth-tab active" onclick="switchAuthMode('login')">Log In</button><button id="authSignupTab" class="auth-tab" onclick="switchAuthMode('signup')">Sign Up</button></div>
+          <div id="authSignupNameField" class="auth-field hidden"><label>YOUR NAME</label><input id="authDisplayName" class="auth-input" maxlength="80" autocomplete="name" placeholder="Your name"></div>
+          <div class="auth-form">
+            <div class="auth-field"><label>EMAIL</label><input id="authEmail" class="auth-input" type="email" maxlength="254" autocomplete="email" placeholder="you@example.com"></div>
+            <div class="auth-field"><label>PASSWORD</label><div class="auth-password-wrap"><input id="authPassword" class="auth-input" type="password" maxlength="128" autocomplete="current-password" placeholder="At least 8 characters" onkeydown="if(event.key==='Enter')submitAuthForm()"><button class="auth-password-toggle" type="button" onclick="toggleAuthPassword('authPassword',this)">Show</button></div></div>
+            <div id="authConfirmField" class="auth-field hidden"><label>CONFIRM PASSWORD</label><div class="auth-password-wrap"><input id="authConfirmPassword" class="auth-input" type="password" maxlength="128" autocomplete="new-password" placeholder="Repeat password" onkeydown="if(event.key==='Enter')submitAuthForm()"><button class="auth-password-toggle" type="button" onclick="toggleAuthPassword('authConfirmPassword',this)">Show</button></div></div>
+            <div class="auth-row"><label class="auth-check"><input id="authRemember" type="checkbox" checked> Remember me</label><button id="authForgotBtn" class="auth-link" type="button" onclick="showForgotPassword()">Forgot password?</button></div>
+            <button id="authSubmitBtn" class="auth-submit" onclick="submitAuthForm()">Log In</button>
+          </div>
+          <div class="auth-divider">OR CONTINUE WITH</div>
+          <div class="auth-social-grid">
+            <button class="auth-social" onclick="startSocialLogin('google')">G&nbsp; Google</button>
+            <button class="auth-social" onclick="startSocialLogin('azure')">▦&nbsp; Microsoft</button>
+            <button class="auth-social" onclick="startSocialLogin('facebook')">f&nbsp; Facebook</button>
+            <button class="auth-social" onclick="startSocialLogin('x')">𝕏&nbsp; X</button>
+          </div>
+        </div>
+        <div id="authForgotArea" class="hidden">
+          <div class="auth-form"><div class="auth-field"><label>EMAIL</label><input id="authResetEmail" class="auth-input" type="email" maxlength="254" placeholder="you@example.com" onkeydown="if(event.key==='Enter')sendPasswordReset()"></div><button class="auth-submit" onclick="sendPasswordReset()">Send Reset Email</button><button class="alt" onclick="cancelForgotPassword()">← Back to Log In</button></div>
+        </div>
+        <div id="authRecoveryArea" class="hidden">
+          <div class="auth-status good" style="margin-bottom:14px">Your reset link was verified. Choose a new password.</div>
+          <div class="auth-recovery-actions"><div class="auth-field"><label>NEW PASSWORD</label><input id="authRecoveryPassword" class="auth-input" type="password" maxlength="128" placeholder="At least 8 characters"></div><div class="auth-field"><label>CONFIRM NEW PASSWORD</label><input id="authRecoveryConfirm" class="auth-input" type="password" maxlength="128" placeholder="Repeat password"></div><button class="auth-submit" onclick="finishPasswordRecovery()">Update Password</button></div>
+        </div>
+        <div id="authStatus" class="auth-status"></div>
+        <div id="authDevNotice" class="auth-dev hidden"><b>Development backend not connected yet.</b><div style="margin-top:5px">The production account system is built into this client, but it needs your Supabase project URL and publishable key before real accounts can be created. Development access keeps your current local Owner profile available while we connect the backend.</div><button onclick="enterDevelopmentMode()">Continue in Development Mode</button></div>
+      </div>
+    </div>
+  </div>
+</div>
+
 <header><div class="brand"><img class="brand-banner" src="assets/learning-academy-banner.png" alt="Learning Academy — Your All in One Learning Hub"></div>
 <div class="header-actions">
   <button class="header-link" onclick="page('leaderboard')">🏆 Leaderboard</button>
@@ -107,6 +165,7 @@ header{padding-top:12px;padding-bottom:12px}
 <button data-page="settings" onclick="page('settings')">⚙️ Settings</button>
 <button class="nav-external" onclick="openWebsite()">🌐 Website</button>
 <button data-page="profile" onclick="page('profile')">👤 Profile</button>
+<button id="logoutNavBtn" class="nav-logout" onclick="logoutAccount()">↪ Logout</button>
 </div>
 
 
@@ -287,6 +346,13 @@ header{padding-top:12px;padding-bottom:12px}
       </div>
     </div>
     <div class="month" style="margin-top:14px">
+      <h3>Account</h3>
+      <p class="muted">Learning Academy accounts are handled by the secure authentication service. Passwords are never saved by the Learning Academy client.</p>
+      <div id="settingsAccountState" class="account-chip"><span class="account-dot dev"></span><span>Development mode</span></div>
+      <div id="settingsAccountEmail" class="muted" style="margin-top:10px"></div>
+      <div style="margin-top:12px"><button class="alt" onclick="logoutAccount()">↪ Log Out</button></div>
+    </div>
+    <div class="month" style="margin-top:14px">
       <div class="setup-setting-row">
         <div><h3 style="margin-top:0">Learner Setup</h3><div class="muted">Your first-run setup stores your learning goals and Daily Goal on this computer. You can run the setup again at any time without deleting course progress.</div><div style="margin-top:8px"><b>Daily Goal:</b> <span id="settingsDailyGoal">5 blocks</span></div></div>
         <button class="alt" onclick="replayOnboarding()">✨ Run Setup Again</button>
@@ -317,7 +383,7 @@ header{padding-top:12px;padding-bottom:12px}
         <button onclick="document.getElementById('profilePhotoInput').click()">📷 Upload Profile Picture</button>
         <button class="alt" onclick="removeProfilePicture()">Remove Picture</button>
       </div>
-      <div class="profile-note"><b>Local Profile</b><div class="muted" style="margin-top:5px">Your profile and photo are stored on this computer for now. Online account sync can be connected later.</div></div>
+      <div class="profile-note"><b>Learning Academy Account</b><div id="profileAuthState" class="muted profile-auth-note">Checking account…</div><div id="profileAuthEmail" class="muted profile-auth-email" style="margin-top:4px"></div></div>
     </div>
     <div class="card profile-detail-card">
       <div class="profile-detail-head"><div><div class="muted">PROFILE DETAILS</div><h2>Your Learning Academy Profile</h2></div><div id="profileMemberChip" class="profile-member-chip">Member</div></div>
@@ -449,6 +515,78 @@ function safeLessonHtml(html){
   return template.innerHTML;
 }
 function escapeHtml(value){return String(value??"").replace(/[&<>"']/g,ch=>({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;"}[ch]||ch))}
+
+let authMode="login";
+let authSessionState={configured:false,authenticated:false,developmentMode:false,user:null};
+let academyInitialized=false;
+
+function setAuthStatus(message,type=""){
+  const el=document.getElementById("authStatus");if(!el)return;el.textContent=message||"";el.className=`auth-status ${type}`.trim();
+}
+function setAuthBusy(busy,label=""){
+  const btn=document.getElementById("authSubmitBtn");if(btn){btn.disabled=!!busy;if(label)btn.textContent=label;}
+  document.querySelectorAll(".auth-social").forEach(b=>b.disabled=!!busy);
+}
+function switchAuthMode(mode){
+  authMode=mode==="signup"?"signup":"login";
+  const signup=authMode==="signup";
+  document.getElementById("authLoginTab")?.classList.toggle("active",!signup);document.getElementById("authSignupTab")?.classList.toggle("active",signup);
+  document.getElementById("authSignupNameField")?.classList.toggle("hidden",!signup);document.getElementById("authConfirmField")?.classList.toggle("hidden",!signup);document.getElementById("authForgotBtn")?.classList.toggle("hidden",signup);
+  const pass=document.getElementById("authPassword");if(pass)pass.autocomplete=signup?"new-password":"current-password";
+  const h=document.getElementById("authHeading"),sub=document.getElementById("authSubheading"),btn=document.getElementById("authSubmitBtn");if(h)h.textContent=signup?"Create your account":"Welcome back";if(sub)sub.textContent=signup?"Create a Learning Academy account to get started.":"Sign in to continue learning.";if(btn)btn.textContent=signup?"Create Account":"Log In";setAuthStatus("");
+}
+function toggleAuthPassword(id,button){const input=document.getElementById(id);if(!input)return;input.type=input.type==="password"?"text":"password";if(button)button.textContent=input.type==="password"?"Show":"Hide"}
+function showAuthInteractive(){document.getElementById("authLoadingState")?.classList.add("hidden");document.getElementById("authInteractive")?.classList.remove("hidden")}
+function lockApplication(){document.body.classList.add("auth-locked");document.getElementById("authGate")?.classList.remove("hidden")}
+function unlockApplication(){document.body.classList.remove("auth-locked");document.getElementById("authGate")?.classList.add("hidden");if(!academyInitialized){academyInitialized=true;initAcademy()}}
+function updateAccountIndicators(){
+  const signed=authSessionState.authenticated&&authSessionState.user,dev=authSessionState.developmentMode&&!signed;
+  const settings=document.getElementById("settingsAccountState"),email=document.getElementById("settingsAccountEmail"),pstate=document.getElementById("profileAuthState"),pemail=document.getElementById("profileAuthEmail");
+  if(settings){settings.innerHTML=`<span class="account-dot ${dev?'dev':''}"></span><span>${signed?'Signed in':dev?'Development mode':'Signed out'}</span>`}
+  if(email)email.textContent=signed?authSessionState.user.email:(dev?"Production account backend not connected yet.":"");
+  if(pstate)pstate.textContent=signed?"Signed in and linked to this Learning Academy session.":dev?"Development mode — this local profile is not yet linked to a cloud account.":"Not signed in.";
+  if(pemail)pemail.textContent=signed?authSessionState.user.email:"";
+}
+function applyAuthenticatedIdentity(user){
+  if(!user)return;academyProfile.role=user.role==="owner"?"owner":"learner";
+  if((!academyProfile.displayName||academyProfile.displayName==="Learner")&&user.displayName)academyProfile.displayName=String(user.displayName).slice(0,40);
+  localStorage.setItem(ACADEMY_PROFILE_KEY,JSON.stringify(academyProfile));updateHeaderProfile();renderProfile();renderLeaderboard();renderTopLearners();
+}
+async function completeAuthenticatedEntry(state){
+  authSessionState={...authSessionState,...state,developmentMode:false};if(state.user)applyAuthenticatedIdentity(state.user);updateAccountIndicators();unlockApplication();
+}
+async function submitAuthForm(){
+  if(!window.academyAuth){setAuthStatus("Authentication bridge is unavailable.","error");return}
+  const email=document.getElementById("authEmail")?.value.trim()||"",password=document.getElementById("authPassword")?.value||"",remember=!!document.getElementById("authRemember")?.checked;
+  if(!email){setAuthStatus("Enter your email address.","error");return}if(password.length<8){setAuthStatus("Password must contain at least 8 characters.","error");return}
+  if(authMode==="signup"){
+    const displayName=document.getElementById("authDisplayName")?.value.trim()||"",confirmPass=document.getElementById("authConfirmPassword")?.value||"";if(!displayName){setAuthStatus("Enter your name.","error");return}if(password!==confirmPass){setAuthStatus("The passwords do not match.","error");return}
+    setAuthBusy(true,"Creating Account…");const result=await window.academyAuth.signUp({displayName,email,password,rememberMe:remember});setAuthBusy(false,"Create Account");if(!result?.ok){setAuthStatus(result?.error||"Could not create the account.","error");return}authSessionState={...authSessionState,...result};if(result.confirmationRequired){setAuthStatus("Account created. Check your email and confirm your address, then return here to log in.","good");switchAuthMode("login");document.getElementById("authEmail").value=email;return}if(result.authenticated){await completeAuthenticatedEntry(result);return}setAuthStatus("Account created. You can now log in.","good");switchAuthMode("login");return;
+  }
+  setAuthBusy(true,"Signing In…");const result=await window.academyAuth.signIn({email,password,rememberMe:remember});setAuthBusy(false,"Log In");if(!result?.ok){setAuthStatus(result?.error||"Could not sign in.","error");return}if(result.warning)setAuthStatus(result.warning,"warn");await completeAuthenticatedEntry(result);
+}
+async function startSocialLogin(provider){
+  if(!window.academyAuth)return;setAuthStatus(`Opening ${provider==='azure'?'Microsoft':provider==='x'?'X':provider.charAt(0).toUpperCase()+provider.slice(1)} in your browser…`);setAuthBusy(true);
+  const result=await window.academyAuth.social({provider,rememberMe:!!document.getElementById("authRemember")?.checked});setAuthBusy(false,authMode==="signup"?"Create Account":"Log In");if(!result?.ok)setAuthStatus(result?.error||"Could not start social sign in.","error");else setAuthStatus("Complete sign in in your browser. Learning Academy will return automatically when finished.","good");
+}
+function showForgotPassword(){document.getElementById("authStandardArea")?.classList.add("hidden");document.getElementById("authForgotArea")?.classList.remove("hidden");document.getElementById("authHeading").textContent="Reset your password";document.getElementById("authSubheading").textContent="We'll send secure reset instructions to your email.";document.getElementById("authResetEmail").value=document.getElementById("authEmail")?.value||"";setAuthStatus("")}
+function cancelForgotPassword(){document.getElementById("authForgotArea")?.classList.add("hidden");document.getElementById("authStandardArea")?.classList.remove("hidden");switchAuthMode("login")}
+async function sendPasswordReset(){const email=document.getElementById("authResetEmail")?.value.trim()||"";if(!email){setAuthStatus("Enter your email address.","error");return}const result=await window.academyAuth?.resetPassword({email});setAuthStatus(result?.ok?(result.message||"Reset instructions sent."):(result?.error||"Could not send reset instructions."),result?.ok?"good":"error")}
+function showPasswordRecovery(){document.getElementById("authStandardArea")?.classList.add("hidden");document.getElementById("authForgotArea")?.classList.add("hidden");document.getElementById("authRecoveryArea")?.classList.remove("hidden");document.getElementById("authHeading").textContent="Choose a new password";document.getElementById("authSubheading").textContent="Finish recovering your Learning Academy account.";showAuthInteractive();lockApplication()}
+async function finishPasswordRecovery(){const p=document.getElementById("authRecoveryPassword")?.value||"",c=document.getElementById("authRecoveryConfirm")?.value||"";if(p.length<8){setAuthStatus("Password must contain at least 8 characters.","error");return}if(p!==c){setAuthStatus("The passwords do not match.","error");return}const result=await window.academyAuth?.updatePassword({password:p});if(!result?.ok){setAuthStatus(result?.error||"Could not update password.","error");return}setAuthStatus("Password updated successfully.","good");await completeAuthenticatedEntry(result)}
+function enterDevelopmentMode(){authSessionState={configured:false,authenticated:false,developmentMode:true,user:null};sessionStorage.setItem("learningAcademy:devAuthSession","1");updateAccountIndicators();unlockApplication()}
+async function logoutAccount(){
+  try{if(authSessionState.authenticated&&window.academyAuth)await window.academyAuth.logout()}catch(_){}sessionStorage.removeItem("learningAcademy:devAuthSession");authSessionState={configured:authSessionState.configured,authenticated:false,developmentMode:false,user:null};updateAccountIndicators();lockApplication();showAuthInteractive();document.getElementById("authRecoveryArea")?.classList.add("hidden");document.getElementById("authForgotArea")?.classList.add("hidden");document.getElementById("authStandardArea")?.classList.remove("hidden");switchAuthMode("login");setAuthStatus("")
+}
+async function initAuthentication(){
+  lockApplication();if(!window.academyAuth){showAuthInteractive();setAuthStatus("Authentication bridge is unavailable.","error");return}
+  window.academyAuth.onState(async state=>{if(!state)return;if(state.type==="password-recovery"){authSessionState={...authSessionState,...state};showPasswordRecovery();return}if(state.type==="oauth-error"){showAuthInteractive();setAuthBusy(false,authMode==="signup"?"Create Account":"Log In");setAuthStatus(state.error||"Social sign in failed.","error");return}if(state.authenticated){await completeAuthenticatedEntry(state)}});
+  const state=await window.academyAuth.getState();authSessionState={...authSessionState,...state};showAuthInteractive();
+  if(state?.authenticated){await completeAuthenticatedEntry(state);return}
+  if(!state?.configured){document.getElementById("authDevNotice")?.classList.remove("hidden");setAuthStatus("Real account services are ready in the client but the production backend has not been connected yet.","warn");return}
+  document.getElementById("authDevNotice")?.classList.add("hidden");setAuthStatus("")
+}
+
 function makeLearnerId(){
   if(globalThis.crypto?.randomUUID) return crypto.randomUUID();
   return "local-"+Date.now().toString(36)+"-"+Math.random().toString(36).slice(2,12);
@@ -832,7 +970,7 @@ function renderProfile(){
   const levelEl=document.getElementById("profileLevel"),levelFill=document.getElementById("profileLevelFill"),levelText=document.getElementById("profileLevelProgressText"),levelNext=document.getElementById("profileLevelNext");
   if(levelEl)levelEl.textContent=level.level;if(levelFill)levelFill.style.width=level.pct+"%";if(levelText)levelText.textContent=`${level.into.toLocaleString()} / ${level.step.toLocaleString()} XP`;if(levelNext)levelNext.textContent=`${level.next.toLocaleString()} XP to Level ${level.level+1}`;
   const joinedText=new Date(academyProfile.joined+"T00:00:00").toLocaleDateString();const memberChip=document.getElementById("profileMemberChip");if(memberChip)memberChip.textContent=`Member since ${joinedText}`;
-  const stats=profileStats();document.getElementById("profileXP").textContent=level.xp.toLocaleString();document.getElementById("profileCourses").textContent=stats.courses;document.getElementById("profileAchievements").textContent=stats.achievements;document.getElementById("profileStreak").textContent=dailyChallengeState.currentStreak;document.getElementById("profileJoined").textContent=joinedText;document.getElementById("profileLearnerId").textContent=learnerProfileId;
+  const stats=profileStats();document.getElementById("profileXP").textContent=level.xp.toLocaleString();document.getElementById("profileCourses").textContent=stats.courses;document.getElementById("profileAchievements").textContent=stats.achievements;document.getElementById("profileStreak").textContent=dailyChallengeState.currentStreak;document.getElementById("profileJoined").textContent=joinedText;document.getElementById("profileLearnerId").textContent=learnerProfileId;updateAccountIndicators();
 }
 function saveProfileFromForm(){
   academyProfile.displayName=(document.getElementById("profileDisplayName").value.trim()||"Learner").slice(0,40);academyProfile.countryCode=String(document.getElementById("profileCountry").value||"").toUpperCase();academyProfile.headline=(document.getElementById("profileHeadline").value.trim()||"Learning Academy Learner").slice(0,80);academyProfile.bio=document.getElementById("profileBio").value.trim().slice(0,300);localStorage.setItem(ACADEMY_PROFILE_KEY,JSON.stringify(academyProfile));updateHeaderProfile();renderProfile();renderLeaderboard();renderTopLearners();showUpdateModal("✅","Profile Saved","Your local learner profile was updated successfully.","close","Continue",false);
@@ -1316,5 +1454,5 @@ async function startUpdate(){
 
 
 
-initAcademy();
+initAuthentication();
 </script></body></html>

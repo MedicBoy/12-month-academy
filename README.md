@@ -1,3 +1,37 @@
+# Learning Academy v1.3.0 — Secure Account Authentication Foundation
+
+This release adds the production-grade client-side account architecture for Learning Academy. The app now opens to a dedicated Login / Sign Up experience before the learning client, supports secure Remember me sessions through Electron safeStorage, external-browser OAuth with PKCE/deep-link return handling, logout, email password reset flow, and server-authoritative Owner/Learner role support through authenticated app metadata.
+
+## Authentication architecture
+
+- Backend provider: Supabase Auth.
+- Email/password: real Supabase `signUp` and `signInWithPassword` calls once the project is connected.
+- Social providers prepared: Google, Microsoft (Azure), Facebook, and X.
+- OAuth is launched in the system browser and returns through `learning-academy://auth/callback`.
+- Remember me never stores the user's password. Access/refresh session tokens are encrypted with Electron `safeStorage` in the app data directory.
+- The renderer does not receive access or refresh tokens; authentication runs in the Electron main process through a narrow preload IPC bridge.
+- Owner is designed to come from server-controlled `app_metadata.role = "owner"`; normal authenticated users resolve to Learner.
+- Until a Supabase project is connected, the login screen visibly runs in Development mode and provides a non-persistent Continue in Development Mode button so the current local Owner development profile remains usable. The bypass disappears automatically once backend credentials are configured.
+
+## Connect the production backend
+
+Create the Learning Academy Supabase project, then put its Project URL and **publishable/anon key** in `package.json` under `learningAcademyBackend.url` and `learningAcademyBackend.publishableKey`. Never place the Supabase service-role key or social-provider client secrets in the Electron client.
+
+In Supabase Authentication settings, add these redirect URLs:
+
+- `learning-academy://auth/callback`
+- `learning-academy://auth/reset`
+
+Enable Email authentication, then configure whichever social providers you want to launch with. Google and Microsoft are the recommended first two; Facebook and X are already wired in the client and can be enabled later. Each social provider's private client secret belongs in Supabase/provider configuration, not in Learning Academy source code.
+
+For the Owner account, set a server-controlled role in the authenticated user's app metadata (`role: owner`). Do not use editable user metadata for authorization.
+
+## What still requires the external Supabase project
+
+The client implementation is complete enough to connect and test, but real signups cannot succeed until the Supabase URL/publishable key are supplied and the provider settings/redirect URLs are configured in that project. This is intentional: no fake local password database was added.
+
+---
+
 
 ## v1.2.13 — First-Run Onboarding
 

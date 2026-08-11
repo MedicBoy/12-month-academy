@@ -79,8 +79,8 @@ if (!fs.existsSync(courseDir)) {
 }
 
 const pkg = JSON.parse(fs.readFileSync("package.json", "utf8"));
-if (pkg.version !== "1.2.13") fail(`package.json version must be 1.2.13, found ${pkg.version}.`);
-else ok("Application version is 1.2.13");
+if (pkg.version !== "1.3.0") fail(`package.json version must be 1.3.0, found ${pkg.version}.`);
+else ok("Application version is 1.3.0");
 if (!pkg.build?.files?.some(entry => String(entry).startsWith("courses/"))) fail("package.json build.files must include courses/**/*.");
 else ok("Built-in course packages included in Windows build");
 if (!pkg.build?.files?.some(entry => String(entry).startsWith("assets/"))) fail("package.json build.files must include assets/**/*.");
@@ -123,6 +123,23 @@ if (!indexHtml.includes('Run Setup Again') || !indexHtml.includes('replayOnboard
 else ok("Onboarding replay control configured in Settings");
 if (!indexHtml.includes('academyProfile.role') || !indexHtml.includes('academyProfile.picture=onboardingDraft.picture')) fail("Onboarding must update profile identity without replacing the saved role.");
 else ok("Onboarding preserves per-profile role while updating identity");
+
+if (!pkg.dependencies?.["@supabase/supabase-js"]) fail("package.json dependencies must include @supabase/supabase-js for account authentication.");
+else ok("Supabase authentication dependency declared");
+if (!pkg.learningAcademyBackend || pkg.learningAcademyBackend.provider !== "supabase" || !String(pkg.learningAcademyBackend.authRedirect || "").startsWith("learning-academy://")) fail("Learning Academy backend/auth redirect configuration is missing.");
+else ok("Backend authentication configuration scaffold present");
+if (!Array.isArray(pkg.build?.protocols) || !pkg.build.protocols.some(p => Array.isArray(p.schemes) && p.schemes.includes("learning-academy"))) fail("electron-builder must register the learning-academy deep-link protocol.");
+else ok("Authentication deep-link protocol configured");
+const preloadText = fs.readFileSync("preload.js", "utf8");
+const mainText = fs.readFileSync("main.js", "utf8");
+if (!preloadText.includes("academyAuth") || !preloadText.includes("auth:signIn") || !preloadText.includes("auth:social") || !preloadText.includes("auth:logout")) fail("preload.js authentication bridge is incomplete.");
+else ok("Authentication IPC bridge configured");
+if (!mainText.includes("safeStorage") || !mainText.includes("secure-auth-session.bin") || !mainText.includes("signInWithPassword") || !mainText.includes("signInWithOAuth") || !mainText.includes("exchangeCodeForSession")) fail("main.js secure authentication/session implementation is incomplete.");
+else ok("Secure main-process authentication and Remember me storage configured");
+if (!indexHtml.includes('id="authGate"') || !indexHtml.includes("initAuthentication()") || !indexHtml.includes("submitAuthForm()") || !indexHtml.includes("startSocialLogin('google')") || !indexHtml.includes('id="logoutNavBtn"')) fail("Login/signup/social/logout UI is incomplete.");
+else ok("Login, signup, social sign-in and logout UI configured");
+if (!indexHtml.includes("enterDevelopmentMode()") || !indexHtml.includes('id="authDevNotice"')) fail("Unconfigured-backend development access is missing.");
+else ok("Safe development access is available until production backend credentials are connected");
 
 if (!pkg.dependencies?.["adm-zip"]) fail("package.json dependencies must include adm-zip for .lacourse support.");
 else ok(".lacourse archive dependency declared");
