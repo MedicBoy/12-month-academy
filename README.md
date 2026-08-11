@@ -1,4 +1,11 @@
-# Learning Academy v1.2.10 — Per-Profile Owner Role
+# Learning Academy v1.2.11 — Real Country Flag Icons
+
+## v1.2.11 changes
+- Replaced Windows text/emoji country markers with actual tiny country flag images beside learner names.
+- Flags now appear beside the selected user name on Profile, the full Leaderboard, and Top Learners.
+- Existing saved country selections are preserved automatically, so a saved Canada profile immediately displays the Canadian flag after updating.
+- Owner/Learner role behavior from v1.2.10 is unchanged.
+
 
 - Adds a real local profile `role` field instead of globally hard-coding **Owner** for everyone.
 - The existing development profile from v1.2.9 migrates once to **Owner** and keeps the gold Academy-style role label.
