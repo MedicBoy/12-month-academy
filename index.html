@@ -87,6 +87,10 @@ header{padding-top:12px;padding-bottom:12px}
 @media(max-width:1050px){.nav{width:100%}.profile-card{position:static}.profile-level-card{grid-template-columns:1fr}.profile-fields{grid-template-columns:1fr}.profile-fields .profile-field-wide{grid-column:auto}.leaderboard-podium{grid-template-columns:1fr}.podium-card.first{transform:none}.leaderboard-head{align-items:flex-start}}
 @media(max-width:650px){.header-actions .header-link{display:none}.header-metric{padding:0 7px;font-size:12px}.profile-avatar-large{width:155px;height:155px}.profile-stat-grid{grid-template-columns:1fr 1fr}.leader-row{grid-template-columns:45px 42px minmax(110px,1fr) 78px;padding:9px 8px;gap:7px}.leader-avatar{width:38px;height:38px}.leader-xp{font-size:12px}.country-flag{width:16px;height:12px}}
 
+/* v1.2.13 — First-run onboarding and learner setup */
+.onboarding-overlay.hidden{display:none}.onboarding-overlay{position:fixed;inset:0;z-index:100;background:radial-gradient(circle at 20% 15%,#1c2b52 0,#0a1021 36%,#070b16 100%);display:flex;align-items:center;justify-content:center;padding:24px;overflow:auto}.onboarding-shell{width:min(980px,100%);background:linear-gradient(145deg,#121b31,#0d1527);border:1px solid #33476f;border-radius:28px;box-shadow:0 30px 90px #000a;overflow:hidden}.onboarding-top{display:flex;justify-content:space-between;align-items:center;gap:16px;padding:18px 24px;border-bottom:1px solid #29395a;background:#0d1425}.onboarding-brand{height:64px;max-width:420px;object-fit:contain}.onboarding-step-label{font-size:12px;color:#aebcdc;font-weight:850;letter-spacing:.08em;white-space:nowrap}.onboarding-progress{height:6px;background:#1e2b49}.onboarding-progress>div{height:100%;background:linear-gradient(90deg,#7898ff,#9d79ff);transition:width .25s ease}.onboarding-body{padding:32px}.onboarding-panel{max-width:760px;margin:auto}.onboarding-kicker{font-size:12px;font-weight:900;letter-spacing:.12em;color:#9eb0db}.onboarding-title{font-size:34px;line-height:1.1;margin:8px 0 12px}.onboarding-copy{font-size:16px;line-height:1.65;color:#b8c4dd;max-width:680px}.onboarding-actions{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;margin-top:26px}.onboarding-actions-right{display:flex;gap:10px;flex-wrap:wrap;margin-left:auto}.onboarding-actions button{min-width:130px}.onboarding-welcome-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:24px}.onboarding-benefit{background:#141f36;border:1px solid #2b3c60;border-radius:16px;padding:16px}.onboarding-benefit .icon{font-size:24px;margin-bottom:8px}.onboarding-benefit b{display:block;margin-bottom:5px}.onboarding-form-grid{display:grid;grid-template-columns:160px 1fr;gap:22px;align-items:start;margin-top:22px}.onboarding-avatar{width:150px;height:150px;border-radius:50%;background:#1d2a49;border:4px solid #7898ff;display:grid;place-items:center;overflow:hidden;font-size:42px;font-weight:950;margin:auto}.onboarding-avatar img{width:100%;height:100%;object-fit:cover}.onboarding-photo-actions{display:grid;gap:7px;margin-top:10px}.onboarding-fields{display:grid;gap:14px}.onboarding-goals{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin-top:20px}.onboarding-choice{border:1px solid #33476c;background:#141f36;color:#edf3ff;border-radius:14px;padding:14px;text-align:left;cursor:pointer;transition:.16s}.onboarding-choice:hover{border-color:#6582cc;background:#192643}.onboarding-choice.selected{border-color:#7898ff;background:#1d2e56;box-shadow:0 0 0 3px #7898ff14}.onboarding-choice b{display:block;font-size:14px}.onboarding-choice span{display:block;color:#aebbd4;font-size:12px;margin-top:4px;line-height:1.4}.onboarding-course-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:11px;margin-top:18px;max-height:365px;overflow:auto;padding:2px}.onboarding-course-card{border:1px solid #304263;background:#131d32;border-radius:16px;padding:15px;cursor:pointer;transition:.16s}.onboarding-course-card:hover{transform:translateY(-1px);border-color:#5a72ad}.onboarding-course-card.selected{border-color:var(--g);box-shadow:0 0 0 3px #43d79a13;background:#152b2b}.onboarding-course-card h3{margin:7px 0}.onboarding-course-card p{font-size:12px;line-height:1.45}.onboarding-goal-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-top:22px}.onboarding-goal-option{text-align:center;border:1px solid #33476c;background:#141f36;border-radius:16px;padding:18px 10px;cursor:pointer}.onboarding-goal-option.selected{border-color:var(--academy-gold);background:#2b260f;box-shadow:0 0 0 3px #fbcc1a10}.onboarding-goal-number{font-size:30px;font-weight:950}.onboarding-summary{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin-top:22px}.onboarding-summary-card{background:#141f36;border:1px solid #2d3f63;border-radius:15px;padding:15px}.onboarding-summary-card .label{font-size:11px;letter-spacing:.08em;color:#94a5c8;font-weight:850}.onboarding-summary-card .value{margin-top:5px;font-weight:850}.onboarding-error{background:#40202a;color:#ffd5dc;border:1px solid #6a3341;padding:10px 12px;border-radius:10px;margin-top:14px}.onboarding-complete-icon{font-size:64px;margin-bottom:8px}.setup-setting-row{display:flex;justify-content:space-between;gap:18px;align-items:center;flex-wrap:wrap}.setup-setting-row .muted{max-width:680px}
+@media(max-width:760px){.onboarding-overlay{padding:10px}.onboarding-body{padding:22px 18px}.onboarding-top{padding:14px 18px}.onboarding-brand{height:48px;max-width:62vw}.onboarding-title{font-size:28px}.onboarding-welcome-grid,.onboarding-goals,.onboarding-goal-grid,.onboarding-summary{grid-template-columns:1fr}.onboarding-form-grid{grid-template-columns:1fr}.onboarding-avatar{width:125px;height:125px}.onboarding-step-label{font-size:10px}}
+
 </style></head><body>
 <header><div class="brand"><img class="brand-banner" src="assets/learning-academy-banner.png" alt="Learning Academy — Your All in One Learning Hub"></div>
 <div class="header-actions">
@@ -283,6 +287,12 @@ header{padding-top:12px;padding-bottom:12px}
       </div>
     </div>
     <div class="month" style="margin-top:14px">
+      <div class="setup-setting-row">
+        <div><h3 style="margin-top:0">Learner Setup</h3><div class="muted">Your first-run setup stores your learning goals and Daily Goal on this computer. You can run the setup again at any time without deleting course progress.</div><div style="margin-top:8px"><b>Daily Goal:</b> <span id="settingsDailyGoal">5 blocks</span></div></div>
+        <button class="alt" onclick="replayOnboarding()">✨ Run Setup Again</button>
+      </div>
+    </div>
+    <div class="month" style="margin-top:14px">
       <h3>Local Learner Data</h3>
       <p class="muted">Course progress is stored separately for every course and automatically backed up on this computer.</p>
       <p><b>Local learner ID:</b> <span id="learnerProfileId">Loading…</span></p>
@@ -344,6 +354,17 @@ header{padding-top:12px;padding-bottom:12px}
 </section>
 
 </div>
+<div id="onboarding" class="onboarding-overlay hidden" role="dialog" aria-modal="true" aria-labelledby="onboardingTitle">
+  <div class="onboarding-shell">
+    <div class="onboarding-top">
+      <img class="onboarding-brand" src="assets/learning-academy-banner.png" alt="Learning Academy">
+      <div id="onboardingStepLabel" class="onboarding-step-label">STEP 1 OF 6</div>
+    </div>
+    <div class="onboarding-progress"><div id="onboardingProgressFill" style="width:16.67%"></div></div>
+    <div id="onboardingContent" class="onboarding-body"></div>
+  </div>
+</div>
+
 <div class="modal" id="modal"><div class="modalbox"><div class="check">✓</div><h2 id="mtitle">DAY COMPLETE!</h2><p id="mtext"></p><button onclick="closeModal()">Continue</button></div></div>
 <div class="modal" id="updateModal"><div class="modalbox">
   <div id="updateModalIcon" class="update-modal-icon">⬆️</div>
@@ -448,6 +469,26 @@ function normalizeAcademyProfile(raw,defaultRole="learner"){
 let academyProfile=normalizeAcademyProfile(storedAcademyProfile||{},hasLegacyLocalProfile?"owner":"learner");
 localStorage.setItem(ACADEMY_PROFILE_KEY,JSON.stringify(academyProfile));
 
+const ONBOARDING_COMPLETE_KEY="learningAcademy:onboardingComplete";
+const LEARNING_GOALS_KEY="learningAcademy:learningGoals";
+const DAILY_GOAL_TARGET_KEY="learningAcademy:dailyGoalTarget";
+const LEARNING_GOAL_OPTIONS=[
+  ["career","Change or advance my career","Build job-ready skills for a new role or stronger opportunities."],
+  ["technical","Build technical skills","Grow confidence in computing, math, science, and problem solving."],
+  ["school","Prepare for school","Strengthen foundations before a program, course, or exam."],
+  ["work","Perform better at work","Develop practical skills I can apply in my current job."],
+  ["consistency","Build a study habit","Create a routine and keep a reliable learning streak."],
+  ["curiosity","Learn for myself","Explore subjects because I enjoy learning and improving."],
+  ["credentials","Work toward credentials","Prepare for future certificates, qualifications, or assessments."],
+  ["projects","Build real projects","Turn concepts into practical work I can demonstrate."]
+];
+let learningGoals=safeJson(localStorage.getItem(LEARNING_GOALS_KEY),[]);
+if(!Array.isArray(learningGoals))learningGoals=[];
+let dailyGoalTarget=Math.max(1,Math.min(12,Number(localStorage.getItem(DAILY_GOAL_TARGET_KEY))||5));
+let onboardingStep=0;
+let onboardingDraft=null;
+let onboardingReplay=false;
+
 const COUNTRIES=[["AF","Afghanistan"],["AL","Albania"],["DZ","Algeria"],["AS","American Samoa"],["AD","Andorra"],["AO","Angola"],["AI","Anguilla"],["AQ","Antarctica"],["AG","Antigua and Barbuda"],["AR","Argentina"],["AM","Armenia"],["AW","Aruba"],["AU","Australia"],["AT","Austria"],["AZ","Azerbaijan"],["BS","Bahamas"],["BH","Bahrain"],["BD","Bangladesh"],["BB","Barbados"],["BY","Belarus"],["BE","Belgium"],["BZ","Belize"],["BJ","Benin"],["BM","Bermuda"],["BT","Bhutan"],["BO","Bolivia"],["BQ","Bonaire, Sint Eustatius and Saba"],["BA","Bosnia and Herzegovina"],["BW","Botswana"],["BV","Bouvet Island"],["BR","Brazil"],["IO","British Indian Ocean Territory"],["BN","Brunei"],["BG","Bulgaria"],["BF","Burkina Faso"],["BI","Burundi"],["CV","Cabo Verde"],["KH","Cambodia"],["CM","Cameroon"],["CA","Canada"],["KY","Cayman Islands"],["CF","Central African Republic"],["TD","Chad"],["CL","Chile"],["CN","China"],["CX","Christmas Island"],["CC","Cocos (Keeling) Islands"],["CO","Colombia"],["KM","Comoros"],["CG","Congo"],["CD","Congo, Democratic Republic of the"],["CK","Cook Islands"],["CR","Costa Rica"],["HR","Croatia"],["CU","Cuba"],["CW","Curaçao"],["CY","Cyprus"],["CZ","Czechia"],["CI","Côte d'Ivoire"],["DK","Denmark"],["DJ","Djibouti"],["DM","Dominica"],["DO","Dominican Republic"],["EC","Ecuador"],["EG","Egypt"],["SV","El Salvador"],["GQ","Equatorial Guinea"],["ER","Eritrea"],["EE","Estonia"],["SZ","Eswatini"],["ET","Ethiopia"],["FK","Falkland Islands (Malvinas)"],["FO","Faroe Islands"],["FJ","Fiji"],["FI","Finland"],["FR","France"],["GF","French Guiana"],["PF","French Polynesia"],["TF","French Southern Territories"],["GA","Gabon"],["GM","Gambia"],["GE","Georgia"],["DE","Germany"],["GH","Ghana"],["GI","Gibraltar"],["GR","Greece"],["GL","Greenland"],["GD","Grenada"],["GP","Guadeloupe"],["GU","Guam"],["GT","Guatemala"],["GG","Guernsey"],["GN","Guinea"],["GW","Guinea-Bissau"],["GY","Guyana"],["HT","Haiti"],["HM","Heard Island and McDonald Islands"],["VA","Holy See (Vatican City State)"],["HN","Honduras"],["HK","Hong Kong"],["HU","Hungary"],["IS","Iceland"],["IN","India"],["ID","Indonesia"],["IR","Iran"],["IQ","Iraq"],["IE","Ireland"],["IM","Isle of Man"],["IL","Israel"],["IT","Italy"],["JM","Jamaica"],["JP","Japan"],["JE","Jersey"],["JO","Jordan"],["KZ","Kazakhstan"],["KE","Kenya"],["KI","Kiribati"],["KP","North Korea"],["KR","South Korea"],["KW","Kuwait"],["KG","Kyrgyzstan"],["LA","Laos"],["LV","Latvia"],["LB","Lebanon"],["LS","Lesotho"],["LR","Liberia"],["LY","Libya"],["LI","Liechtenstein"],["LT","Lithuania"],["LU","Luxembourg"],["MO","Macao"],["MG","Madagascar"],["MW","Malawi"],["MY","Malaysia"],["MV","Maldives"],["ML","Mali"],["MT","Malta"],["MH","Marshall Islands"],["MQ","Martinique"],["MR","Mauritania"],["MU","Mauritius"],["YT","Mayotte"],["MX","Mexico"],["FM","Micronesia, Federated States of"],["MD","Moldova"],["MC","Monaco"],["MN","Mongolia"],["ME","Montenegro"],["MS","Montserrat"],["MA","Morocco"],["MZ","Mozambique"],["MM","Myanmar"],["NA","Namibia"],["NR","Nauru"],["NP","Nepal"],["NL","Netherlands"],["NC","New Caledonia"],["NZ","New Zealand"],["NI","Nicaragua"],["NE","Niger"],["NG","Nigeria"],["NU","Niue"],["NF","Norfolk Island"],["MK","North Macedonia"],["MP","Northern Mariana Islands"],["NO","Norway"],["OM","Oman"],["PK","Pakistan"],["PW","Palau"],["PS","Palestine"],["PA","Panama"],["PG","Papua New Guinea"],["PY","Paraguay"],["PE","Peru"],["PH","Philippines"],["PN","Pitcairn"],["PL","Poland"],["PT","Portugal"],["PR","Puerto Rico"],["QA","Qatar"],["RO","Romania"],["RU","Russia"],["RW","Rwanda"],["RE","Réunion"],["BL","Saint Barthélemy"],["SH","Saint Helena, Ascension and Tristan da Cunha"],["KN","Saint Kitts and Nevis"],["LC","Saint Lucia"],["MF","Saint Martin (French part)"],["PM","Saint Pierre and Miquelon"],["VC","Saint Vincent and the Grenadines"],["WS","Samoa"],["SM","San Marino"],["ST","Sao Tome and Principe"],["SA","Saudi Arabia"],["SN","Senegal"],["RS","Serbia"],["SC","Seychelles"],["SL","Sierra Leone"],["SG","Singapore"],["SX","Sint Maarten (Dutch part)"],["SK","Slovakia"],["SI","Slovenia"],["SB","Solomon Islands"],["SO","Somalia"],["ZA","South Africa"],["GS","South Georgia and the South Sandwich Islands"],["SS","South Sudan"],["ES","Spain"],["LK","Sri Lanka"],["SD","Sudan"],["SR","Suriname"],["SJ","Svalbard and Jan Mayen"],["SE","Sweden"],["CH","Switzerland"],["SY","Syria"],["TW","Taiwan"],["TJ","Tajikistan"],["TZ","Tanzania"],["TH","Thailand"],["TL","Timor-Leste"],["TG","Togo"],["TK","Tokelau"],["TO","Tonga"],["TT","Trinidad and Tobago"],["TN","Tunisia"],["TM","Turkmenistan"],["TC","Turks and Caicos Islands"],["TV","Tuvalu"],["TR","Türkiye"],["UG","Uganda"],["UA","Ukraine"],["AE","United Arab Emirates"],["GB","United Kingdom"],["US","United States"],["UM","United States Minor Outlying Islands"],["UY","Uruguay"],["UZ","Uzbekistan"],["VU","Vanuatu"],["VE","Venezuela"],["VN","Vietnam"],["VG","Virgin Islands, British"],["VI","Virgin Islands, U.S."],["WF","Wallis and Futuna"],["EH","Western Sahara"],["YE","Yemen"],["ZM","Zambia"],["ZW","Zimbabwe"],["AX","Åland Islands"]];
 const COUNTRY_NAME_BY_CODE=new Map(COUNTRIES);
 function countryFlagUrl(code){
@@ -459,11 +500,12 @@ function countryFlagHtml(code){
   const url=countryFlagUrl(code),name=countryName(code);
   return url?`<img class="country-flag" src="${url}" alt="${escapeHtml(name)} flag" title="${escapeHtml(name)}" loading="lazy" referrerpolicy="no-referrer">`:"";
 }
-function populateCountrySelect(){
-  const select=document.getElementById("profileCountry");if(!select)return;
+function populateCountrySelectElement(select,value=""){
+  if(!select)return;
   if(select.options.length===1)select.insertAdjacentHTML("beforeend",COUNTRIES.map(([code,name])=>`<option value="${code}">${escapeHtml(name)}</option>`).join(""));
-  select.value=academyProfile.countryCode||"";
+  select.value=String(value||"").toUpperCase();
 }
+function populateCountrySelect(){populateCountrySelectElement(document.getElementById("profileCountry"),academyProfile.countryCode||"")}
 
 function notificationIcon(type){
   return {success:"✅",update:"⬆️",achievement:"🏆",course:"📚",lesson:"🎓",error:"⚠️"}[type]||"🔔";
@@ -795,11 +837,78 @@ function renderProfile(){
 function saveProfileFromForm(){
   academyProfile.displayName=(document.getElementById("profileDisplayName").value.trim()||"Learner").slice(0,40);academyProfile.countryCode=String(document.getElementById("profileCountry").value||"").toUpperCase();academyProfile.headline=(document.getElementById("profileHeadline").value.trim()||"Learning Academy Learner").slice(0,80);academyProfile.bio=document.getElementById("profileBio").value.trim().slice(0,300);localStorage.setItem(ACADEMY_PROFILE_KEY,JSON.stringify(academyProfile));updateHeaderProfile();renderProfile();renderLeaderboard();renderTopLearners();showUpdateModal("✅","Profile Saved","Your local learner profile was updated successfully.","close","Continue",false);
 }
+function processProfilePictureFile(file,onReady){
+  if(!file)return;if(!/^image\/(png|jpeg|webp)$/i.test(file.type)){alert("Choose a PNG, JPG, or WebP image.");return}if(file.size>8*1024*1024){alert("Choose an image smaller than 8 MB.");return}
+  const reader=new FileReader();reader.onload=()=>{const img=new Image();img.onload=()=>{const size=Math.min(img.width,img.height),sx=(img.width-size)/2,sy=(img.height-size)/2,canvas=document.createElement("canvas");canvas.width=320;canvas.height=320;const ctx=canvas.getContext("2d");ctx.drawImage(img,sx,sy,size,size,0,0,320,320);onReady(canvas.toDataURL("image/jpeg",0.86));};img.onerror=()=>alert("That image could not be loaded.");img.src=reader.result};reader.readAsDataURL(file);
+}
 function handleProfilePictureUpload(event){
-  const file=event.target.files?.[0];if(!file)return;if(!/^image\/(png|jpeg|webp)$/i.test(file.type)){alert("Choose a PNG, JPG, or WebP image.");return}if(file.size>8*1024*1024){alert("Choose an image smaller than 8 MB.");return}
-  const reader=new FileReader();reader.onload=()=>{const img=new Image();img.onload=()=>{const size=Math.min(img.width,img.height),sx=(img.width-size)/2,sy=(img.height-size)/2,canvas=document.createElement("canvas");canvas.width=320;canvas.height=320;const ctx=canvas.getContext("2d");ctx.drawImage(img,sx,sy,size,size,0,0,320,320);academyProfile.picture=canvas.toDataURL("image/jpeg",0.86);localStorage.setItem(ACADEMY_PROFILE_KEY,JSON.stringify(academyProfile));event.target.value="";render();};img.onerror=()=>alert("That image could not be loaded.");img.src=reader.result};reader.readAsDataURL(file);
+  const file=event.target.files?.[0];processProfilePictureFile(file,data=>{academyProfile.picture=data;localStorage.setItem(ACADEMY_PROFILE_KEY,JSON.stringify(academyProfile));event.target.value="";render();});
 }
 function removeProfilePicture(){academyProfile.picture="";localStorage.setItem(ACADEMY_PROFILE_KEY,JSON.stringify(academyProfile));const input=document.getElementById("profilePhotoInput");if(input)input.value="";render()}
+
+function resetOnboardingDraft(){
+  const preferredCourse=(selectedCourseId&&courseById(selectedCourseId))?selectedCourseId:(courseById(PRIMARY_COURSE_ID)?.id||COURSES[0]?.id||"");
+  onboardingDraft={displayName:academyProfile.displayName||"Learner",countryCode:academyProfile.countryCode||"",picture:academyProfile.picture||"",goals:[...learningGoals],courseId:preferredCourse,dailyGoal:dailyGoalTarget||5};
+}
+function openOnboarding({replay=false}={}){
+  onboardingReplay=replay;onboardingStep=0;resetOnboardingDraft();
+  const overlay=document.getElementById("onboarding");if(overlay)overlay.classList.remove("hidden");
+  renderOnboarding();
+}
+function replayOnboarding(){openOnboarding({replay:true})}
+function closeOnboardingReplay(){if(!onboardingReplay)return;document.getElementById("onboarding")?.classList.add("hidden");render()}
+function startOnboardingIfNeeded(){if(localStorage.getItem(ONBOARDING_COMPLETE_KEY)!=="1")openOnboarding({replay:false})}
+function onboardingAvatarHtml(){return onboardingDraft?.picture?`<img src="${onboardingDraft.picture}" alt="Profile preview">`:escapeHtml(profileInitials(onboardingDraft?.displayName||"Learner"))}
+function onboardingError(message){const box=document.getElementById("onboardingError");if(box){box.textContent=message;box.classList.remove("hidden")}else alert(message)}
+function renderOnboarding(){
+  const box=document.getElementById("onboardingContent");if(!box||!onboardingDraft)return;
+  const total=6,step=Math.max(0,Math.min(total-1,onboardingStep));
+  document.getElementById("onboardingStepLabel").textContent=`STEP ${step+1} OF ${total}`;
+  document.getElementById("onboardingProgressFill").style.width=`${((step+1)/total)*100}%`;
+  const back=step>0?'<button class="alt" onclick="onboardingBack()">← Back</button>':'<span></span>';
+  const exit=onboardingReplay?'<button class="alt" onclick="closeOnboardingReplay()">Exit Setup</button>':'';
+  const next=(label="Continue →",fn="onboardingNext()")=>`<div class="onboarding-actions">${back}<div class="onboarding-actions-right">${exit}<button onclick="${fn}">${label}</button></div></div>`;
+  if(step===0){
+    box.innerHTML=`<div class="onboarding-panel"><div class="onboarding-kicker">WELCOME TO LEARNING ACADEMY</div><h1 id="onboardingTitle" class="onboarding-title">Build a learning plan that feels like yours.</h1><p class="onboarding-copy">A quick setup will personalize your profile, learning goals, first course, and daily study target. Your progress stays local on this computer for now and can connect to an online account later.</p><div class="onboarding-welcome-grid"><div class="onboarding-benefit"><div class="icon">👤</div><b>Create your identity</b><span class="muted">Name, country flag, and optional profile picture.</span></div><div class="onboarding-benefit"><div class="icon">🎯</div><b>Set your direction</b><span class="muted">Tell Learning Academy what you want to achieve.</span></div><div class="onboarding-benefit"><div class="icon">📚</div><b>Start with a course</b><span class="muted">Choose where you want to begin and set a daily target.</span></div></div>${next("Start Setup →")}</div>`;
+  }else if(step===1){
+    box.innerHTML=`<div class="onboarding-panel"><div class="onboarding-kicker">YOUR PROFILE</div><h1 id="onboardingTitle" class="onboarding-title">Who is learning?</h1><p class="onboarding-copy">This is the identity shown on your profile and leaderboard. Your role is preserved separately and cannot be changed here.</p><div class="onboarding-form-grid"><div><div id="onboardingAvatar" class="onboarding-avatar">${onboardingAvatarHtml()}</div><input id="onboardingPhotoInput" class="hidden" type="file" accept="image/png,image/jpeg,image/webp" onchange="handleOnboardingPictureUpload(event)"><div class="onboarding-photo-actions"><button onclick="document.getElementById('onboardingPhotoInput').click()">📷 ${onboardingDraft.picture?'Change':'Add'} Picture</button>${onboardingDraft.picture?'<button class="alt" onclick="removeOnboardingPicture()">Remove</button>':''}</div></div><div class="onboarding-fields"><div><div class="field-label">DISPLAY NAME</div><input id="onboardingName" class="profile-input" maxlength="40" value="${escapeHtml(onboardingDraft.displayName)}" placeholder="Your name"></div><div><div class="field-label">COUNTRY</div><select id="onboardingCountry" class="profile-input"><option value="">Select your country...</option></select><div class="muted" style="font-size:11px;margin-top:5px">Your country's flag will appear beside your name.</div></div><div id="onboardingError" class="onboarding-error hidden"></div></div></div>${next()}</div>`;
+    populateCountrySelectElement(document.getElementById("onboardingCountry"),onboardingDraft.countryCode);
+  }else if(step===2){
+    box.innerHTML=`<div class="onboarding-panel"><div class="onboarding-kicker">LEARNING GOALS</div><h1 id="onboardingTitle" class="onboarding-title">What are you working toward?</h1><p class="onboarding-copy">Choose one or more. These goals will be used later to personalize recommendations and what your Dashboard suggests next.</p><div class="onboarding-goals">${LEARNING_GOAL_OPTIONS.map(([id,title,desc])=>`<button class="onboarding-choice ${onboardingDraft.goals.includes(id)?'selected':''}" onclick="toggleOnboardingGoal('${id}')"><b>${escapeHtml(title)}</b><span>${escapeHtml(desc)}</span></button>`).join("")}</div><div id="onboardingError" class="onboarding-error hidden"></div>${next()}</div>`;
+  }else if(step===3){
+    const courses=COURSES.length?COURSES.map(c=>`<div class="onboarding-course-card ${onboardingDraft.courseId===c.id?'selected':''}" onclick="selectOnboardingCourse('${c.id}')"><div class="field-label">${escapeHtml(c.category||'COURSE')} · ${escapeHtml(c.difficulty||'ALL LEVELS')}</div><h3>${escapeHtml(c.name)}</h3><p class="muted">${escapeHtml(c.description)}</p><div><span class="tag">${escapeHtml(c.duration||'Self-paced')}</span>${c.installedPackage?'<span class="tag">Installed</span>':'<span class="tag">Built-in</span>'}</div></div>`).join(""):'<div class="onboarding-error">No courses are currently available. You can finish setup and install a course later.</div>';
+    box.innerHTML=`<div class="onboarding-panel"><div class="onboarding-kicker">YOUR FIRST COURSE</div><h1 id="onboardingTitle" class="onboarding-title">Where do you want to start?</h1><p class="onboarding-copy">Pick the course Learning Academy should load when setup is complete. You can switch courses anytime from the Course Library.</p><div class="onboarding-course-grid">${courses}</div><div id="onboardingError" class="onboarding-error hidden"></div>${next()}</div>`;
+  }else if(step===4){
+    const options=[[3,"Light","A smaller target for busy days."],[5,"Standard","A balanced everyday learning goal."],[7,"Focused","A deeper session with more practice."],[9,"Intensive","A high-effort study day."]];
+    box.innerHTML=`<div class="onboarding-panel"><div class="onboarding-kicker">DAILY STUDY GOAL</div><h1 id="onboardingTitle" class="onboarding-title">How much do you want to complete each day?</h1><p class="onboarding-copy">A block is one course task. The Dashboard will track your completed blocks against this target. If a course day has fewer blocks, the target automatically adapts to that day.</p><div class="onboarding-goal-grid">${options.map(([value,title,desc])=>`<button class="onboarding-goal-option ${Number(onboardingDraft.dailyGoal)===value?'selected':''}" onclick="selectOnboardingDailyGoal(${value})"><div class="onboarding-goal-number">${value}</div><b>${title}</b><div class="muted" style="font-size:11px;margin-top:5px">${desc}</div></button>`).join("")}</div>${next()}</div>`;
+  }else{
+    const c=courseById(onboardingDraft.courseId),goalNames=LEARNING_GOAL_OPTIONS.filter(x=>onboardingDraft.goals.includes(x[0])).map(x=>x[1]);const cName=countryName(onboardingDraft.countryCode);
+    box.innerHTML=`<div class="onboarding-panel" style="text-align:center"><div class="onboarding-complete-icon">🚀</div><div class="onboarding-kicker">READY TO BEGIN</div><h1 id="onboardingTitle" class="onboarding-title">Your Learning Academy is set up.</h1><p class="onboarding-copy" style="margin-left:auto;margin-right:auto">Review your setup below. You can change profile details later and run this setup again from Settings without losing course progress.</p><div class="onboarding-summary" style="text-align:left"><div class="onboarding-summary-card"><div class="label">PROFILE</div><div class="value">${escapeHtml(onboardingDraft.displayName)}${countryFlagHtml(onboardingDraft.countryCode)}</div><div class="muted" style="font-size:11px;margin-top:3px">${escapeHtml(cName||'No country')}</div></div><div class="onboarding-summary-card"><div class="label">FIRST COURSE</div><div class="value">${escapeHtml(c?.name||'Choose later')}</div></div><div class="onboarding-summary-card"><div class="label">LEARNING GOALS</div><div class="value">${escapeHtml(goalNames.join(', ')||'General learning')}</div></div><div class="onboarding-summary-card"><div class="label">DAILY GOAL</div><div class="value">${Number(onboardingDraft.dailyGoal)||5} blocks per day</div></div></div><div id="onboardingError" class="onboarding-error hidden"></div>${next("Start Learning →","finishOnboarding()")}</div>`;
+  }
+}
+function captureOnboardingProfileFields(){const name=document.getElementById("onboardingName")?.value.trim();if(name)onboardingDraft.displayName=name.slice(0,40);const country=document.getElementById("onboardingCountry")?.value;if(country!==undefined)onboardingDraft.countryCode=String(country||"").toUpperCase()}
+function handleOnboardingPictureUpload(event){captureOnboardingProfileFields();const file=event.target.files?.[0];processProfilePictureFile(file,data=>{onboardingDraft.picture=data;event.target.value="";renderOnboarding()})}
+function removeOnboardingPicture(){captureOnboardingProfileFields();onboardingDraft.picture="";renderOnboarding()}
+function toggleOnboardingGoal(id){const set=new Set(onboardingDraft.goals);set.has(id)?set.delete(id):set.add(id);onboardingDraft.goals=[...set];renderOnboarding()}
+function selectOnboardingCourse(id){if(courseById(id)){onboardingDraft.courseId=id;renderOnboarding()}}
+function selectOnboardingDailyGoal(value){onboardingDraft.dailyGoal=Math.max(1,Math.min(12,Number(value)||5));renderOnboarding()}
+function captureOnboardingStep(){
+  if(onboardingStep===1){const name=document.getElementById("onboardingName")?.value.trim()||"",country=String(document.getElementById("onboardingCountry")?.value||"").toUpperCase();if(!name){onboardingError("Enter a display name to continue.");return false}if(!country){onboardingError("Select your country so Learning Academy can show your flag.");return false}onboardingDraft.displayName=name.slice(0,40);onboardingDraft.countryCode=country;}
+  if(onboardingStep===2&&!onboardingDraft.goals.length){onboardingError("Choose at least one learning goal to continue.");return false}
+  if(onboardingStep===3&&COURSES.length&&!courseById(onboardingDraft.courseId)){onboardingError("Choose a course to continue.");return false}
+  return true;
+}
+function onboardingNext(){if(!captureOnboardingStep())return;onboardingStep=Math.min(5,onboardingStep+1);renderOnboarding()}
+function onboardingBack(){if(onboardingStep===1){const name=document.getElementById("onboardingName")?.value.trim();if(name)onboardingDraft.displayName=name.slice(0,40);onboardingDraft.countryCode=String(document.getElementById("onboardingCountry")?.value||onboardingDraft.countryCode||"").toUpperCase()}onboardingStep=Math.max(0,onboardingStep-1);renderOnboarding()}
+async function finishOnboarding(){
+  const btn=document.querySelector("#onboardingContent .onboarding-actions-right button:last-child");if(btn){btn.disabled=true;btn.textContent="Setting up…"}
+  try{
+    academyProfile.displayName=(onboardingDraft.displayName||"Learner").slice(0,40);academyProfile.countryCode=String(onboardingDraft.countryCode||"").toUpperCase();academyProfile.picture=onboardingDraft.picture||"";localStorage.setItem(ACADEMY_PROFILE_KEY,JSON.stringify(academyProfile));
+    learningGoals=[...onboardingDraft.goals];localStorage.setItem(LEARNING_GOALS_KEY,JSON.stringify(learningGoals));dailyGoalTarget=Math.max(1,Math.min(12,Number(onboardingDraft.dailyGoal)||5));localStorage.setItem(DAILY_GOAL_TARGET_KEY,String(dailyGoalTarget));
+    const id=onboardingDraft.courseId;if(id&&courseById(id)){await activateCourse(id,{announce:true});recentCourseIds=[id,...recentCourseIds.filter(x=>x!==id)].slice(0,4);localStorage.setItem("learningAcademy:recentCourses",JSON.stringify(recentCourseIds));}
+    localStorage.setItem(ONBOARDING_COMPLETE_KEY,"1");onboardingReplay=false;document.getElementById("onboarding")?.classList.add("hidden");addNotification(`Setup complete — welcome, ${academyProfile.displayName}.`,"success","onboarding-complete");render();page("dash");showUpdateModal("🚀","You're Ready",`${academyProfile.displayName}, your Learning Academy profile, goals, course, and daily target are ready.`,"close","Start Learning",false);
+  }catch(error){onboardingError("Setup could not finish: "+error.message);if(btn){btn.disabled=false;btn.textContent="Start Learning →"}}
+}
 const DEMO_LEADERBOARD=[
   ["CodeComet",9820,21],["NovaScholar",9130,17],["LogicLegend",8640,15],["ByteBuilder",7920,13],["MathMaven",7310,12],["CircuitSage",6750,11],["StudySpark",6120,10],["PixelProfessor",5480,9],["QuantumQuest",4930,8],["SyntaxStar",4410,8],["AlgebraAce",3890,7],["FocusForge",3380,6],["CuriousCoder",2890,6],["SkillSeeker",2410,5],["Brainwave",1960,4],["LearnLoop",1510,4],["NextChapter",1120,3],["BrightPath",780,2],["FreshStart",320,1]
 ].map(([name,xp,streak])=>({name,xp,streak,picture:"",countryCode:"",me:false}));
@@ -943,8 +1052,9 @@ function renderDashboard(){
   const recent=recentCourseIds.map(courseById).filter(Boolean);
   document.getElementById("recentCourses").innerHTML=recent.length?recent.map(course=>{const state=course.id===selectedCourseId?S:courseProgressFor(course.id);const max=totalDaysForCourse(course);return `<div class="queue-item recent-course-item"><div><b>${course.name}</b><div class="muted">${state.completed.length}/${max} days • ${Math.round(state.completed.length/max*100)}%</div></div><button ${selectedCourseId===course.id?'class="good"':''} onclick="loadCourse('${course.id}')">${selectedCourseId===course.id?'✓ Loaded':'Load Course'}</button></div>`}).join(""):'<p class="muted">No recent courses yet.</p>';
   renderNotifications();
-  const d=current(),done=d?d.tasks.filter((_,i)=>isDone(d.day,i)).length:0,goal=Math.min(5,done);
-  document.getElementById("dailyGoalText").textContent=`${goal} / 5 blocks`;document.getElementById("dailyGoalFill").style.width=(goal/5*100)+"%";
+  const d=current(),done=d?d.tasks.filter((_,i)=>isDone(d.day,i)).length:0,target=d?Math.max(1,Math.min(dailyGoalTarget,d.tasks.length)):dailyGoalTarget,goal=Math.min(target,done);
+  document.getElementById("dailyGoalText").textContent=`${goal} / ${target} blocks`;document.getElementById("dailyGoalFill").style.width=(target?goal/target*100:0)+"%";
+  const settingsGoal=document.getElementById("settingsDailyGoal");if(settingsGoal)settingsGoal.textContent=`${dailyGoalTarget} blocks`;
   const states=COURSES.map(course=>course.id===selectedCourseId?S:courseProgressFor(course.id));
   document.getElementById("overallHours").textContent=(states.reduce((n,x)=>n+x.minutes,0)/60).toFixed(1);
   document.getElementById("overallCourses").textContent=states.filter((x,i)=>x.completed.length||Object.keys(x.tasks).length||COURSES[i].id===selectedCourseId).length;
@@ -1029,10 +1139,12 @@ async function initAcademy(){
     if(!selectedCourseId&&localStorage.getItem("academyFull")&&courseById(PRIMARY_COURSE_ID))selectedCourseId=PRIMARY_COURSE_ID;
     if(selectedCourseId)await activateCourse(selectedCourseId);
     render();
+    startOnboardingIfNeeded();
   }catch(error){
     addNotification("Course Engine error: "+error.message,"error");
     renderNotifications();
     document.getElementById("courseGrid").innerHTML=`<div class="feedback bad"><b>Course Engine Error</b><br>${error.message}</div>`;
+    startOnboardingIfNeeded();
   }
   initUpdaterUI();
 }

@@ -79,8 +79,8 @@ if (!fs.existsSync(courseDir)) {
 }
 
 const pkg = JSON.parse(fs.readFileSync("package.json", "utf8"));
-if (pkg.version !== "1.2.12") fail(`package.json version must be 1.2.12, found ${pkg.version}.`);
-else ok("Application version is 1.2.12");
+if (pkg.version !== "1.2.13") fail(`package.json version must be 1.2.13, found ${pkg.version}.`);
+else ok("Application version is 1.2.13");
 if (!pkg.build?.files?.some(entry => String(entry).startsWith("courses/"))) fail("package.json build.files must include courses/**/*.");
 else ok("Built-in course packages included in Windows build");
 if (!pkg.build?.files?.some(entry => String(entry).startsWith("assets/"))) fail("package.json build.files must include assets/**/*.");
@@ -115,6 +115,14 @@ if (!indexHtml.includes('data-page="dash"') || !indexHtml.includes('nav-active')
 else ok("Active navigation and external Website styling configured");
 if (!indexHtml.includes('grid-template-areas:"challenge recent" "challenge stats" "updates goal" "updates top"')) fail("Requested dashboard card layout has changed unexpectedly.");
 else ok("Requested dashboard card layout preserved");
+if (!indexHtml.includes('id="onboarding"') || !indexHtml.includes('startOnboardingIfNeeded()') || !indexHtml.includes('finishOnboarding()')) fail("First-run onboarding flow is missing.");
+else ok("First-run onboarding flow configured");
+if (!indexHtml.includes('LEARNING_GOALS_KEY') || !indexHtml.includes('DAILY_GOAL_TARGET_KEY') || !indexHtml.includes('selectOnboardingDailyGoal')) fail("Onboarding goals or Daily Goal persistence is missing.");
+else ok("Onboarding learning goals and Daily Goal persistence configured");
+if (!indexHtml.includes('Run Setup Again') || !indexHtml.includes('replayOnboarding()')) fail("Settings must allow onboarding to be replayed safely.");
+else ok("Onboarding replay control configured in Settings");
+if (!indexHtml.includes('academyProfile.role') || !indexHtml.includes('academyProfile.picture=onboardingDraft.picture')) fail("Onboarding must update profile identity without replacing the saved role.");
+else ok("Onboarding preserves per-profile role while updating identity");
 
 if (!pkg.dependencies?.["adm-zip"]) fail("package.json dependencies must include adm-zip for .lacourse support.");
 else ok(".lacourse archive dependency declared");

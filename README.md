@@ -1,6 +1,16 @@
-# Learning Academy v1.2.12 — Commercial UI Polish
 
-## v1.2.12 changes
+## v1.2.13 — First-Run Onboarding
+
+- Added a full first-run setup flow: welcome, profile identity, country, optional profile picture, learning goals, first-course selection, Daily Goal selection, and a final review screen.
+- Fresh installs are guided through setup automatically. Existing development profiles see the onboarding once after updating so the flow can be tested, then it stays completed.
+- Owner/Learner role is preserved separately and cannot be changed by onboarding.
+- Added persistent learning goals and an adjustable Daily Goal target. The Dashboard now uses the learner-selected target and safely adapts when a course day has fewer tasks.
+- Added **Run Setup Again** in Settings for testing or changing setup choices without deleting course progress.
+- Completing onboarding loads the selected first course and adds it to Recent Courses.
+
+# Learning Academy v1.2.13 — Commercial UI Polish
+
+## v1.2.13 changes
 - Dashboard polish: more consistent card spacing, section labels, typography, hover states, and visual weight while preserving the requested dashboard layout.
 - Profile polish: stronger account header, Owner-specific gold treatment, Academy Level with XP-to-next-level progress, member-since chip, cleaner editable fields, and refined avatar controls.
 - Leaderboard polish: Top 3 podium cards, cleaner Top 20 rows, clearer current-user highlighting, Owner badge, profile pictures, country flags, XP, and streaks.
