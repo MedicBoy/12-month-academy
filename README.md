@@ -1,4 +1,4 @@
-# Learning Academy v1.3.0 — Secure Account Authentication Foundation
+# Learning Academy v1.3.1 — Login Screen Visual Polish
 
 This release adds the production-grade client-side account architecture for Learning Academy. The app now opens to a dedicated Login / Sign Up experience before the learning client, supports secure Remember me sessions through Electron safeStorage, external-browser OAuth with PKCE/deep-link return handling, logout, email password reset flow, and server-authoritative Owner/Learner role support through authenticated app metadata.
 
