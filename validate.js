@@ -79,8 +79,8 @@ if (!fs.existsSync(courseDir)) {
 }
 
 const pkg = JSON.parse(fs.readFileSync("package.json", "utf8"));
-if (pkg.version !== "1.3.2") fail(`package.json version must be 1.3.2, found ${pkg.version}.`);
-else ok("Application version is 1.3.2");
+if (pkg.version !== "1.3.3") fail(`package.json version must be 1.3.3, found ${pkg.version}.`);
+else ok("Application version is 1.3.3");
 if (!pkg.build?.files?.some(entry => String(entry).startsWith("courses/"))) fail("package.json build.files must include courses/**/*.");
 else ok("Built-in course packages included in Windows build");
 if (!pkg.build?.files?.some(entry => String(entry).startsWith("assets/"))) fail("package.json build.files must include assets/**/*.");
